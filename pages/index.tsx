@@ -1,21 +1,48 @@
-import Layout from '@/modules/common/components/layout'
-import React from 'react'
+import { Button } from "@/modules/common/components/input";
+import Layout from "@/modules/common/components/layout";
+import {
+	FindGreatWork,
+	Hero,
+	HireTalents,
+	HireTalentsWay,
+	Partners,
+	WorkCategories
+} from "@/modules/common/section/home";
 
 const Home = () => {
-  return (
-    <Layout>Home</Layout>
-  )
-}
+	return (
+		<Layout>
+			<Hero />
+			<Partners />
+			<HireTalentsWay />
+			<HireTalents />
+			<FindGreatWork />
+			<WorkCategories />
+			<section className=" bg-lightGreen py-6 md:py-[78px]">
+				<div className="layout-container">
+					<div className="text-center mb-8">
+						<h1 className="font-bold text-[#0B2C25] text-2xl md:text-[42px] leading-[30px] md:leading-[53px] mb-2 md:mb-4 ">
+							Leading the next era of work.
+						</h1>
+						<p className="text-base md:text-xl leading-[30px] md:leading-[30px] font-normal text-[#1C4A36] ">
+							Find talent, find jobs anytime, anywhere
+						</p>
+					</div>
+					<Button title="get started" href="/" className="w-[196px]" centered />
+				</div>
+			</section>
+		</Layout>
+	);
+};
 
-export default Home
-
+export default Home;
 
 // import Head from 'next/head'
 // import Image from 'next/image'
 // import styles from '../styles/Home.module.css'
 
 // export default function Home() {
-//   return (
+//   return (leading-[30px]
 //     <>
 //       <Head>
 //         <title>Create Next App</title>

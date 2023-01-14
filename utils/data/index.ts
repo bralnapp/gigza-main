@@ -1,0 +1,4 @@
+export * from "./footer-links.data";
+export * from "./skills-list.data";
+export * from "./content";
+export * from "./partners-logos.data";

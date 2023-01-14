@@ -1,13 +1,13 @@
 import Image from "next/image";
+import Link from "next/link";
+import { footerLinks } from "utils/data";
 
 // images
 import logo from "@/public/asset/logo/logo.svg";
-import { footerLinks } from "utils/data/footer-links.data";
-import Link from "next/link";
 
 const Footer = () => {
 	return (
-		<footer className="bg-white pt-[35px] pb-[32px] px-6 md:flex items-center justify-between md:py-8 lg:px-20">
+		<footer className="layout-container bg-white pt-[35px] pb-[32px] md:flex items-center justify-between md:py-8">
 			<div className="">
 				<Image src={logo} alt="gigza logo" />
 				<p className="font-primary text-sm leading-6 text-black3 font-normal mt-2">
