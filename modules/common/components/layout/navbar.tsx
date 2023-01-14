@@ -1,18 +1,26 @@
 import Image from "next/image";
+import { footerLinks } from "utils/data";
+import Link from "next/link";
+import { Button } from "../input";
+import { useState } from "react";
 
 // images
 import logo from "@/public/asset/logo/logo.svg";
 import menu from "@/public/asset/icons/menu.svg";
-import { footerLinks } from "utils/data";
-import Link from "next/link";
-import { Button } from "../input";
+import Sidebar from "./sidebar";
 
 const Navbar = () => {
+	const [isOpen, setIsOpen] = useState(false);
+
+	const toggleMenu = () => {
+		setIsOpen(!isOpen);
+	};
 	return (
-		<div className="fixed z-[999] w-full top-0 left-0 bg-white">
+		<header className="fixed z-[999] w-full top-0 left-0 bg-white">
+			<Sidebar {...{ isOpen, toggleMenu, setIsOpen }} />
 			<div className="layout-container h-[62px] md:h-20 flex items-center justify-between">
 				<Image src={logo} alt="gigza logo" />
-				<nav className="flex items-center space-x-8">
+				<nav className="items-center space-x-8 hidden md:flex">
 					{footerLinks.map((item, index) => (
 						<Link
 							key={`nav-links-${index}`}
@@ -23,10 +31,14 @@ const Navbar = () => {
 						</Link>
 					))}
 				</nav>
-				<Image src={menu} alt="" className="md:hidden" />
-				<Button title="get started" href="/" className="w-[151px] hidden md:flex" />
+				<Image src={menu} alt="" className="md:hidden" onClick={toggleMenu} />
+				<Button
+					title="get started"
+					href="/"
+					className="w-[151px] hidden md:flex"
+				/>
 			</div>
-		</div>
+		</header>
 	);
 };
 

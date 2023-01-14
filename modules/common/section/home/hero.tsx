@@ -8,7 +8,7 @@ import heroDesktop from "@/public/asset/images/hero-desktop.svg";
 const Hero = () => {
 	return (
 		<section className="bg-[#0B2C25] py-8 md:py-[63px]">
-			<div className="w-[96%] mx-auto lg:mx-0 lg:ml-auto lg:grid grid-cols-2 lg:gap-x-10 xl:gap-x-20 lg:items-center">
+			<div className="w-11/12 lg:w-[96%] mx-auto lg:mx-0 lg:ml-auto lg:grid grid-cols-2 lg:gap-x-10 xl:gap-x-20 lg:items-center">
 				<div className="">
 					<h1 className="font-bold text-white max-[400px]:text-3xl min-[412px]:text-4xl min-[540px]:text-5xl md:text-[52px] lg:text-4xl xl:text-[52px] md:leading-[68px] xl:leading-[68px] min-[412px]:leading-[45px]">
 						Gigza market place is{" "}
