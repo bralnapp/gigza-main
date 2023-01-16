@@ -21,7 +21,9 @@ const Navbar = () => {
 		<header className="fixed z-[999] w-full top-0 left-0 bg-white">
 			<Sidebar {...{ isOpen, toggleMenu, setIsOpen }} />
 			<div className="layout-container h-[62px] md:h-20 flex items-center justify-between">
-				<Image src={logo} alt="gigza logo" />
+				<Link href='/'>
+					<Image src={logo} alt="gigza logo" />
+				</Link>
 				<nav className="items-center space-x-8 hidden md:flex">
 					{footerLinks.map((item, index) => (
 						<Link

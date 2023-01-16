@@ -45,7 +45,13 @@ const Button = ({
 			{title}
 		</Link>
 	) : (
-		<button {...props}>{title}</button>
+		<button
+			{...{ href }}
+			className={twMerge(`${buttonStyles({ intent, centered })}  ${className}`)}
+			{...props}
+		>
+			{title}
+		</button>
 	);
 };
 

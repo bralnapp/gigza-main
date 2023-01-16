@@ -1,10 +1,10 @@
-import DashboardNav from "@/modules/dashboard/layout/dashboard-nav";
+import DashboardLayout from "@/modules/dashboard/components/layout";
 
 const FindWork = () => {
 	return (
-		<DashboardNav>
+		<DashboardLayout>
 			<h1>FindWork</h1>
-		</DashboardNav>
+		</DashboardLayout>
 	);
 };
 

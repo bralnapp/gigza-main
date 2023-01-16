@@ -22,8 +22,18 @@ const Hero = () => {
 					<Button title="get started" href="/" className="md:w-[196px]" />
 				</div>
 				<div className="mt-8 min-[540px]:mt-10 lg:mt-0">
-					<Image src={heroMobile} alt="" className="w-full lg:hidden" />
-					<Image src={heroDesktop} alt="" className="w-full hidden lg:block" />
+					<Image
+						src={heroMobile}
+						alt=""
+						className="w-full lg:hidden"
+						priority
+					/>
+					<Image
+						src={heroDesktop}
+						alt=""
+						className="w-full hidden lg:block"
+						priority
+					/>
 				</div>
 			</div>
 		</section>

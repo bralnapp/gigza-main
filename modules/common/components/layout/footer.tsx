@@ -9,7 +9,9 @@ const Footer = () => {
 	return (
 		<footer className="layout-container bg-white pt-[35px] pb-[32px] md:flex items-center justify-between md:py-8">
 			<div className="">
-				<Image src={logo} alt="gigza logo" />
+				<Link href="/">
+					<Image src={logo} alt="gigza logo" />
+				</Link>
 				<p className="font-primary text-sm leading-6 text-black3 font-normal mt-2">
 					Copyright © 2021 Gigza, Inc.
 					<span className="block">All rights reserved.</span>

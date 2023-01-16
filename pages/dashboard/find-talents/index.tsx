@@ -1,9 +1,7 @@
-import React from 'react'
+import DashboardLayout from "@/modules/dashboard/components/layout";
 
 const FindTalents = () => {
-  return (
-    <div>FindTalents</div>
-  )
-}
+	return <DashboardLayout>FindTalents</DashboardLayout>;
+};
 
-export default FindTalents
+export default FindTalents;

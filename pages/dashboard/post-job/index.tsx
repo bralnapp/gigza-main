@@ -1,9 +1,7 @@
-import React from 'react'
+import DashboardLayout from "@/modules/dashboard/components/layout";
 
 const PostJob = () => {
-  return (
-    <div>PostJob</div>
-  )
-}
+	return <DashboardLayout>PostJob</DashboardLayout>;
+};
 
-export default PostJob
+export default PostJob;
