@@ -1,6 +1,7 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import { Plus_Jakarta_Sans } from "@next/font/google";
+import { StoreContextProvider } from "context/StoreContext";
 
 const inter = Plus_Jakarta_Sans({
 	subsets: ["latin"],
@@ -8,7 +9,11 @@ const inter = Plus_Jakarta_Sans({
 });
 
 export default function App({ Component, pageProps }: AppProps) {
-	return <main className={inter.variable}>
-		<Component {...pageProps} />
-	</main>;
+	return (
+		<StoreContextProvider>
+			<main className={inter.variable}>
+				<Component {...pageProps} />
+			</main>
+		</StoreContextProvider>
+	);
 }

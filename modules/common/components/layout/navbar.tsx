@@ -3,14 +3,16 @@ import { footerLinks } from "utils/data";
 import Link from "next/link";
 import { Button } from "../input";
 import { useState } from "react";
+import Sidebar from "./sidebar";
+import { useStoreContext } from "context/StoreContext";
 
 // images
 import logo from "@/public/asset/logo/logo.svg";
 import menu from "@/public/asset/icons/menu.svg";
-import Sidebar from "./sidebar";
 
 const Navbar = () => {
 	const [isOpen, setIsOpen] = useState(false);
+	const { connectAccount } = useStoreContext();
 
 	const toggleMenu = () => {
 		setIsOpen(!isOpen);
@@ -34,7 +36,7 @@ const Navbar = () => {
 				<Image src={menu} alt="" className="md:hidden" onClick={toggleMenu} />
 				<Button
 					title="get started"
-					href="/"
+					onClick={connectAccount}
 					className="w-[151px] hidden md:flex"
 				/>
 			</div>

@@ -1,14 +1,14 @@
 export const footerLinks = [
 	{
 		name: "Find talents",
-		to: "/"
+		to: "/find-talents"
 	},
 	{
 		name: "Find work",
-		to: "/"
+		to: "/find-work"
 	},
 	{
 		name: "post a job",
-		to: "/"
+		to: "/post-job"
 	}
 ];
