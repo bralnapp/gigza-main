@@ -19,8 +19,8 @@ const NotificationItem = ({ isActive, type, icon, handleClick }: Props) => {
 				<div
 					className={`absolute ${
 						type === "message"
-							? "-right-[2px] -top-[14px]"
-							: "-top-[14px] right-0"
+							? "-right-[2px] -top-[3px]"
+							: "-top-[2px] right-0"
 					} `}
 				>
 					<Image src={notificationStatusIcon} alt="" />

@@ -1,22 +1,28 @@
+import { useState } from "react";
 import Image from "next/image";
 import { dashboardNavLinks } from "utils/data";
 import Link from "next/link";
 import { ConnectWalletButton } from "@/modules/common/components/input";
 import NavLink from "../navlink";
-
-// images
-import logo from "@/public/asset/logo/logo.svg";
 import NotificationBell from "../notification-items/notification-bell";
 import MessagingNotification from "../notification-items/messaging-notification";
 
+// images
+import logo from "@/public/asset/logo/logo.svg";
+import menuIcon from "@/public/asset/icons/menu.svg";
+import closeIcon from "@/public/asset/icons/close.svg";
+
 const DashboardNav = () => {
+	const [isOpen, setIsOpen] = useState(false);
+	const handleToggle = () => setIsOpen(!isOpen);
+
 	return (
-		<header className="fixed bg-white z-[999] top-0 left-0 w-full ">
+		<header className="fixed bg-white z-[999] top-0 left-0 w-full">
 			<div className="layout-container flex items-center justify-between h-[78px]">
 				<Link href="/">
 					<Image src={logo} alt="" />
 				</Link>
-				<nav className="flex items-center space-x-[44px]">
+				<nav className="hidden xl:flex items-center space-x-[44px]">
 					{dashboardNavLinks.map((item, index) => (
 						<NavLink
 							key={`dashboard-navlinks-${index}`}
@@ -27,10 +33,18 @@ const DashboardNav = () => {
 				</nav>
 				<div className="flex items-center">
 					<div className="flex items-center space-x-8 mr-[21px]">
-						<MessagingNotification />
-						<NotificationBell />
+						<MessagingNotification isActive />
+						<NotificationBell isActive />
 					</div>
-					<ConnectWalletButton />
+					<Image
+						src={isOpen ? closeIcon : menuIcon }
+						alt=""
+						className="xl:hidden"
+						onClick={handleToggle}
+					/>
+					<div className="hidden xl:block">
+						<ConnectWalletButton />
+					</div>
 				</div>
 			</div>
 		</header>

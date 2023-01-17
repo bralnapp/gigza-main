@@ -28,7 +28,12 @@ const Home = () => {
 							Find talent, find jobs anytime, anywhere
 						</p>
 					</div>
-					<Button title="get started" href="/" className="w-[196px]" centered />
+					<Button
+						title="get started"
+						href="/dashboard/find-work"
+						className="w-[196px]"
+						centered
+					/>
 				</div>
 			</section>
 		</Layout>

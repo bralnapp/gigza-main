@@ -27,7 +27,11 @@ const FindGreatWork = () => {
 							</div>
 						))}
 					</div>
-					<Button title="get started" href="/" className="w-[178px]" />
+					<Button
+						title="get started"
+						href="/dashboard/find-work"
+						className="w-[178px]"
+					/>
 				</div>
 				<div className="">
 					<Image src={greatWork} alt="" className="w-full md:hidden" />

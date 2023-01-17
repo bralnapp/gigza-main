@@ -19,7 +19,11 @@ const Hero = () => {
 						allows anyone to post a job and get help from freelancers with the
 						requisite skills.
 					</p>
-					<Button title="get started" href="/" className="md:w-[196px]" />
+					<Button
+						title="get started"
+						href="/dashboard/find-work"
+						className="md:w-[196px]"
+					/>
 				</div>
 				<div className="mt-8 min-[540px]:mt-10 lg:mt-0">
 					<Image
