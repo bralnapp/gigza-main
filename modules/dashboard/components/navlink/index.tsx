@@ -1,23 +1,32 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
+import ProposalLink from "./proposal-link";
 
-type NavLinkProp = {
-	title: string;
-	to: string;
+export type NavLinkProp = {
+	item: {
+		title: string;
+		to: string;
+		categories?: undefined | {
+			name: string;
+			to: string;
+		}[];
+	};
 };
-const NavLink = ({ title, to }: NavLinkProp) => {
+const NavLink = ({ item }: NavLinkProp) => {
 	const router = useRouter();
 
-	return (
+	return item.title.toLowerCase() === "proposals" ? (
+		<ProposalLink {...{ item }} />
+	) : (
 		<Link
-			href={to}
+			href={item.to}
 			className={`text-base leading-5 capitalize ${
-				router?.pathname?.toLowerCase() === to.toLowerCase()
+				router?.pathname?.toLowerCase() === item.to.toLowerCase()
 					? "text-primary"
 					: "text-b4"
 			}`}
 		>
-			{title}
+			{item.title}
 		</Link>
 	);
 };

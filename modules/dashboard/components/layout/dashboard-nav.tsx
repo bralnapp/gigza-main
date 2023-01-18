@@ -6,20 +6,20 @@ import { ConnectWalletButton } from "@/modules/common/components/input";
 import NavLink from "../navlink";
 import NotificationBell from "../notification-items/notification-bell";
 import MessagingNotification from "../notification-items/messaging-notification";
+import DashboardSidebar from "./dashboard-sidebar";
 
 // images
 import logo from "@/public/asset/logo/logo.svg";
 import menuIcon from "@/public/asset/icons/menu.svg";
-import closeIcon from "@/public/asset/icons/close.svg";
-import { useStoreContext } from "context/StoreContext";
 
 const DashboardNav = () => {
 	const [isOpen, setIsOpen] = useState(false);
-	const {state} = useStoreContext()
-	const handleToggle = () => setIsOpen(!isOpen);
-
+	const toggleMenu = () => {
+		setIsOpen(!isOpen);
+	};
 	return (
 		<header className="fixed bg-white z-[999] top-0 left-0 w-full">
+			<DashboardSidebar {...{ isOpen, toggleMenu, setIsOpen }} />
 			<div className="layout-container flex items-center justify-between h-[78px]">
 				<Link href="/">
 					<Image src={logo} alt="" />
@@ -28,8 +28,7 @@ const DashboardNav = () => {
 					{dashboardNavLinks.map((item, index) => (
 						<NavLink
 							key={`dashboard-navlinks-${index}`}
-							title={item.title}
-							to={item.to}
+							item={item}
 						/>
 					))}
 				</nav>
@@ -39,10 +38,10 @@ const DashboardNav = () => {
 						<NotificationBell isActive />
 					</div>
 					<Image
-						src={isOpen ? closeIcon : menuIcon}
+						src={menuIcon}
 						alt=""
 						className="xl:hidden"
-						onClick={handleToggle}
+						onClick={toggleMenu}
 					/>
 					<div className="hidden xl:block">
 						<ConnectWalletButton />

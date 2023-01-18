@@ -43,18 +43,20 @@ const ConnectWalletButton = () => {
 			) : null}
 			<div>
 				{state.isWalletConnected ? (
-					<div className="flex items-center bg-[#F3F4F5] rounded-[38px] py-2 px-[10px]">
-						<Image
-							src={`https://avatars.dicebear.com/api/pixel-art/${state.account}.svg`}
-							priority
-							alt=""
-							width={30}
-							height={30}
-							className="rounded-full mr-2"
-						/>
-						<p className="text-base leading-[18px] text-primary2 font-medium mr-[26px]">
-							{formatWalletAddress(state.account!)}
-						</p>
+					<div className="flex items-center justify-between bg-[#F3F4F5] rounded-[38px] py-2 px-[10px]">
+						<div className="flex items-center">
+							<Image
+								src={`https://avatars.dicebear.com/api/pixel-art/${state.account}.svg`}
+								priority
+								alt=""
+								width={30}
+								height={30}
+								className="rounded-full mr-2"
+							/>
+							<p className="text-base leading-[18px] text-primary2 font-medium mr-[26px]">
+								{formatWalletAddress(state.account!)}
+							</p>
+						</div>
 						<div className="flex items-center space-x-[9px]">
 							<CopyToClipboard icon={copyIcon} text={`${state.account}`} />
 							<Image

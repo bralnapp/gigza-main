@@ -9,7 +9,17 @@ export const dashboardNavLinks = [
 	},
 	{
 		title: "proposals",
-		to: "/"
+		to: '',
+		categories: [
+			{
+				name: 'Sent proposals',
+				to: '/dashboard/proposal/sent'
+			},
+			{
+				name: 'Received proposals',
+				to: '/dashboard/proposal/received'
+			},
+		]
 	},
 	{
 		title: "contract",
