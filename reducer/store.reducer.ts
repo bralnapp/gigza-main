@@ -13,8 +13,9 @@ type ActionMap<M extends { [index: string]: any }> = {
 
 export enum Types {
 	ConnectAccount = "CONNECT_ACCOUNT",
-	DisableButton = "DISABLE_BUTTON",
-	EnableButton = "ENABLE_BUTTON"
+	DisconnectAccount = "DISCONNECT_ACCOUNT",
+	// DisableButton = "DISABLE_BUTTON",
+	// EnableButton = "ENABLE_BUTTON"
 }
 
 export type StoreActions =
@@ -24,28 +25,36 @@ type StorePayload = {
 	[Types.ConnectAccount]: {
 		account: string;
 	};
-	[Types.DisableButton]: undefined;
-	[Types.EnableButton]: undefined;
+	[Types.DisconnectAccount]: undefined;
+	// [Types.DisableButton]: undefined;
+	// [Types.EnableButton]: undefined;
 };
 
 export const storeReducer = (state: IinitialState, action: StoreActions) => {
 	switch (action.type) {
-		case Types.DisableButton:
-			return {
-				...state,
-				isButtonDisabled: true
-			};
-		case Types.EnableButton:
-			return {
-				...state,
-				isButtonDisabled: false
-			};
+		// case Types.DisableButton:
+		// 	return {
+		// 		...state,
+		// 		isButtonDisabled: true
+		// 	};
+		// case Types.EnableButton:
+		// 	return {
+		// 		...state,
+		// 		isButtonDisabled: false
+		// 	};
 		case Types.ConnectAccount:
 			return {
 				...state,
-				isButtonDisabled: false,
+				// isButtonDisabled: false,
 				account: action.payload.account,
 				isWalletConnected: true
+			};
+
+		case Types.DisconnectAccount:
+			return {
+				...state,
+				account: null,
+				isWalletConnected: false
 			};
 
 		default:

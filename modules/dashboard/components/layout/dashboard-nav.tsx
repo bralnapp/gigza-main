@@ -11,9 +11,11 @@ import MessagingNotification from "../notification-items/messaging-notification"
 import logo from "@/public/asset/logo/logo.svg";
 import menuIcon from "@/public/asset/icons/menu.svg";
 import closeIcon from "@/public/asset/icons/close.svg";
+import { useStoreContext } from "context/StoreContext";
 
 const DashboardNav = () => {
 	const [isOpen, setIsOpen] = useState(false);
+	const {state} = useStoreContext()
 	const handleToggle = () => setIsOpen(!isOpen);
 
 	return (
@@ -37,7 +39,7 @@ const DashboardNav = () => {
 						<NotificationBell isActive />
 					</div>
 					<Image
-						src={isOpen ? closeIcon : menuIcon }
+						src={isOpen ? closeIcon : menuIcon}
 						alt=""
 						className="xl:hidden"
 						onClick={handleToggle}

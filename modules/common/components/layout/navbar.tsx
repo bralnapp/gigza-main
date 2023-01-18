@@ -4,7 +4,6 @@ import Link from "next/link";
 import { Button } from "../input";
 import { useState } from "react";
 import Sidebar from "./sidebar";
-import { useStoreContext } from "context/StoreContext";
 
 // images
 import logo from "@/public/asset/logo/logo.svg";
@@ -12,7 +11,6 @@ import menu from "@/public/asset/icons/menu.svg";
 
 const Navbar = () => {
 	const [isOpen, setIsOpen] = useState(false);
-	const { connectAccount } = useStoreContext();
 
 	const toggleMenu = () => {
 		setIsOpen(!isOpen);

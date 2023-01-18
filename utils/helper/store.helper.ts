@@ -4,7 +4,7 @@ import { useEffect } from "react";
 const initialState = {
 	account: null,
 	isWalletConnected: false,
-	isButtonDisabled: false
+	// isButtonDisabled: false
 };
 
 const useSetPersistStore = (state: IinitialState) => {
