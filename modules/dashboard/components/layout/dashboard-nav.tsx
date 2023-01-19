@@ -2,11 +2,11 @@ import { useState } from "react";
 import Image from "next/image";
 import { dashboardNavLinks } from "utils/data";
 import Link from "next/link";
-import { ConnectWalletButton } from "@/modules/common/components/input";
 import NavLink from "../navlink";
 import NotificationBell from "../notification-items/notification-bell";
 import MessagingNotification from "../notification-items/messaging-notification";
 import DashboardSidebar from "./dashboard-sidebar";
+import { ConnectWalletButton } from "@/modules/common/components/input/button";
 
 // images
 import logo from "@/public/asset/logo/logo.svg";
@@ -20,16 +20,13 @@ const DashboardNav = () => {
 	return (
 		<header className="fixed bg-white z-[999] top-0 left-0 w-full">
 			<DashboardSidebar {...{ isOpen, toggleMenu, setIsOpen }} />
-			<div className="layout-container flex items-center justify-between h-[78px]">
+			<div className="dashboard-layout-container flex items-center justify-between h-[78px]">
 				<Link href="/">
 					<Image src={logo} alt="" />
 				</Link>
 				<nav className="hidden xl:flex items-center space-x-[44px]">
 					{dashboardNavLinks.map((item, index) => (
-						<NavLink
-							key={`dashboard-navlinks-${index}`}
-							item={item}
-						/>
+						<NavLink key={`dashboard-navlinks-${index}`} item={item} />
 					))}
 				</nav>
 				<div className="flex items-center">

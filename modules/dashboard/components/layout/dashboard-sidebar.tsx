@@ -2,9 +2,9 @@ import Image from "next/image";
 import { useRef } from "react";
 import useOnClickOutside from "utils/hooks/useOnClickOutside.hook";
 import { dashboardNavLinks } from "utils/data";
-import { ConnectWalletButton } from "@/modules/common/components/input";
 import Link from "next/link";
 import ProposalSidebarLink from "@/modules/common/misc/proposal-sidebar-link";
+import { ConnectWalletButton } from "@/modules/common/components/input/button";
 
 // images
 import closeIcon from "@/public/asset/icons/close.svg";
@@ -24,7 +24,7 @@ const DashboardSidebar = ({ isOpen, toggleMenu, setIsOpen }: Props) => {
 
 	return isOpen ? (
 		<div
-			className={`bg-black/80 w-full fixed h-screen top-0 left-0 z-[200] overflow-y-hidden md:hidden`}
+			className={`bg-black/80 w-full fixed h-screen top-0 left-0 z-[200] overflow-y-hidden xl:hidden`}
 		>
 			<aside
 				ref={sideBarRef}

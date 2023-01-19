@@ -4,7 +4,11 @@
 
 @layer components {
 	.layout-container {
-		@apply  w-11/12  mx-auto;
+		@apply w-11/12  mx-auto;
+	}
+
+	.dashboard-layout-container {
+		@apply w-11/12  mx-auto max-w-7xl;
 	}
 
 	.error {

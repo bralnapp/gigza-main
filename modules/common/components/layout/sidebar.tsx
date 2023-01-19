@@ -2,7 +2,7 @@ import Image from "next/image";
 import { useRef } from "react";
 import useOnClickOutside from "utils/hooks/useOnClickOutside.hook";
 import { footerLinks } from "utils/data";
-import { Button } from "../input";
+import { Button } from "../input/button";
 
 // images
 import closeIcon from "@/public/asset/icons/close.svg";

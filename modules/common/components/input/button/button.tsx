@@ -1,4 +1,5 @@
 import { cva, VariantProps } from "class-variance-authority";
+import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
 import { twMerge } from "tailwind-merge";
 
@@ -6,6 +7,7 @@ type ButtonProps = {
 	href?: string;
 	title: string;
 	className?: string;
+	icon?: StaticImageData;
 	[x: string]: any;
 };
 
@@ -35,6 +37,7 @@ const Button = ({
 	className,
 	intent,
 	centered,
+	icon,
 	...props
 }: Props) => {
 	return href ? (
@@ -50,6 +53,7 @@ const Button = ({
 			className={twMerge(`${buttonStyles({ intent, centered })}  ${className}`)}
 			{...props}
 		>
+			{icon ? <Image src={icon} alt="" className="mr-[11px]" /> : null}
 			{title}
 		</button>
 	);

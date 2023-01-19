@@ -1,11 +1,11 @@
 import { useRef, useState } from "react";
 import useOnClickOutside from "utils/hooks/useOnClickOutside.hook";
 import Image from "next/image";
-import Button from "./button";
 import Link from "next/link";
-import CopyToClipboard from "../copy-to-clipboard";
+import CopyToClipboard from "../../copy-to-clipboard";
 import { useStoreContext } from "context/StoreContext";
 import { formatWalletAddress } from "utils/helper";
+import Button from "./button";
 
 // images
 import copyIcon from "@/public/asset/icons/copy-icon.svg";
