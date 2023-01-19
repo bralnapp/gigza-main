@@ -18,7 +18,8 @@ module.exports = {
 				b2: "#323335",
 				b3: "#494948",
 				b4: "#5F6062",
-				lightGreen: "#E4F5EE"
+				lightGreen: "#E4F5EE",
+				stroke: '#E3E8EB',
 			}
 		}
 	},
