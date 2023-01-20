@@ -64,7 +64,7 @@ const EditProfileForm = () => {
 					placeholder="Ex. Product Design, No-code, ReactJS"
 				/>
 			</div>
-			<Button title="Save Changes" className="w-full mt-[37px]" />
+			<Button title="Save Changes" className="w-full mt-[37px] md:w-[161px]" />
 		</form>
 	);
 };
