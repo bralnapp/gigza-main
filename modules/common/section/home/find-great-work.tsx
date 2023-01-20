@@ -1,7 +1,7 @@
 import React from "react";
 import { findGreatWork } from "utils/data";
-import { Button } from "../../components/input";
 import Image from "next/image";
+import { Button } from "../../components/input/button";
 
 // images
 import greatWorkDesktop from "@/public/asset/images/great-work-desktop.svg";

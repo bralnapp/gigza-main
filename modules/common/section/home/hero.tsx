@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Button } from "../../components/input";
+import { Button } from "../../components/input/button";
 
 // images
 import heroMobile from "@/public/asset/images/hero-mobile.svg";

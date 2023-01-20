@@ -1,8 +1,8 @@
+import { useState } from "react";
+import { Button } from "../input/button";
 import Image from "next/image";
 import { footerLinks } from "utils/data";
 import Link from "next/link";
-import { Button } from "../input";
-import { useState } from "react";
 import Sidebar from "./sidebar";
 
 // images

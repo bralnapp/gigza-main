@@ -1,4 +1,4 @@
-import { Button } from "@/modules/common/components/input";
+import { Button } from "@/modules/common/components/input/button";
 import Layout from "@/modules/common/components/layout";
 import {
 	FindGreatWork,

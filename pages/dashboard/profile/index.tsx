@@ -1,12 +1,16 @@
 import { useState } from "react";
 import DashboardLayout from "@/modules/dashboard/components/layout";
 import Image from "next/image";
-import { Button } from "@/modules/common/components/input";
 import Stars from "@/modules/dashboard/components/stars";
 import {
 	ProfileAbout,
 	ProfileReviews
 } from "@/modules/dashboard/sections/profile";
+import {
+	Button,
+	EditProfileButton,
+	SendMessageButton
+} from "@/modules/common/components/input/button";
 
 // images
 import bgImage from "@/public/asset/images/profile-background.svg";
@@ -21,7 +25,7 @@ const Profile = () => {
 			<div className="h-[100px] min-[540px]:h-[140px] md:h-[212px]">
 				<Image src={bgImage} alt="" className="w-full h-full object-cover" />
 			</div>
-			<div className="layout-container flex items-center justify-between -mt-10">
+			<div className="dashboard-layout-container flex items-center justify-between -mt-10">
 				<div className="md:flex items-center md:space-x-5">
 					<Image
 						src={profileAvatar}
@@ -44,19 +48,13 @@ const Profile = () => {
 					</div>
 				</div>
 				<div className="md:hidden">
-					<Button
-						title="Edit Profile"
-						className="w-[125px] h-[42px] text-primary border-primary bg-white border"
-					/>
+					{activeIndex === 0 ? <SendMessageButton /> : <EditProfileButton />}
 				</div>
 			</div>
 			<div className="md:border-b border-stroke mt-[17px] md:mt-3">
-				<div className="layout-container border-b md:border-none border-stroke">
+				<div className="dashboard-layout-container border-b md:border-none border-stroke">
 					<div className="hidden md:flex justify-end xl:pr-[100px]">
-						<Button
-							title="Edit Profile"
-							className="w-[125px] h-[42px] text-primary border-primary bg-white border"
-						/>
+						{activeIndex === 0 ? <SendMessageButton /> : <EditProfileButton />}
 					</div>
 					<div className="flex items-center">
 						{sections.map((item, index) => (
@@ -76,7 +74,7 @@ const Profile = () => {
 				</div>
 			</div>
 
-			<section className="mt-6 min-[540px]:mt-8 layout-container pb-[47px] lg:pb-[149px]">
+			<section className="mt-6 min-[540px]:mt-8 dashboard-layout-container pb-[47px] lg:pb-[149px]">
 				{activeIndex === 0 ? <ProfileReviews /> : <ProfileAbout />}
 			</section>
 		</DashboardLayout>
