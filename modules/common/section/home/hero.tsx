@@ -11,7 +11,7 @@ const Hero = () => {
 			<div className="w-11/12 lg:w-[96%] mx-auto lg:mx-0 lg:ml-auto lg:grid grid-cols-2 lg:gap-x-10 xl:gap-x-20 lg:items-center">
 				<div className="">
 					<h1 className="font-bold text-white max-[400px]:text-3xl min-[412px]:text-4xl min-[540px]:text-5xl md:text-[52px] lg:text-4xl xl:text-[52px] md:leading-[68px] xl:leading-[68px] min-[412px]:leading-[45px]">
-						Gigza market place is{" "}
+						Gigza Marketplace is{" "}
 						<span className="block text-primary">the future of work</span>
 					</h1>
 					<p className="my-[18px] min-[540px]:mt-4 min-[540px]:mb-8 text-white text-base min-[540px]:text-xl leading-[23px] md:w-4/5 lg:w-full xl:w-[583px]">

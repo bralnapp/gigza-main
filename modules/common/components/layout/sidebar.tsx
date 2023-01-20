@@ -53,7 +53,11 @@ const Sidebar = ({ isOpen, toggleMenu, setIsOpen }: Props) => {
 						</li>
 					))}
 				</ul>
-				<Button href="/" title="get started" />
+				<Button
+					href="/dashboard/find-work"
+					title="get started"
+					onClick={() => setIsOpen(false)}
+				/>
 			</aside>
 		</div>
 	) : null;
