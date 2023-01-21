@@ -11,6 +11,7 @@ module.exports = {
 				primary: ["var(--font-plusJakartaSans)"]
 			},
 			colors: {
+				black1: "#1B1C1E",
 				black3: "#615C66",
 				primary2: "#1C144C",
 				primary: "#24947A",
@@ -19,7 +20,7 @@ module.exports = {
 				b3: "#494948",
 				b4: "#5F6062",
 				lightGreen: "#E4F5EE",
-				stroke: '#E3E8EB',
+				stroke: "#E3E8EB"
 			}
 		}
 	},

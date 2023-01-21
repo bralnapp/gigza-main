@@ -25,8 +25,13 @@ const EditProfileForm = () => {
 		}));
 	};
 
+	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		console.log(formData)
+	};
+
 	return (
-		<form className="pb-[55px]">
+		<form onSubmit={handleSubmit} className="pb-[55px]">
 			<div className="space-y-6">
 				<TextInput
 					id="name"
@@ -52,7 +57,7 @@ const EditProfileForm = () => {
 					name="role"
 					label="what's your role"
 					placeholder="ex: Product designer"
-					value={formData.name}
+					value={formData.role}
 					handleTextChange={handleTextChange}
 				/>
 				<TagInput
