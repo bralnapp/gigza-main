@@ -18,7 +18,7 @@ const DashboardNav = () => {
 		setIsOpen(!isOpen);
 	};
 	return (
-		<header className="fixed bg-white z-[999] top-0 left-0 w-full">
+		<header className="fixed bg-white z-[999] top-0 left-0 w-full border-b border-[#E3E8EB]">
 			<DashboardSidebar {...{ isOpen, toggleMenu, setIsOpen }} />
 			<div className="dashboard-layout-container flex items-center justify-between h-[78px]">
 				<Link href="/">

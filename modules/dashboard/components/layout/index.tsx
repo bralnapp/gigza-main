@@ -15,7 +15,7 @@ const DashboardLayout = ({ children }:DashboardLayoutProps) => {
 				<meta name="description" content="gigza" />
 			</Head>
 			<DashboardNav />
-			<main className="mt-[78px]">{children}</main>
+			<main className="mt-[79px]">{children}</main>
 		</div>
 	);
 };

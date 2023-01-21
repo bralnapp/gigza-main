@@ -70,7 +70,7 @@ const RecentJobListDetails = ({ jobDetails }: RecentJobListDetailsProps) => {
 							{jobDetails?.client}
 						</p>
 					</div>
-					<Button title="Send Proposal" className="w-[163px]" href="" />
+					<Button title="Send Proposal" className="w-[163px]" href={`/dashboard/find-work/bid/0`} />
 				</div>
 			</div>
 		</div>

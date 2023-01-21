@@ -7,15 +7,20 @@ import Link from "next/link";
 import squareDot from "@/public/asset/icons/square-dot.svg";
 import avatar from "@/public/asset/avatar/profile-avatar.svg";
 import chevronLeft from "@/public/asset/icons/chevron-left.svg";
+import { useRouter } from "next/router";
 
 const JobDetails = () => {
+	const router = useRouter();
 	return (
 		<DashboardLayout>
 			<div className="py-6 px-5 bg-white rounded-[10px] pb-[100px]">
-				<Link href='/dashboard/find-work/' className="mb-[27px] flex items-center gap-x-[9px]">
+				<button
+					onClick={() => router.back()}
+					className="mb-[27px] flex items-center gap-x-[9px]"
+				>
 					<Image src={chevronLeft} alt="" />
 					<p className="text-base text-[#5F6062] capitalize">go back</p>
-				</Link>
+				</button>
 				<div className="pb-6 border-b border-[#E8E8E8]">
 					<div className="flex items-center justify-between text-b1 font-bold">
 						<h3 className="text-xl leading-6">Graphics design</h3>
@@ -72,7 +77,11 @@ const JobDetails = () => {
 								Olivia Rhye
 							</p>
 						</div>
-						<Button title="Send Proposal" href="" className="w-full" />
+						<Button
+							title="Send Proposal"
+							href={`/dashboard/find-work/bid/0`}
+							className="w-full"
+						/>
 					</div>
 				</div>
 			</div>
