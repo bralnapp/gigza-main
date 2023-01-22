@@ -84,6 +84,7 @@ const RecentTransaction = () => {
 							<div>${item.amount}</div>
 							<div>{item.date}</div>
 							<div className="">
+								{/* @ts-ignore */}
 								<Status title={item.status} intent={item.status} />
 							</div>
 						</Link>
