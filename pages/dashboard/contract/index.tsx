@@ -24,11 +24,11 @@ const Contract = () => {
 					Contracts
 				</h1>
 
-				<div className="flex items-center mt-6 mb-7">
+				<div className="flex items-center mt-6 border-b border-[#E8E8E8] gap-x-4">
 					{sections.map((item, index) => (
 						<div
 							key={index}
-							className={`text-sm min-[540px]:text-base leading-[18px] font-bold capitalize py-2 px-4 md:pb-6 cursor-pointer ${
+							className={`text-sm min-[540px]:text-base p-2 md:px-4 leading-[18px] font-bold capitalize cursor-pointer ${
 								activeSection === item
 									? "border-b-2 border-primary text-primary"
 									: "text-b4"
@@ -41,23 +41,23 @@ const Contract = () => {
 						>
 							{item.toLowerCase() === "pending" ? (
 								<>
-									{item} <Image src={redDot} alt="" />
+									{item} {width! < 540 ? null : "contracts"} <Image src={redDot} alt="" />
 								</>
 							) : (
 								<>
-									{item} {width! < 1024 ? null : "contracts"}
+									{item} {width! < 540 ? null : "contracts"}
 								</>
 							)}
 						</div>
 					))}
 				</div>
 
-				<div className="mt-4">
+				<div className="mt-4 space-y-5">
 					{contracts[activeSection]?.map((item, index) => (
 						<Link
 							href={`/dashboard/contract/${index}`}
 							key={`contracts-${index}`}
-							className="py-4 md:py-6 px-3 md:px-5 rounded-lg md:rounded-[6px]"
+							className="py-4 md:py-6 px-3 md:px-5 rounded-lg md:rounded-[6px] block"
 						>
 							<div className="md:mb-[13px] md:grid grid-flow-col gap-x-[55px]">
 								<div className="">

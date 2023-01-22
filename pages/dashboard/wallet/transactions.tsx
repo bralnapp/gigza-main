@@ -18,11 +18,11 @@ const Transactions = () => {
 						all transactions
 					</h1>
 
-					<div className="flex items-center mt-6 mb-7">
+					<div className="flex items-center mt-6 mb-7 border-b border-[#E8E8E8]">
 						{sections.map((item, index) => (
 							<div
 								key={index}
-								className={`text-sm min-[540px]:text-base leading-[18px] font-bold capitalize py-2 px-4 md:pb-6 cursor-pointer ${
+								className={`text-sm min-[540px]:text-base leading-[18px] font-bold capitalize py-2 px-4  cursor-pointer ${
 									activeSection === item
 										? "border-b-2 border-primary text-primary"
 										: "text-b4"
