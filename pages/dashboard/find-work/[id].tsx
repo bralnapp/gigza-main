@@ -1,13 +1,12 @@
 import DashboardLayout from "@/modules/dashboard/components/layout";
 import Image from "next/image";
 import { Button } from "@/modules/common/components/input/button";
-import Link from "next/link";
+import { useRouter } from "next/router";
 
 // images
 import squareDot from "@/public/asset/icons/square-dot.svg";
 import avatar from "@/public/asset/avatar/profile-avatar.svg";
 import chevronLeft from "@/public/asset/icons/chevron-left.svg";
-import { useRouter } from "next/router";
 
 const JobDetails = () => {
 	const router = useRouter();

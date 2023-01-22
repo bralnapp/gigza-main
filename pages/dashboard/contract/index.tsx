@@ -7,6 +7,7 @@ import useWindowSize from "utils/hooks/useWindowSize.hook";
 // images
 import squareDot from "@/public/asset/icons/square-dot.svg";
 import redDot from "@/public/asset/icons/red-dot.svg";
+import Link from "next/link";
 
 type ContractTypes = "active" | "closed" | "pending";
 
@@ -31,7 +32,11 @@ const Contract = () => {
 								activeSection === item
 									? "border-b-2 border-primary text-primary"
 									: "text-b4"
-							} ${item.toLowerCase() === 'pending' ? 'flex items-start gap-x-2' : null}`}
+							} ${
+								item.toLowerCase() === "pending"
+									? "flex items-start gap-x-2"
+									: null
+							}`}
 							onClick={() => setActiveSection(sections[index] as ContractTypes)}
 						>
 							{item.toLowerCase() === "pending" ? (
@@ -49,7 +54,8 @@ const Contract = () => {
 
 				<div className="mt-4">
 					{contracts[activeSection]?.map((item, index) => (
-						<div
+						<Link
+							href={`/dashboard/contract/${index}`}
 							key={`contracts-${index}`}
 							className="py-4 md:py-6 px-3 md:px-5 rounded-lg md:rounded-[6px]"
 						>
@@ -83,7 +89,7 @@ const Contract = () => {
 								<Image src={squareDot} alt="" />
 								<p>initiated {item?.startDate}</p>
 							</div>
-						</div>
+						</Link>
 					))}
 				</div>
 			</div>
