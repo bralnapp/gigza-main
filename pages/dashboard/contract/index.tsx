@@ -70,15 +70,18 @@ const Contract = () => {
 								</div>
 								<p className="text-sm leading-[19px] text-b4 capitalize ml-auto">
 									{activeSection === "active" ? (
+										//  @ts-ignore
 										`End Date: ${item?.endDate}`
 									) : (
 										<p
 											className={`capitalize text-[10px] min-[540px]:text-[13px] leading-4 rounded-3xl w-fit py-[5px] min-[540px]:py-2 px-[10px] min-[540px]:px-4 ${
+												//  @ts-ignore
 												item?.status.toLowerCase() === "completed"
 													? "bg-[rgba(149,214,164,0.2)] text-[#0E9802]  "
 													: "bg-[rgba(255,184,0,0.1)] text-[#FFB800]"
 											}`}
 										>
+											 {/* @ts-ignore */}
 											{item?.status}
 										</p>
 									)}
