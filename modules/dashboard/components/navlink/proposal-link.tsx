@@ -21,8 +21,8 @@ const ProposalLink = ({ item }: NavLinkProp) => {
 	return (
 		<div ref={dropDownRef} className="relative">
 			{showDropDown ? (
-				<div className="absolute top-8 bg-white py-4 w-[291px]">
-					<ul className="flex flex-col space-y-5">
+				<div className="absolute top-8 bg-white  w-[291px]">
+					<ul className="flex flex-col space-y-5 py-4 px-6">
 						{item?.categories?.map((link, index) => (
 							<Link
 								key={index}
