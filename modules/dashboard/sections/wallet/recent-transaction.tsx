@@ -8,12 +8,12 @@ import useWindowSize from "utils/hooks/useWindowSize.hook";
 // images
 import chevronRight from "@/public/asset/icons/chevron-right.svg";
 
-type Sections = "sent" | "received";
+export type RecentTransactionSections = "sent" | "received";
 
 const RecentTransaction = () => {
 	const sections = ["sent", "received"];
-	const [activeSection, setActiveSection] = useState<Sections>(
-		sections[0] as Sections
+	const [activeSection, setActiveSection] = useState<RecentTransactionSections>(
+		sections[0] as RecentTransactionSections
 	);
 	const { width } = useWindowSize();
 	return (
@@ -23,7 +23,7 @@ const RecentTransaction = () => {
 					recent transactions
 				</h3>
 				<Link
-					href=""
+					href="/dashboard/wallet/transactions"
 					className="text-[#657795] capitalize text-sm min-[540px]:text-base leading-[17px] min-[540px]:leading-[19px]"
 				>
 					{width! < 540 ? (
@@ -46,7 +46,7 @@ const RecentTransaction = () => {
 								? "border-b-2 border-primary text-primary"
 								: "text-b4"
 						} `}
-						onClick={() => setActiveSection(sections[index] as Sections)}
+						onClick={() => setActiveSection(sections[index] as RecentTransactionSections)}
 					>
 						{item}
 					</div>
