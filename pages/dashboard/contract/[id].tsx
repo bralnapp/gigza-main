@@ -38,7 +38,7 @@ const ContractDetails = () => {
 							Hello!
 							<br />
 							<br />
-							Hello! My name is Ryan and I run the "SagaTheYoungin" YouTube
+							Hello! My name is Ryan and I run the SagaTheYoungin YouTube
 							channel: https://www.youtube.com/channel/UCs-erbeCJNu-NqSoQ80w9fQ
 							<br />
 							<br />
