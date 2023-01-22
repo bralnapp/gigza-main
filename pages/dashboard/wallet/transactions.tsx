@@ -22,7 +22,7 @@ const Transactions = () => {
 						{sections.map((item, index) => (
 							<div
 								key={index}
-								className={`text-sm min-[540px]:text-base leading-[18px] font-bold capitalize py-2 px-4  cursor-pointer ${
+								className={`text-sm min-[540px]:text-base leading-[18px] font-bold capitalize py-2 px-4 cursor-pointer ${
 									activeSection === item
 										? "border-b-2 border-primary text-primary"
 										: "text-b4"

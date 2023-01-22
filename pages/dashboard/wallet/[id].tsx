@@ -1,14 +1,18 @@
+import { useState } from "react";
 import { Button } from "@/modules/common/components/input/button";
 import GoBack from "@/modules/dashboard/components/go-back";
 import DashboardLayout from "@/modules/dashboard/components/layout";
+import { OpenDisputeModal } from "@/modules/dashboard/components/modal";
 import Status from "@/modules/dashboard/components/status";
 
 // images
 import chatIcon from "@/public/asset/icons/chat.svg";
 
 const TransactionDetails = () => {
+	const [showDisputeModal, setShowDisputeModal] = useState(false);
 	return (
 		<DashboardLayout>
+			<OpenDisputeModal {...{ showDisputeModal, setShowDisputeModal }} />
 			<div className="layout-container max-w-[700px] pt-8">
 				<section className="py-6 px-4">
 					<GoBack />
@@ -46,7 +50,7 @@ const TransactionDetails = () => {
 						className="mb-4 min-[540px]:mb-8 w-full text-white"
 					/>
 					<Button
-						// onClick={() => setShowDisputeModal(true)}
+						onClick={() => setShowDisputeModal(true)}
 						title="open dispute"
 						className="bg-white border border-[#E3E8EB] w-full text-[#4A4A4A]"
 					/>
