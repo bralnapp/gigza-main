@@ -1,7 +1,9 @@
+import { useState } from "react";
 import { useRouter } from "next/router";
 import DashboardLayout from "@/modules/dashboard/components/layout";
 import Image from "next/image";
 import { Button } from "@/modules/common/components/input/button";
+import { DeclineOfferModal } from "@/modules/dashboard/components/modal";
 
 // images
 import chevronLeft from "@/public/asset/icons/chevron-left.svg";
@@ -10,8 +12,10 @@ import chatIcon from "@/public/asset/icons/message-square.svg";
 
 const ContractDetails = () => {
 	const router = useRouter();
+	const [isDeclineModalOpen, setIsDeclineModalOpen] = useState(false);
 	return (
 		<DashboardLayout>
+			<DeclineOfferModal {...{ isDeclineModalOpen, setIsDeclineModalOpen }} />
 			<div className="dashboard-layout-container pt-[26px] lg:pt-[42px] mb-7 min-[540px]:pb-[118px]">
 				<button
 					onClick={() => router.back()}
@@ -76,6 +80,7 @@ const ContractDetails = () => {
 						<div className="flex items-center gap-x-5 mt-4 mb-6">
 							<Button
 								title="decline offer"
+								onClick={() => setIsDeclineModalOpen(true)}
 								className="w-[180px] text-[#F02323] font-normal border border-[#F02323] bg-white"
 							/>
 							<Button
