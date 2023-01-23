@@ -1,11 +1,14 @@
+import { sequence } from "0xsequence";
+import { useStoreContext } from "context/StoreContext";
 import Head from "next/head";
 import DashboardNav from "./dashboard-nav";
 
 type DashboardLayoutProps = {
-    children: React.ReactNode;
-}
+	children: React.ReactNode;
+};
 
-const DashboardLayout = ({ children }:DashboardLayoutProps) => {
+const DashboardLayout = ({ children }: DashboardLayoutProps) => {
+	const { state } = useStoreContext();
 	return (
 		<div>
 			<Head>
@@ -15,7 +18,15 @@ const DashboardLayout = ({ children }:DashboardLayoutProps) => {
 				<meta name="description" content="gigza" />
 			</Head>
 			<DashboardNav />
-			<main className="mt-[79px]">{children}</main>
+			<main className="mt-[79px] min-h-screen bg-[#FBFAFA]">
+				{state.isWalletConnected ? (
+					<>{children}</>
+				) : (
+					<p className="grid place-items-center h-[calc(100vh_-_79px)]">
+						Please connect your account first
+					</p>
+				)}
+			</main>
 		</div>
 	);
 };

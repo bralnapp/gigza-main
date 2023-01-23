@@ -1,9 +1,11 @@
 import { IinitialState } from "@custom-types/store-context";
 import { useEffect } from "react";
+import GigzaContractAbi from "../constants/Gigza.json"
+import DaiContractAbi from "../constants/Dia.json"
 
 const initialState = {
 	account: null,
-	isWalletConnected: false,
+	isWalletConnected: false
 	// isButtonDisabled: false
 };
 
@@ -23,4 +25,39 @@ const useGetPersistedStore = () => {
 	}
 };
 
-export { initialState, useSetPersistStore, useGetPersistedStore };
+const GigzaContractAddress = "0xBE4230c239D96bE66B1e1E4d387adc9B73cb77A3";
+const DiaContractAddress = "0xA4d4dBd2Da4fBd7DAafD8DD66ba102025d38AE7F";
+
+const currentEpochTime = Math.floor(new Date().getTime() / 1000.0);
+
+const bidState = [
+	"sent",
+	"awarded",
+	"accepted",
+	"executed",
+	"fulfilled",
+	"cancelled"
+];
+const jobState = [
+	"POSTED",
+	"OFFERED",
+	"ACCEPTED",
+	"EXECUTED",
+	"FUFILLED",
+	"CANCELLED",
+	"INDISPUTE",
+	"RESOLVED"
+];
+
+export {
+	initialState,
+	useSetPersistStore,
+	useGetPersistedStore,
+	GigzaContractAddress,
+	DiaContractAddress,
+	GigzaContractAbi,
+	DaiContractAbi,
+	currentEpochTime,
+	bidState,
+	jobState
+};
