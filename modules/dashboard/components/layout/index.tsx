@@ -1,4 +1,3 @@
-import { sequence } from "0xsequence";
 import { useStoreContext } from "context/StoreContext";
 import Head from "next/head";
 import DashboardNav from "./dashboard-nav";
@@ -9,7 +8,7 @@ type DashboardLayoutProps = {
 
 const DashboardLayout = ({ children }: DashboardLayoutProps) => {
 	const { state } = useStoreContext();
-	return (
+	return state.isWalletConnected ? (
 		<div>
 			<Head>
 				<title>Giza | Home</title>
@@ -28,7 +27,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
 				)}
 			</main>
 		</div>
-	);
+	) : null;
 };
 
 export default DashboardLayout;

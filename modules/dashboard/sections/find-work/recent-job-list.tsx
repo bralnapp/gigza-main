@@ -1,14 +1,18 @@
 import { useRouter } from "next/router";
 import Image from "next/image";
 import useWindowSize from "utils/hooks/useWindowSize.hook";
-import { recentJobs } from "utils/data";
-import { covertToReadableDate, formatUnit, formatWalletAddress } from "utils/helper";
+import {
+	covertToReadableDate,
+	formatUnit,
+	formatWalletAddress
+} from "utils/helper";
+import { JobDetailsProps } from "@custom-types/typing";
 
 // images
 import squareDot from "@/public/asset/icons/square-dot.svg";
 
 type RecentJobListProps = {
-	jobList: typeof recentJobs;
+	jobList: JobDetailsProps;
 	activeIndex: number;
 	handleSelect: (value: number) => void;
 };
@@ -28,7 +32,6 @@ const RecentJobList = ({
 			router.push(`/dashboard/find-work/${index}`);
 		}
 	};
-
 	return (
 		<div className="flex flex-col gap-y-5">
 			{jobList?.map((item, index) => (
@@ -68,7 +71,8 @@ const RecentJobList = ({
 						</p>
 						<Image src={squareDot} alt="" />
 						<p className="text-[10px] min-[540px]:text-[13px] leading-3 min-[540px]:leading-4">
-							Posted {covertToReadableDate(formatUnit(item?.timestamp) * 10 ** 18)}
+							Posted {/* @ts-ignore */}
+							{covertToReadableDate(formatUnit(item?.timestamp) * 10 ** 18)}
 						</p>
 					</div>
 				</div>

@@ -42,12 +42,10 @@ const StoreContextProvider = ({ children }: StoreContextProviderProps) => {
 				});
 			});
 		}
-		// const wallet = sequence.getWallet();
-		// console.log(wallet.getWalletContext());
-	}, []);
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [wallet]);
 
 	const connectAccount = async () => {
-		// if (state.isWalletConnected) return;
 		try {
 			const wallet = sequence.getWallet();
 			const connectDetails = await wallet.connect({

@@ -1,7 +1,16 @@
+import { useEffect, useState } from "react";
 import DashboardLayout from "@/modules/dashboard/components/layout";
 import Image from "next/image";
 import { Button } from "@/modules/common/components/input/button";
 import { useRouter } from "next/router";
+import { initGigzaContract } from "utils/helper/contract.helper";
+import { toast } from "react-hot-toast";
+import {
+	covertToReadableDate,
+	formatUnit,
+	formatWalletAddress
+} from "utils/helper";
+import { JobDetailsProps } from "@custom-types/typing";
 
 // images
 import squareDot from "@/public/asset/icons/square-dot.svg";
@@ -10,7 +19,31 @@ import chevronLeft from "@/public/asset/icons/chevron-left.svg";
 
 const JobDetails = () => {
 	const router = useRouter();
-	return (
+	const { id: jobId } = router.query;
+	const [jobDetails, setJobDetails] = useState<JobDetailsProps[number] | null>(null);
+
+	const getJobDetails = async () => {
+		try {
+			const response = await initGigzaContract();
+			// @ts-ignore
+			const contract = response.contract;
+			const _jobDetails = await contract.jobs(jobId);
+			console.log(_jobDetails);
+			setJobDetails(_jobDetails);
+		} catch (error) {
+			toast.error("Something went wrong, could not get job details");
+			console.log({ error });
+		}
+	};
+
+	useEffect(() => {
+		if (jobId) {
+			getJobDetails();
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [jobId]);
+
+	return jobDetails ? (
 		<DashboardLayout>
 			<div className="py-6 px-5 bg-white rounded-[10px] pb-[100px]">
 				<button
@@ -22,13 +55,21 @@ const JobDetails = () => {
 				</button>
 				<div className="pb-6 border-b border-[#E8E8E8]">
 					<div className="flex items-center justify-between text-b1 font-bold">
-						<h3 className="text-xl leading-6">Graphics design</h3>
-						<h4 className="text-[24px] leading-[29px]">$250</h4>
+						<h3 className="text-xl leading-6">{jobDetails?.title}</h3>
+						<h4 className="text-[24px] leading-[29px]">
+							${formatUnit(jobDetails?.amount)}
+						</h4>
 					</div>
 					<div className="flex items-center gap-x-2 text-[#5F6062] mt-[13px] text-[13px] leading-4">
-						<p className="capitalize">raphael Benjamin</p>
+						<p className="capitalize">
+							{formatWalletAddress(jobDetails?.client)}
+						</p>
 						<Image src={squareDot} alt="" />
-						<p>Posted about 3 hours ago</p>
+						<p>
+							Posted{" "}
+							{/* @ts-ignore */}
+							{covertToReadableDate(formatUnit(jobDetails?.timestamp) * 10 ** 18)}
+						</p>
 					</div>
 				</div>
 				{/* project details */}
@@ -37,21 +78,10 @@ const JobDetails = () => {
 						project details
 					</h4>
 					<p className="mt-3 text-b4 text-sm leading-[21px]">
-						Hello! My name is Ryan and I run the SagaTheYoungin YouTube
-						channel: https://www.youtube.com/channel/UCs-erbeCJNu-NqSoQ80w9fQ
-						<br />
-						<br />
-						This type of work is freelance, and I will have a slow but steady
-						stream of color scenes over a long period of time.
-						<br />
-						<br />
-						In order to apply for this job, please complete the test
-						scene/application scene (download link at the bottom of this
-						listing), and email it to bkartistscenetest@gmail.com. I will get
-						back to you with a decision within a week!
+						{jobDetails?.description}
 					</p>
 					{/* skills */}
-					<h4 className="mt-6 font-bold text-b1 text-base leading-[19px] capitalize">
+					{/* <h4 className="mt-6 font-bold text-b1 text-base leading-[19px] capitalize">
 						skills
 					</h4>
 					<div className="mt-3 mb-6 flex gap-[11px]">
@@ -63,17 +93,17 @@ const JobDetails = () => {
 								{item}
 							</div>
 						))}
-					</div>
+					</div> */}
 
 					{/* client about */}
-					<div className="">
+					<div className="mt-6">
 						<h3 className="font-bold text-base leading-[21px] text-black1">
 							About the client
 						</h3>
 						<div className="mt-[18px] gap-x-[10px] mb-8 flex items-center">
 							<Image src={avatar} alt="" className="w-10 h-10" />
-							<p className="text-base leading-5 text-[#101828] capitalize">
-								Olivia Rhye
+							<p className="text-[10px] min-[540px]:text-base leading-5 text-[#101828] capitalize">
+								{jobDetails?.client}
 							</p>
 						</div>
 						<Button
@@ -85,7 +115,7 @@ const JobDetails = () => {
 				</div>
 			</div>
 		</DashboardLayout>
-	);
+	) : null;
 };
 
 export default JobDetails;

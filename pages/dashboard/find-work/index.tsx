@@ -5,11 +5,12 @@ import {
 	RecentJobList,
 	RecentJobListDetails
 } from "@/modules/dashboard/sections/find-work";
-import { recentJobs } from "utils/data";
+import { toast } from "react-hot-toast";
+import { JobDetailsProps } from "@custom-types/typing";
 
 const FindWork = () => {
 	const [activeIndex, setActiveIndex] = useState(0);
-	const [totalJobs, setTotalJobs] = useState([])
+	const [totalJobs, setTotalJobs] = useState<JobDetailsProps>([]);
 
 	const handleSelect = (index: number) => {
 		setActiveIndex(index);
@@ -33,6 +34,7 @@ const FindWork = () => {
 		console.log("total jobs", totalJobs);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
+	
 	return (
 		<DashboardLayout>
 			<div className="dashboard-layout-container">

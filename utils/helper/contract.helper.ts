@@ -9,13 +9,12 @@ import {
 
 const initGigzaContract = async () => {
 	try {
-
 		const wallet = sequence.getWallet();
 		const signer = wallet.getSigner();
 
-		if (!wallet.isConnected()) throw Error();
-		
-		const _walletAddress = wallet.getAddress();
+		// if (!wallet.isConnected()) throw Error();
+
+		const _walletAddress = await wallet.getAddress();
 
 		const _contract = new ethers.Contract(
 			GigzaContractAddress,
@@ -33,13 +32,12 @@ const initGigzaContract = async () => {
 
 const initDaiContract = async () => {
 	try {
-
 		const wallet = sequence.getWallet();
 		const provider = wallet.getProvider();
 		const signer = wallet.getSigner();
 
-		if (!wallet.isConnected()) throw Error();		
-        const _walletAddress = wallet.getAddress();
+		if (!wallet.isConnected()) throw Error();
+		const _walletAddress = wallet.getAddress();
 
 		const _contract = new ethers.Contract(
 			DiaContractAddress,
