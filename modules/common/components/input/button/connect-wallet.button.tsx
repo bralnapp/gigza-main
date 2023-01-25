@@ -25,7 +25,7 @@ const ConnectWalletButton = () => {
 
 	useOnClickOutside(dropDownRef, clickOutsideHandler);
 
-	return state.isWalletConnected ? (
+	return  (
 		<div ref={dropDownRef} className="relative">
 			{showDropDown && state.isWalletConnected ? (
 				<div className="absolute top-[53px] bg-white rounded-lg shadow-[0px_6px_60px_#F2F3F7] py-6 pl-6 pr-9">
@@ -76,7 +76,7 @@ const ConnectWalletButton = () => {
 				)}
 			</div>
 		</div>
-	) : null;
+	);
 };
 
 export default ConnectWalletButton;
