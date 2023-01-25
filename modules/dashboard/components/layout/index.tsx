@@ -8,7 +8,7 @@ type DashboardLayoutProps = {
 
 const DashboardLayout = ({ children }: DashboardLayoutProps) => {
 	const { state } = useStoreContext();
-	return state.isWalletConnected ? (
+	return (
 		<div>
 			<Head>
 				<title>Giza | Home</title>
@@ -27,7 +27,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
 				)}
 			</main>
 		</div>
-	) : null;
+	);
 };
 
 export default DashboardLayout;
