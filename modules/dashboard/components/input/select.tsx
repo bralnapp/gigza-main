@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import useOnClickOutside from "utils/hooks/useOnClickOutside.hook";
 
@@ -43,6 +43,13 @@ const Select = ({
 	const filteredIdOptions = options?.filter(
 		(option: string) => option !== selectedOption
 	);
+
+	useEffect(() => {
+		if (defaultValue && typeof onChange === "function") {
+			onChange(defaultValue);
+		}
+	}, [defaultValue, onChange]);
+
 	return (
 		<div>
 			<div className="text-base leading-5 text-[#101828] mb-2">

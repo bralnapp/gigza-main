@@ -42,14 +42,12 @@ const Profile = () => {
 		console.log("account", state.account);
 		try {
 			const response = await initGigzaContract();
-			// @ts-ignore
 			const contract = response.contract;
 			const userDetails = await contract.getUser(state.account);
 			setUserDetails(userDetails);
 			console.log(userDetails);
 		} catch (error) {
 			toast.error("Something went wrong, could not user details");
-			console.log(error);
 		}
 	};
 

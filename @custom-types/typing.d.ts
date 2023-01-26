@@ -5,4 +5,5 @@ export type JobDetailsProps = {
     skills: string[];
     timestamp: any;
     description: string;
+    jobId: any;
 }[];

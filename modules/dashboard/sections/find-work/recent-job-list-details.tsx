@@ -16,7 +16,7 @@ type RecentJobListDetailsProps = {
 };
 
 const RecentJobListDetails = ({ jobDetails }: RecentJobListDetailsProps) => {
-	console.log("amount type", typeof jobDetails?.skills);
+	console.log( jobDetails);
 
 	return jobDetails ? (
 		<div className="hidden lg:block py-6 px-5 bg-white rounded-[10px] h-fit sticky top-[94px]">

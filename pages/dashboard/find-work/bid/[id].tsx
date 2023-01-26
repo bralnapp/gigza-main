@@ -2,9 +2,38 @@ import { JobBidForm } from "@/modules/dashboard/components/forms";
 import DashboardLayout from "@/modules/dashboard/components/layout";
 import { Button } from "@/modules/common/components/input/button";
 import { useRouter } from "next/router";
+import { useStoreContext } from "context/StoreContext";
+import { useEffect, useState } from "react";
+import { initGigzaContract } from "utils/helper/contract.helper";
+import { toast } from "react-hot-toast";
+import { JobDetailsProps } from "@custom-types/typing";
+import { convertToNumber } from "utils/helper";
 
 const JobBid = () => {
+	const { state } = useStoreContext();
+	const [jobDetails, setJobDetails] = useState<JobDetailsProps[number]>();
 	const router = useRouter();
+	const { id: jobId } = router.query;
+
+	const getJobDetails = async () => {
+		try {
+			const response = await initGigzaContract();
+			const contract = response.contract;
+			const _jobDetails = await contract.jobs(jobId);
+			setJobDetails(_jobDetails);
+		} catch (error) {
+			toast.error("Something went wrong, could not get job details");
+			console.log({ error });
+		}
+	};
+
+	useEffect(() => {
+		if (jobId) {
+			getJobDetails();
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [state.account, jobId]);
+
 	return (
 		<DashboardLayout>
 			<div className="hidden lg:block dashboard-layout-container pt-[42px]">
@@ -20,40 +49,13 @@ const JobBid = () => {
 				</h3>
 				<div className="my-8">
 					<h3 className="text-base min-[540px]:text-lg leading-5 text-[#344054] font-bold">
-						Graphics design
+						{jobDetails?.title}
 					</h3>
 					<p className="mt-2 text-sm text-b3 leading-[21px]">
-						Hello!
-						<br />
-						<br />
-						Hello! My name is Ryan and I run the SagaTheYoungin YouTube
-						channel: https://www.youtube.com/channel/UCs-erbeCJNu-NqSoQ80w9fQ
-						<br />
-						<br />
-						This type of work is freelance, and I will have a slow but steady
-						stream of color scenes over a long period of time.
-						<br />
-						<br />
-						In order to apply for this job, please complete the test
-						scene/application scene (download link at the bottom of this
-						listing), and email it to bkartistscenetest@gmail.com. I will get
-						back to you with a decision within a week!
-						<br />
-						<br />
-						This project will include providing guidance on branding, new page
-						layout/structure, conversion optimization, and more. For the scope
-						of this initial phase, I would like to focus on five high-quality
-						pages.
-						<br />
-						<br />
-						Additional work related to creating packaging and print materials is
-						available if you are interested.
-						<br />
-						<br />
-						Thank you!
+						{jobDetails?.description}
 					</p>
 				</div>
-				<JobBidForm />
+				<JobBidForm jobId={convertToNumber(jobId as string)} />
 			</div>
 		</DashboardLayout>
 	);

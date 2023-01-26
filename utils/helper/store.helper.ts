@@ -28,8 +28,6 @@ const useGetPersistedStore = () => {
 const GigzaContractAddress = "0xBE4230c239D96bE66B1e1E4d387adc9B73cb77A3";
 const DiaContractAddress = "0xA4d4dBd2Da4fBd7DAafD8DD66ba102025d38AE7F";
 
-const currentEpochTime = Math.floor(new Date().getTime() / 1000.0);
-
 const bidState = [
 	"sent",
 	"awarded",
@@ -57,7 +55,6 @@ export {
 	DiaContractAddress,
 	GigzaContractAbi,
 	DaiContractAbi,
-	currentEpochTime,
 	bidState,
 	jobState
 };

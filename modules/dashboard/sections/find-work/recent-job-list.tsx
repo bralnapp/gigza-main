@@ -29,7 +29,11 @@ const RecentJobList = ({
 		if (width! >= 1024) {
 			handleSelect(index);
 		} else {
-			router.push(`/dashboard/find-work/${index}`);
+			router.push(
+				`/dashboard/find-work/${Math.round(
+					formatUnit(jobList[index]?.jobId)! * 10 ** 18
+				)}`
+			);
 		}
 	};
 	return (
