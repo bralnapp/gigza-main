@@ -8,7 +8,5 @@ export type InputProps = {
     name: string;
     labelClassName?: string;
     className?: string;
-    value: string;
-    handleTextChange: (e:React.ChangeEvent<HTMLInputElement>) => void;
     [x: string]: any;
 }

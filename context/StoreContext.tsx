@@ -4,6 +4,7 @@ import { createContext, useContext, useEffect, useReducer } from "react";
 import { toast } from "react-hot-toast";
 import { storeReducer, Types } from "reducer";
 import { useGetPersistedStore, useSetPersistStore } from "utils/helper";
+import { Web3Storage } from "web3.storage";
 
 const StoreContext = createContext<IstoreContextInterface | null>(null);
 
@@ -42,8 +43,11 @@ const StoreContextProvider = ({ children }: StoreContextProviderProps) => {
 				});
 			});
 		}
-	// eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [wallet]);
+
+	const WEB3_STORAGE_API_TOKEN = process.env.NEXT_PUBLIC_WEB3_STORAGE_KEY;
+	const web3StorageClient = new Web3Storage({ token: WEB3_STORAGE_API_TOKEN! });
 
 	const connectAccount = async () => {
 		try {
@@ -80,7 +84,14 @@ const StoreContextProvider = ({ children }: StoreContextProviderProps) => {
 	};
 	return (
 		<StoreContext.Provider
-			value={{ state, dispatch, connectAccount, disconnectAccount, ...state }}
+			value={{
+				state,
+				dispatch,
+				connectAccount,
+				disconnectAccount,
+				web3StorageClient,
+				...state
+			}}
 		>
 			{children}
 		</StoreContext.Provider>

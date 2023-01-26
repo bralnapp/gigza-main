@@ -7,6 +7,9 @@ module.exports = {
 	],
 	theme: {
 		extend: {
+			backgroundImage: {
+				"profile-background": "url('../public/asset/images/profile-background.svg')"
+			},
 			fontFamily: {
 				primary: ["var(--font-plusJakartaSans)"]
 			},

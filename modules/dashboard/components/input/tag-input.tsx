@@ -11,9 +11,11 @@ const TagInput = ({
 	label,
 	labelClassName,
 	type,
-	placeholder,
+	placeholder="ex. product design, No-code, product management",
 	className,
+	value,
 	handleTag,
+	error,
 	...props
 }: Omit<InputProps, "handleTextchange">) => {
 	const [input, setInput] = useState("");
@@ -21,6 +23,12 @@ const TagInput = ({
 
 	const onChange = (e: React.FormEvent<HTMLInputElement>) =>
 		setInput(e.currentTarget.value);
+
+	useEffect(() => {
+		if (tags) {
+			handleTag(tags);
+		}
+	}, [tags, handleTag]);
 
 	const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
 		const { key } = e;
@@ -49,11 +57,6 @@ const TagInput = ({
 		e.preventDefault();
 		setTags((prevState) => prevState.filter((tag, i) => i !== index));
 	};
-
-	useEffect(() => {
-		handleTag(tags);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [tags]);
 
 	return (
 		<div>
@@ -85,6 +88,9 @@ const TagInput = ({
 						</button>
 					</div>
 				))}
+			</div>
+			<div className="text-sm leading-[17px] text-red-500 mt-[6px]">
+				{error ? <p>{error}</p> : null}
 			</div>
 		</div>
 	);

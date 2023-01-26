@@ -9,4 +9,5 @@ export interface IstoreContextInterface {
 	dispatch: React.Dispatch<StoreActions>;
 	connectAccount: () => void;
 	disconnectAccount: () => void;
+	web3StorageClient: any;
 }

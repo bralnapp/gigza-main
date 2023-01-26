@@ -1,37 +1,87 @@
-import { Button } from "@/modules/common/components/input/button";
 import { useState } from "react";
-import { TagInput, TextArea, TextInput } from "../input";
+import { useRouter } from "next/router";
+import { toast } from "react-hot-toast";
+import { Button } from "@/modules/common/components/input/button";
+import { initGigzaContract } from "utils/helper/contract.helper";
+import { ProfileUpload, TagInput, TextArea, TextInput } from "../input";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { Controller, useForm } from "react-hook-form";
+
+const schema = yup
+	.object()
+	.shape({
+		name: yup.string().required(),
+		bio: yup.string().required(),
+		mainSkill: yup.string().required(),
+		skills: yup.array().min(1).max(5).required(),
+		profileUrl: yup.string().required()
+	})
+	.required();
+
+type FormData = {
+	name: string;
+	bio: string;
+	mainSkill: string;
+	skills: string[];
+	profileUrl: string;
+};
 
 const EditProfileForm = () => {
-	const initialFormData = {
-		name: "",
-		bio: "",
-		role: "",
-		skills: [""]
-	};
-	const [formData, setFormData] = useState(initialFormData);
+	const [isCreatingProfile, setIsCreatingProfile] = useState(false);
+	const router = useRouter();
 
-	const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setFormData((prev) => ({
-			...prev,
-			[e.target.name]: e.target.value
-		}));
-	};
+	const {
+		register,
+		handleSubmit,
+		control,
+		formState: { errors }
+	} = useForm<FormData>({
+		resolver: yupResolver(schema)
+	});
 
-	const handleTag = (tag: string[]) => {
-		setFormData((prev) => ({
-			...prev,
-			skills: tag
-		}));
-	};
+	const onSubmit = async (data: FormData) => {
+		const notification = toast.loading("Please wait...Updating profile");
 
-	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
-		console.log(formData)
+		try {
+			const response = await initGigzaContract();
+			// @ts-ignore
+			const contract = response.contract;
+			const txHash = await contract.createProfile(
+				data.name,
+				data.bio,
+				data.mainSkill,
+				data.skills,
+				data.profileUrl
+			);
+			const receipt = await txHash.wait();
+			if (receipt) {
+				setIsCreatingProfile(false);
+				toast.success("Profile has been updated", {
+					id: notification
+				});
+				router.push("/dashboard/profile");
+			}
+		} catch (error) {
+			setIsCreatingProfile(false);
+			toast.error("Opps! Something went wrong.", {
+				id: notification
+			});
+		}
 	};
 
 	return (
-		<form onSubmit={handleSubmit} className="pb-[55px]">
+		<form onSubmit={handleSubmit(onSubmit)} className="pb-[55px]">
+			<Controller
+				name="profileUrl"
+				control={control}
+				render={({ field: { value, onChange } }) => (
+					<ProfileUpload
+						{...{ value, onChange }}
+						error={errors.profileUrl?.message!}
+					/>
+				)}
+			/>
 			<div className="space-y-6">
 				<TextInput
 					id="name"
@@ -39,37 +89,42 @@ const EditProfileForm = () => {
 					name="name"
 					label="name"
 					placeholder="John Doe"
-					value={formData.name}
-					handleTextChange={handleTextChange}
+					{...{ register, errors }}
 				/>
 				<TextArea
 					id="bio"
 					name="bio"
 					label="bio"
 					placeholder="Tell us about yourself"
-					value={formData.bio}
 					className="h-[152px]"
-					handleTextChange={handleTextChange}
+					{...{ register, errors }}
 				/>
 				<TextInput
 					id="role"
 					type="text"
-					name="role"
+					name="mainSkill"
 					label="what's your role"
 					placeholder="ex: Product designer"
-					value={formData.role}
-					handleTextChange={handleTextChange}
+					{...{ register, errors }}
 				/>
-				<TagInput
-					id="skills"
+
+				<Controller
 					name="skills"
-					type="text"
-					handleTag={handleTag}
-					label="skills"
-					placeholder="Ex. Product Design, No-code, ReactJS"
+					control={control}
+					render={({ field: { value, onChange } }) => (
+						<TagInput
+							value={value}
+							handleTag={onChange}
+							error={errors.skills?.message}
+						/>
+					)}
 				/>
 			</div>
-			<Button title="Save Changes" className="w-full mt-[37px] md:w-[161px]" />
+			<Button
+				title="Save Changes"
+				className="w-full mt-[37px] md:w-[161px]"
+				disabled={isCreatingProfile}
+			/>
 		</form>
 	);
 };
