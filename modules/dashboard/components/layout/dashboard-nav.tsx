@@ -6,7 +6,8 @@ import NavLink from "../navlink";
 import NotificationBell from "../notification-items/notification-bell";
 import MessagingNotification from "../notification-items/messaging-notification";
 import DashboardSidebar from "./dashboard-sidebar";
-import { ConnectWalletButton } from "@/modules/common/components/input/button";
+import { Button } from "@/modules/common/components/input/button";
+import { UserProfileNav } from "../misc";
 
 // images
 import logo from "@/public/asset/logo/logo.svg";
@@ -24,25 +25,33 @@ const DashboardNav = () => {
 				<Link href="/">
 					<Image src={logo} alt="" />
 				</Link>
-				<nav className="hidden xl:flex items-center space-x-[44px]">
+				<nav className="hidden lg:flex items-center space-x-[44px]">
 					{dashboardNavLinks.map((item, index) => (
 						<NavLink key={`dashboard-navlinks-${index}`} item={item} />
 					))}
 				</nav>
-				<div className="flex items-center">
-					<div className="flex items-center space-x-8 mr-[21px]">
+				<div className="flex">
+					<div className="flex items-center gap-x-10 md:gap-x-8 mr-10 lg:mr-[21px]">
 						<MessagingNotification isActive />
 						<NotificationBell isActive />
 					</div>
 					<Image
 						src={menuIcon}
 						alt=""
-						className="xl:hidden"
+						className="lg:hidden"
 						onClick={toggleMenu}
 					/>
-					<div className="hidden xl:block">
-						<ConnectWalletButton />
+					<div className="hidden lg:block mr-8">
+						<UserProfileNav />
 					</div>
+					<Button
+						href="/dashboard/post-job"
+						title="Post A Job"
+						className="w-[134px] hidden lg:flex"
+					/>
+					{/* <div className="hidden xl:block">
+						<ConnectWalletButton />
+					</div> */}
 				</div>
 			</div>
 		</header>
