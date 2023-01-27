@@ -1,16 +1,13 @@
-import { useEffect, useState } from "react";
 import DashboardLayout from "@/modules/dashboard/components/layout";
 import Image from "next/image";
 import { Button } from "@/modules/common/components/input/button";
 import { useRouter } from "next/router";
-import { initGigzaContract } from "utils/helper/contract.helper";
-import { toast } from "react-hot-toast";
 import {
 	covertToReadableDate,
 	formatUnit,
 	formatWalletAddress
 } from "utils/helper";
-import { JobDetailsProps } from "@custom-types/typing";
+import useGetJobDetails from "utils/hooks/useGetJobDetails.hook";
 
 // images
 import squareDot from "@/public/asset/icons/square-dot.svg";
@@ -20,28 +17,7 @@ import chevronLeft from "@/public/asset/icons/chevron-left.svg";
 const JobDetails = () => {
 	const router = useRouter();
 	const { id: jobId } = router.query;
-	const [jobDetails, setJobDetails] = useState<JobDetailsProps[number] | null>(null);
-
-	const getJobDetails = async () => {
-		try {
-			const response = await initGigzaContract();
-			// @ts-ignore
-			const contract = response.contract;
-			const _jobDetails = await contract.jobs(jobId);
-			console.log(_jobDetails);
-			setJobDetails(_jobDetails);
-		} catch (error) {
-			toast.error("Something went wrong, could not get job details");
-			console.log({ error });
-		}
-	};
-
-	useEffect(() => {
-		if (jobId) {
-			getJobDetails();
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [jobId]);
+	const { jobDetails } = useGetJobDetails(jobId);
 
 	return jobDetails ? (
 		<DashboardLayout>
@@ -66,9 +42,10 @@ const JobDetails = () => {
 						</p>
 						<Image src={squareDot} alt="" />
 						<p>
-							Posted{" "}
-							{/* @ts-ignore */}
-							{covertToReadableDate(formatUnit(jobDetails?.timestamp) * 10 ** 18)}
+							Posted
+							{covertToReadableDate(
+								formatUnit(jobDetails?.timestamp)! * 10 ** 18
+							)}
 						</p>
 					</div>
 				</div>

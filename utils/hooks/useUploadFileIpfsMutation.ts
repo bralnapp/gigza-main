@@ -10,4 +10,4 @@ const useUploadFileIpfsMutation = () => {
 	});
 };
 
-export { useUploadFileIpfsMutation };
+export default useUploadFileIpfsMutation;

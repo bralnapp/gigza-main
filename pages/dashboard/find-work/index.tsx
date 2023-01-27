@@ -5,36 +5,16 @@ import {
 	RecentJobList,
 	RecentJobListDetails
 } from "@/modules/dashboard/sections/find-work";
-import { toast } from "react-hot-toast";
-import { JobDetailsProps } from "@custom-types/typing";
+import { useGetJobs } from "utils/hooks";
 
 const FindWork = () => {
 	const [activeIndex, setActiveIndex] = useState(0);
-	const [totalJobs, setTotalJobs] = useState<JobDetailsProps>([]);
+	const { totalJobs } = useGetJobs();
 
 	const handleSelect = (index: number) => {
 		setActiveIndex(index);
 	};
 
-	const getGetTotalJobs = async () => {
-		try {
-			const response = await initGigzaContract();
-			const contract = response.contract;
-			const totalJobs = await contract.getTotalJobs();
-			console.log("main", totalJobs);
-			setTotalJobs(totalJobs);
-		} catch (error) {
-			// @ts-ignore
-			toast.error(error?.message);
-		}
-	};
-
-	useEffect(() => {
-		getGetTotalJobs();
-		console.log("total jobs", totalJobs);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
-	
 	return (
 		<DashboardLayout>
 			<div className="dashboard-layout-container">
