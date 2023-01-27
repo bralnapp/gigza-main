@@ -1,19 +1,19 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { userDetailsType } from "@/pages/dashboard/profile";
 import { useStoreContext } from "context/StoreContext";
-import { initGigzaContract } from "utils/helper";
-import { toast } from "react-hot-toast";
 import Image from "next/image";
-
-// images
-import profileAvatar from "@/public/asset/avatar/profile-avatar.svg";
 import CopyToClipboard from "@/modules/common/components/copy-to-clipboard";
 import Link from "next/link";
 
-const UserProfileNav = () => {
+// images
+import profileAvatar from "@/public/asset/avatar/profile-avatar.svg";
+
+type UserProfileNavProps = {
+	userDetails: userDetailsType;
+};
+
+const UserProfileNav = ({ userDetails }: UserProfileNavProps) => {
 	const { state } = useStoreContext();
-	const [userDetails, setUserDetails] = useState<userDetailsType>();
-	const [hover, setHover] = useState(-1);
 	const [showProfile, setShowProfile] = useState(false);
 
 	const links = [
@@ -31,27 +31,6 @@ const UserProfileNav = () => {
 		}
 	];
 
-	const handleMouseLeave = () => {
-		setHover(-1);
-	};
-
-	const getUserProfile = async () => {
-		console.log("account", state.account);
-		try {
-			const response = await initGigzaContract();
-			const contract = response.contract;
-			const userDetails = await contract.getUser(state.account);
-			setUserDetails(userDetails);
-			console.log(userDetails);
-		} catch (error) {
-			toast.error("Something went wrong, could not user details");
-		}
-	};
-
-	useEffect(() => {
-		getUserProfile();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [state.account]);
 	return (
 		<div
 			className="relative h-full flex items-center"

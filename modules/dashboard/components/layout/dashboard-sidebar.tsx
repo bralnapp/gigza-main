@@ -5,6 +5,7 @@ import { dashboardNavLinks } from "utils/data";
 import Link from "next/link";
 import ProposalSidebarLink from "@/modules/common/misc/proposal-sidebar-link";
 import { ConnectWalletButton } from "@/modules/common/components/input/button";
+import { userDetailsType } from "@/pages/dashboard/profile";
 
 // images
 import closeIcon from "@/public/asset/icons/close.svg";
@@ -13,9 +14,15 @@ type Props = {
 	isOpen: boolean;
 	toggleMenu: () => void;
 	setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+	userDetails: userDetailsType;
 };
 
-const DashboardSidebar = ({ isOpen, toggleMenu, setIsOpen }: Props) => {
+const DashboardSidebar = ({
+	isOpen,
+	toggleMenu,
+	setIsOpen,
+	userDetails
+}: Props) => {
 	const sideBarRef = useRef(null);
 	const clickOutsideHandler = () => {
 		setIsOpen(false);
@@ -44,7 +51,10 @@ const DashboardSidebar = ({ isOpen, toggleMenu, setIsOpen }: Props) => {
 					{dashboardNavLinks.map((item, index) => (
 						<li key={`sidebar-links-${index}`} className="">
 							{item.title.toLowerCase() === "proposals" ? (
-								<ProposalSidebarLink handleCloseSidebar={() => setIsOpen(false)} {...{ item }} />
+								<ProposalSidebarLink
+									handleCloseSidebar={() => setIsOpen(false)}
+									{...{ item }}
+								/>
 							) : (
 								<Link
 									href={item.to}
