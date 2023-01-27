@@ -4,7 +4,7 @@ import { useStoreContext } from "context/StoreContext";
 import Image from "next/image";
 import CopyToClipboard from "@/modules/common/components/copy-to-clipboard";
 import Link from "next/link";
-
+import { formatWalletAddress } from "utils/helper";
 // images
 import profileAvatar from "@/public/asset/avatar/profile-avatar.svg";
 
@@ -47,13 +47,18 @@ const UserProfileNav = ({ userDetails }: UserProfileNavProps) => {
 			{showProfile ? (
 				<div className="absolute -left-[150px] top-[45px] rounded-lg bg-white p-6 w-[370px] shadow-[0px_6px_60px_rgba(0,0,0,0.1)]">
 					<div className="flex items-center justify-between rounded-md bg-[#F8F8F8] py-2 px-[10px] mb-4">
-						<Image
-							src={userDetails?.profileUrl || profileAvatar}
-							alt=""
-							width={30}
-							height={30}
-							className="rounded cursor-pointer"
-						/>
+						<div className="flex items-center gap-x-2">
+							<Image
+								src={userDetails?.profileUrl || profileAvatar}
+								alt=""
+								width={30}
+								height={30}
+								className="rounded cursor-pointer"
+							/>
+							<p className="text-primary2 capitalize text-base">
+								{formatWalletAddress(state?.account!)}
+							</p>
+						</div>
 						<CopyToClipboard text={state.account!} />
 					</div>
 					<ul className="space-y-4">

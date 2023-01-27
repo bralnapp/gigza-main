@@ -4,11 +4,15 @@ import useOnClickOutside from "utils/hooks/useOnClickOutside.hook";
 import { dashboardNavLinks } from "utils/data";
 import Link from "next/link";
 import ProposalSidebarLink from "@/modules/common/misc/proposal-sidebar-link";
-import { ConnectWalletButton } from "@/modules/common/components/input/button";
 import { userDetailsType } from "@/pages/dashboard/profile";
+import { formatWalletAddress } from "utils/helper";
+import CopyToClipboard from "@/modules/common/components/copy-to-clipboard";
+import { useStoreContext } from "context/StoreContext";
 
 // images
 import closeIcon from "@/public/asset/icons/close.svg";
+import profileAvatar from "@/public/asset/avatar/profile-avatar.svg";
+
 
 type Props = {
 	isOpen: boolean;
@@ -17,6 +21,25 @@ type Props = {
 	userDetails: userDetailsType;
 };
 
+const links = [
+	{
+		name: "my contract",
+		to: "/dashboard/contract"
+	},
+	{
+		name: "wallet",
+		to: "/dashboard/wallet"
+	},
+	{
+		name: "messages",
+		to: "/dashboard/profile"
+	},
+	{
+		name: "view profile",
+		to: "/dashboard/profile"
+	}
+];
+
 const DashboardSidebar = ({
 	isOpen,
 	toggleMenu,
@@ -24,6 +47,7 @@ const DashboardSidebar = ({
 	userDetails
 }: Props) => {
 	const sideBarRef = useRef(null);
+	const { state } = useStoreContext();
 	const clickOutsideHandler = () => {
 		setIsOpen(false);
 	};
@@ -46,7 +70,6 @@ const DashboardSidebar = ({
 						<Image src={closeIcon} alt="" />
 					</div>
 				</div>
-				<ConnectWalletButton />
 				<ul className="mt-8 space-y-10">
 					{dashboardNavLinks.map((item, index) => (
 						<li key={`sidebar-links-${index}`} className="">
@@ -67,6 +90,35 @@ const DashboardSidebar = ({
 						</li>
 					))}
 				</ul>
+				<div className="border-t border-stroke mt-6 py-4">
+					<div className="flex items-center justify-between rounded-md bg-[#F8F8F8] py-2 px-[10px] mb-4">
+						<div className="flex items-center gap-x-2">
+							<Image
+								src={userDetails?.profileUrl || profileAvatar}
+								alt=""
+								width={30}
+								height={30}
+								className="rounded cursor-pointer"
+							/>
+							<p className="text-primary2 capitalize text-base">
+								{formatWalletAddress(state?.account!)}
+							</p>
+						</div>
+						<CopyToClipboard text={state.account!} />
+					</div>
+					<ul className="mt-[18px] space-y-6">
+						{links.map((item, index) => (
+							<li key={`mobile-dashboard-links-${index}`}>
+								<Link
+									href={item.to}
+									className="text-b3 capitalize text-base leading-[21px]"
+								>
+									{item.name}
+								</Link>
+							</li>
+						))}
+					</ul>
+				</div>
 			</aside>
 		</div>
 	) : null;
