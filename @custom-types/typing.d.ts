@@ -15,11 +15,14 @@ export type JobDetailsProps = {
 	description: string;
 	jobId: any;
 	userBids: IuserBids[];
-    state: number;
-	timeline: any;  
+	state: number;
+	timeline: any;
 }[];
 
+// kindly note the ProposalType is type declaration for sent proposals
 export type ProposalType = {
 	job: JobDetailsProps[number];
 	proposals: IuserBids[];
 };
+
+export type ReceivedProposalType = JobDetailsProps

@@ -3,28 +3,31 @@ import { initGigzaContract } from "utils/helper/contract.helper";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useStoreContext } from "context/StoreContext";
-import {  JobDetailsProps, ProposalType } from "@custom-types/typing";
+import {  JobDetailsProps, ProposalType, ReceivedProposalType } from "@custom-types/typing";
 
 type useGetProposalsProps = {
     sentProposals: ProposalType[] | [],
-    receivedProposals: any,
+    receivedProposals: ReceivedProposalType,
 }
 
 const useGetProposals = ():useGetProposalsProps => {
 	const { state } = useStoreContext();
+	// kindly note the ProposalType is type declaration for sent proposals
 	const [sentProposals, setSentproposals] = useState<ProposalType[] | []>([]);
-	const [receivedProposals, setReceivedproposals] = useState<ProposalType | []>(
+	const [receivedProposals, setReceivedproposals] = useState<ReceivedProposalType | []>(
 		[]
 	);
 
-	const getSentProposals = async () => {
+	const getProposals = async () => {
 		let proposal:ProposalType[] = [];
+		let jobsPostedByUser:JobDetailsProps[number][] = []
+
 
 		try {
 			const response = await initGigzaContract();
 			const contract = response.contract;
 			const totalJobs = await contract.getTotalJobs();
-
+			// get proposal sent by freelancers
 			for (let index = 0; index < totalJobs.length; index++) {
 				const _job:JobDetailsProps[number] = totalJobs[index];
 				const jobBids = _job.userBids.filter(
@@ -38,6 +41,19 @@ const useGetProposals = ():useGetProposalsProps => {
                     });
 				}
 			}
+			// get proposal received by job posters
+			for (let index = 0; index < totalJobs.length; index++) {
+				// get all jobs posted by a user
+				const _job:JobDetailsProps[number] = totalJobs[index];
+				if (_job.client === "0x5c12DB1E016bEa19aeD67C125dc5b036e39320Cb") {
+					jobsPostedByUser.push(_job)
+				}
+
+			}
+			if (jobsPostedByUser.length) {
+				const _jobsPostedByUser = [...jobsPostedByUser]
+				setReceivedproposals(jobsPostedByUser)
+			}
 			setSentproposals(proposal);
 		} catch (error: any) {
 			toast.error(error?.message);
@@ -45,7 +61,7 @@ const useGetProposals = ():useGetProposalsProps => {
 	};
 
 	useEffect(() => {
-		getSentProposals();
+		getProposals();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [state.account]);
 
@@ -56,3 +72,6 @@ const useGetProposals = ():useGetProposalsProps => {
 };
 
 export default useGetProposals;
+
+
+
