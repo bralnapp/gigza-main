@@ -27,10 +27,9 @@ const useGetProposals = ():useGetProposalsProps => {
 
 			for (let index = 0; index < totalJobs.length; index++) {
 				const _job:JobDetailsProps[number] = totalJobs[index];
-				console.log(`job ${index} :`, _job);
 				const jobBids = _job.userBids.filter(
 					(item) =>
-						item.freelancer === "0x247915f6492ef3cfb1A8A48A75B24dDDE2FD0ae5"
+						item?.freelancer?.toLowerCase() === state.account?.toLowerCase()
 				);
 				if (jobBids.length) {
 					proposal.push({ 
@@ -40,7 +39,6 @@ const useGetProposals = ():useGetProposalsProps => {
 				}
 			}
 			setSentproposals(proposal);
-			console.log("hook proposal value", proposal);
 		} catch (error: any) {
 			toast.error(error?.message);
 		}

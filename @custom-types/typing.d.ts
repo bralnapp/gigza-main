@@ -16,6 +16,7 @@ export type JobDetailsProps = {
 	jobId: any;
 	userBids: IuserBids[];
     state: number;
+	timeline: any;  
 }[];
 
 export type ProposalType = {

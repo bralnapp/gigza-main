@@ -1,23 +1,35 @@
-import { IuserBids } from '@custom-types/typing';
+import { IuserBids,JobDetailsProps } from '@custom-types/typing';
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { useStoreContext } from "context/StoreContext";
 import { useEffect } from "react";
 import { initGigzaContract } from "utils/helper";
 
-const useGetJobBids = (jobId: number) => {
+interface useGetJobBidsType  {
+	proposal: IuserBids[] | [];
+	job: undefined | JobDetailsProps[number] ;   
+}
+
+const useGetJobBids = (jobId: number | string | string[] | undefined):useGetJobBidsType => {
 	const { state } = useStoreContext();
-	const [jobBids, setjobBids] = useState();
+	const [proposal, setProposal] = useState<IuserBids[] | []>([]);
+	const [job, setJob] = useState<undefined | JobDetailsProps[number]>()
 
 	const getJobBids = async () => {
+		let freelancerProposal:IuserBids[] = []
 		try {
 			const response = await initGigzaContract();
 			const contract = response.contract;
-            const job = await contract.jobs(jobId)
-			const jobbids:IuserBids[] = await contract.getJobBids(jobId);
-            const freelancerProposal = jobBids?.filter(item => item.freelance === '"0x247915f6492ef3cfb1A8A48A75B24dDDE2FD0ae5"')
-			console.log(jobbids);
-			// setTotalJobs(totalJobs);
+            const _job:JobDetailsProps[number] = await contract.jobs(jobId)
+			const jobBids:IuserBids[] = await contract.getJobBids(jobId);
+			for (let index = 0; index < jobBids.length; index++) {
+				const jobBid = jobBids[index];
+				if (jobBid?.freelancer?.toLowerCase() === state.account?.toLowerCase()) {
+					freelancerProposal.push(jobBid)
+				}
+			}
+			setJob(_job)
+			setProposal(freelancerProposal)
 		} catch (error: any) {
 			toast.error(error?.message);
 		}
@@ -27,7 +39,7 @@ const useGetJobBids = (jobId: number) => {
 		getJobBids();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [state.account]);
-	return { jobBids, job };
+	return { proposal, job };
 };
 
 export default useGetJobBids;

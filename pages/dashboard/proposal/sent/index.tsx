@@ -13,8 +13,6 @@ import squareDot from "@/public/asset/icons/square-dot.svg";
 
 const Sent = () => {
 	const { sentProposals } = useGetProposals();
-    console.log(sentProposals)
-
 	return (
 		<DashboardLayout>
 			<div className="dashboard-layout-container pt-8 min-[540px]:pt-[42px] pb-[95px] lg:pb-[141px]">
