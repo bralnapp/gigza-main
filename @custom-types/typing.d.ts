@@ -25,4 +25,13 @@ export type ProposalType = {
 	proposals: IuserBids[];
 };
 
+export type UserProfileType = {
+	name: string;
+	mainSkill: string;
+	bio: string;
+	profileUrl: string;
+	skills: string[];
+	user: string;
+};
+
 export type ReceivedProposalType = JobDetailsProps

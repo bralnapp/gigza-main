@@ -28,6 +28,7 @@ const useGetJobBids = (
 			const response = await initGigzaContract();
 			const contract = response.contract;
 			const _job: JobDetailsProps[number] = await contract.jobs(jobId);
+			console.log(_job)
 			const jobBids: IuserBids[] = await contract.getJobBids(jobId);
 			for (let index = 0; index < jobBids.length; index++) {
 				const jobBid = jobBids[index];
