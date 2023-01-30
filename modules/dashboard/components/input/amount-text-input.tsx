@@ -1,8 +1,8 @@
 import { InputProps } from "./typing";
+import Image from "next/image";
 
 // images
 import usdtLogo from "@/public/asset/icons/usdt-logo.svg";
-import Image from "next/image";
 
 const AmountTextInput = ({
 	id,

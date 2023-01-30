@@ -1,13 +1,7 @@
 import { PostJobForm } from "@/modules/dashboard/components/forms";
 import DashboardLayout from "@/modules/dashboard/components/layout";
-import Image from "next/image";
-import { useRouter } from "next/router";
-
-// images
-import chevronLeft from "@/public/asset/icons/chevron-left.svg";
 
 const PostJob = () => {
-	const router = useRouter();
 	return (
 		<DashboardLayout>
 			<div className="bg-white min-h-screen">

@@ -5,12 +5,14 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import Select from "../input/select";
 import { Button } from "@/modules/common/components/input/button";
+import { useRouter } from "next/router";
 
 const schema = yup.object().shape({
 	title: yup.string().required(),
 	description: yup.string().required(),
 	skills: yup.array().min(1).max(5).required(),
-	budget: yup.number().required()
+	amount: yup.number().required(),
+	timeline: yup.number().required()
 });
 
 type FormData = {
@@ -19,10 +21,12 @@ type FormData = {
 	mainSkill: string;
 	skills: string[];
 	profileUrl: string;
+	timeline: number;
 };
 
 const PostJobForm = () => {
 	const timeDurationOptions = ["2", "4", "6", "8"];
+	const router = useRouter();
 
 	const {
 		register,
@@ -31,9 +35,14 @@ const PostJobForm = () => {
 		formState: { errors }
 	} = useForm<FormData>({ resolver: yupResolver(schema) });
 
-	const onSubmit = (data:FormData) => {
-
-	}
+	const onSubmit = (data: FormData) => {
+		router.push({
+			pathname: "/dashboard/post-job/preview",
+			query: {
+				data: JSON.stringify(data)
+			}
+		});
+	};
 
 	return (
 		<form onSubmit={handleSubmit(onSubmit)} className="mt-6 space-y-6">
@@ -83,11 +92,11 @@ const PostJobForm = () => {
 				/>
 			</div>
 			<AmountTextInput
-				id="budget"
-				name="budget"
+				id="amount"
+				name="amount"
 				label="Budget"
 				placeholder="Enter Amount"
-				type='text'
+				type="text"
 				{...{ register, errors }}
 			/>
 			<Button title="Preview" className="w-full md:w-[253px] md:mx-auto" />
