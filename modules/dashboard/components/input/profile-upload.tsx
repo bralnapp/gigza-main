@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { useUploadFileIpfsMutation } from "utils/hooks/useUploadFileIpfsMutation";
 import { useDropzone } from "react-dropzone";
 import { toast } from "react-hot-toast";
+import { useUploadFileIpfsMutation } from "utils/hooks";
 
 // images
 import plusIcon from "@/public/asset/icons/plus-icon.svg";

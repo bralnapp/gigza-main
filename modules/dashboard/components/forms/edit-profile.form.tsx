@@ -115,6 +115,7 @@ const EditProfileForm = () => {
 						<TagInput
 							value={value}
 							handleTag={onChange}
+							label="Skills"
 							error={errors.skills?.message}
 						/>
 					)}

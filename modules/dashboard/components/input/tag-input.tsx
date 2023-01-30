@@ -63,7 +63,7 @@ const TagInput = ({
 			<div className="">
 				<label
 					htmlFor={id}
-					className={`text-b1 block text-base leading-[19px] capitalize mb-2 ${labelClassName}`}
+					className={`text-b1 block text-base leading-[19px] mb-2 ${labelClassName}`}
 				>
 					{label}
 				</label>
