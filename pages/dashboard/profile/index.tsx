@@ -60,7 +60,7 @@ const Profile = () => {
 			<div className="h-[100px] bg-profile-background bg-no-repeat bg-cover min-[540px]:h-[140px] md:h-[212px]" />
 			<div className="dashboard-layout-container flex items-center justify-between -mt-10">
 				<div className="md:flex items-center md:space-x-5">
-					<div className=" w-20 h-20 rounded-full md:h-[164px] md:w-[164px]">
+					<div className="w-20 h-20 rounded-full md:h-[164px] md:w-[164px]">
 						<Image
 							src={userDetails?.profileUrl || profileAvatar}
 							alt=""

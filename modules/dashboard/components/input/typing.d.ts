@@ -3,7 +3,7 @@ import { HTMLInputTypeAttribute } from "react";
 export type InputProps = {
     id: string;
     type: HTMLInputTypeAttribute;
-    label: string;
+    label?: string;
     placeholder: string;
     name: string;
     labelClassName?: string;
