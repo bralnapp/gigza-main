@@ -12,7 +12,7 @@ type ButtonProps = {
 };
 
 const buttonStyles = cva(
-	"rounded h-12 flex items-center justify-center capitalize text-base leading-[18px] font-medium",
+	"disabled:cursor-not-allowed disabled:bg-gray-600 rounded h-12 flex items-center justify-center capitalize text-base leading-[18px] font-medium ",
 	{
 		variants: {
 			intent: {

@@ -16,7 +16,7 @@ export default function App({ Component, pageProps }: AppProps) {
 	return (
 		<QueryClientProvider client={queryClient}>
 			<StoreContextProvider>
-				<Toaster />
+				<Toaster toastOptions={{style:{zIndex: 999999999999999}}} />
 				<main className={inter.variable}>
 					<Component {...pageProps} />
 				</main>

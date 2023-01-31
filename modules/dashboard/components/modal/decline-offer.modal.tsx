@@ -1,10 +1,10 @@
 import React, { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
+import { Button } from "@/modules/common/components/input/button";
 
 // images
 import closeIcon from "@/public/asset/icons/close.svg";
 import Image from "next/image";
-import { Button } from "@/modules/common/components/input/button";
 
 type DeclineOfferModalProps = {
 	isDeclineModalOpen: boolean;

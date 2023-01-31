@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Button } from "@/modules/common/components/input/button";
 import Layout from "@/modules/common/components/layout";
 import {
@@ -8,10 +9,13 @@ import {
 	Partners,
 	WorkCategories
 } from "@/modules/common/section/home";
+import { WaitList } from "@/modules/common/components/modal";
 
 const Home = () => {
+	const [showWaitList, setShowWaitList] = useState(true);
 	return (
 		<Layout>
+			<WaitList {...{ showWaitList, setShowWaitList }} />
 			<Hero />
 			<Partners />
 			<HireTalentsWay />
