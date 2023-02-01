@@ -4,6 +4,8 @@ import { Plus_Jakarta_Sans } from "@next/font/google";
 import { StoreContextProvider } from "context/StoreContext";
 import { Toaster } from "react-hot-toast";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { WagmiConfig } from "wagmi";
+import { wagmiClient } from "utils/config";
 
 const inter = Plus_Jakarta_Sans({
 	subsets: ["latin"],
@@ -14,13 +16,15 @@ const queryClient = new QueryClient();
 
 export default function App({ Component, pageProps }: AppProps) {
 	return (
-		<QueryClientProvider client={queryClient}>
-			<StoreContextProvider>
-				<Toaster toastOptions={{style:{zIndex: 999999999999999}}} />
-				<main className={inter.variable}>
-					<Component {...pageProps} />
-				</main>
-			</StoreContextProvider>
-		</QueryClientProvider>
+		<WagmiConfig client={wagmiClient}>
+			<QueryClientProvider client={queryClient}>
+				<StoreContextProvider>
+					<Toaster toastOptions={{ style: { zIndex: 999999999999999 } }} />
+					<main className={inter.variable}>
+						<Component {...pageProps} />
+					</main>
+				</StoreContextProvider>
+			</QueryClientProvider>
+		</WagmiConfig>
 	);
 }
