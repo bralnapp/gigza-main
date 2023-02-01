@@ -1,18 +1,7 @@
+import { useState } from "react";
 import { CheckBox } from "@/modules/common/components/input";
 import { Button } from "@/modules/common/components/input/button";
-import { useState } from "react";
-
-const specialtiesOptions = [
-	"Animation",
-	"Brand / Graphic Design",
-	"Illustration",
-	"Mobile Design",
-	"UI / Visual Design",
-	"web design",
-	"front end development",
-	"backend development",
-	"artificial intelligence"
-];
+import { specialtiesOptions } from "utils/data";
 
 const ApplyFilter = () => {
 	const [checkedState, setCheckedState] = useState<boolean[]>(
@@ -37,7 +26,7 @@ const ApplyFilter = () => {
 		e.preventDefault();
 	};
 	return (
-		<div className="bg-white p-6 h-fit hidden lg:block">
+		<div className="hidden h-fit bg-white p-6 lg:block">
 			<h1 className="text-xl font-bold capitalize leading-[21px] text-[#101828]">
 				filter
 			</h1>
@@ -47,7 +36,7 @@ const ApplyFilter = () => {
 
 				<form onSubmit={handleSubmit}>
 					<div className="mb-2">
-						<div className="mt-[17px] flex flex-col space-y-[17px] border-b border-[#F0F0F0] pb-5 mb-2">
+						<div className="mt-[17px] mb-2 flex flex-col space-y-[17px] border-b border-[#F0F0F0] pb-5">
 							{ratings.map((item, index) => (
 								<CheckBox
 									key={index}
