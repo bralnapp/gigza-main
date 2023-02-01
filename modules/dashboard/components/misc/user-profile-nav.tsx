@@ -1,26 +1,30 @@
 import { useState } from "react";
 import { userDetailsType } from "@/pages/dashboard/profile";
-import { useStoreContext } from "context/StoreContext";
 import Image from "next/image";
 import CopyToClipboard from "@/modules/common/components/copy-to-clipboard";
 import Link from "next/link";
 import { formatWalletAddress } from "utils/helper";
-import {Web3Button} from "@web3modal/react"
-import { useAccount } from "wagmi";
+import { useAccount, useConnect, useDisconnect } from "wagmi";
+import { InjectedConnector } from "wagmi/connectors/injected";
 
 // images
 import profileAvatar from "@/public/asset/avatar/profile-avatar.svg";
+import { Button } from "@/modules/common/components/input/button";
 
 type UserProfileNavProps = {
 	userDetails: userDetailsType;
 };
 
 const UserProfileNav = ({ userDetails }: UserProfileNavProps) => {
-	// const { state } = useStoreContext();
-	const { address, isConnected } = useAccount()
-	console.log(isConnected)
-	const [showProfile, setShowProfile] = useState(false);
+	const { address, isConnected } = useAccount();
 
+	const { connect } = useConnect({
+		connector: new InjectedConnector()
+	});
+
+	const { disconnect } = useDisconnect();
+
+	const [showProfile, setShowProfile] = useState(false);
 	const links = [
 		{
 			name: "my contract",
@@ -38,7 +42,7 @@ const UserProfileNav = ({ userDetails }: UserProfileNavProps) => {
 
 	return (
 		<div
-			className="relative h-full flex items-center"
+			className="relative flex h-full items-center"
 			onMouseLeave={() => setShowProfile(false)}
 			onMouseEnter={() => setShowProfile(true)}
 		>
@@ -47,40 +51,51 @@ const UserProfileNav = ({ userDetails }: UserProfileNavProps) => {
 				alt=""
 				width={30}
 				height={30}
-				className="rounded cursor-pointer"
+				className="cursor-pointer rounded"
 			/>
 			{showProfile ? (
-				<div className="absolute -left-[150px] top-[45px] rounded-lg bg-white p-6 w-[370px] shadow-[0px_6px_60px_rgba(0,0,0,0.1)]">
-					<Web3Button	 />
-					<div className="flex items-center justify-between rounded-md bg-[#F8F8F8] py-2 px-[10px] mb-4">
-						<div className="flex items-center gap-x-2">
-							<Image
-								src={userDetails?.profileUrl || profileAvatar}
-								alt=""
-								width={30}
-								height={30}
-								className="rounded cursor-pointer"
-							/>
-							{/* <p className="text-primary2 capitalize text-base">
-								{formatWalletAddress(state?.account!)}
-							</p> */}
+				<div className="absolute -left-[150px] top-[45px] w-[370px] rounded-lg bg-white p-6 shadow-[0px_6px_60px_rgba(0,0,0,0.1)]">
+					{isConnected ? (
+						<div className="mb-4 flex items-center justify-between rounded-md bg-[#F8F8F8] py-2 px-[10px]">
+							<div className="flex items-center gap-x-2">
+								<Image
+									src={userDetails?.profileUrl || profileAvatar}
+									alt=""
+									width={30}
+									height={30}
+									className="cursor-pointer rounded"
+								/>
+								<p className="text-base capitalize text-primary2">
+									{formatWalletAddress(address!)}
+								</p>
+							</div>
+							<CopyToClipboard text={address!} />
 						</div>
-						{/* <CopyToClipboard text={state.account!} /> */}
-					</div>
+					) : (
+						<Button
+							onClick={() => connect()}
+							title="Connect Wallet"
+							className="mb-4 h-10 w-[152px]"
+						/>
+					)}
+
 					<ul className="space-y-4">
 						{links.map((item, index) => (
 							<li key={`links-${index}`}>
 								<Link
 									href={item.to}
 									onClick={() => setShowProfile(false)}
-									className="cursor-pointer capitalize text-base leading-7 text-[#192839]"
+									className="cursor-pointer text-base capitalize leading-7 text-[#192839]"
 								>
 									{item.name}
 								</Link>
 							</li>
 						))}
 					</ul>
-					<button className="mt-4 text-[#F02323] capitalize text-base leading-7">
+					<button
+						onClick={() => disconnect()}
+						className="mt-4 text-base capitalize leading-7 text-[#F02323]"
+					>
 						disconnect wallet
 					</button>
 				</div>

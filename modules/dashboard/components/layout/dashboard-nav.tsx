@@ -49,10 +49,10 @@ const DashboardNav = () => {
 				projectId={process.env.NEXT_PUBLIC_WEB3_MODAL_PROJECT_ID}
 				ethereumClient={ethereumClient}
 			/>
-			{/* <DashboardSidebar
+			<DashboardSidebar
 				{...{ isOpen, toggleMenu, setIsOpen }}
 				userDetails={userDetails!}
-			/> */}
+			/>
 			<div className="dashboard-layout-container flex h-[78px] items-center justify-between">
 				<Link href="/">
 					<Image src={logo} alt="" />
