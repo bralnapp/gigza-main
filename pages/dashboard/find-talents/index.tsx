@@ -13,13 +13,13 @@ import { FilterTalentListModal } from "@/modules/dashboard/components/modal";
 import filterIcon from "@/public/asset/icons/filter-icon.svg";
 
 const FindTalents = () => {
-	const { usersProfile } = useGetAllFreelancers();
+	// const { usersProfile } = useGetAllFreelancers();
 	const [showFilterTalentModal, setShowFilterTalentModal] = useState(false);
 
-	console.log(usersProfile);
+	// console.log(usersProfile);
 	return (
 		<DashboardLayout>
-			<div className="lg:hidden">
+			{/* <div className="lg:hidden">
 				<FilterTalentListModal
 					{...{ showFilterTalentModal, setShowFilterTalentModal }}
 				/>
@@ -37,12 +37,12 @@ const FindTalents = () => {
 						className="ml-auto h-[28px] w-[75px] rounded-[3px] border border-[#E8E8EF] bg-[#FCFDFD] text-xs leading-[14px] text-b2"
 					/>
 				</div>
-				<div className="dashboard-layout-container mt-6 mb-[51px] grid-cols-[2fr_1fr] md:mb-[76px] lg:mt-12 lg:grid lg:gap-x-[45px]">
+				<div className="dashboard-layout-container mt-6 mb-[51px] grid-cols-[2fr_1fr] md:mb-[76px] lg:mt-12 lg:grid lg:gap-x-[45px]"> */}
 					{/* freelancers */}
-					<TalentList {...{ usersProfile }} />
+					{/* <TalentList {...{ usersProfile }} />
 					<ApplyFilter />
 				</div>
-			</div>
+			</div> */}
 		</DashboardLayout>
 	);
 };

@@ -5,6 +5,9 @@ import Image from "next/image";
 import CopyToClipboard from "@/modules/common/components/copy-to-clipboard";
 import Link from "next/link";
 import { formatWalletAddress } from "utils/helper";
+import {Web3Button} from "@web3modal/react"
+import { useAccount } from "wagmi";
+
 // images
 import profileAvatar from "@/public/asset/avatar/profile-avatar.svg";
 
@@ -13,7 +16,9 @@ type UserProfileNavProps = {
 };
 
 const UserProfileNav = ({ userDetails }: UserProfileNavProps) => {
-	const { state } = useStoreContext();
+	// const { state } = useStoreContext();
+	const { address, isConnected } = useAccount()
+	console.log(isConnected)
 	const [showProfile, setShowProfile] = useState(false);
 
 	const links = [
@@ -46,6 +51,7 @@ const UserProfileNav = ({ userDetails }: UserProfileNavProps) => {
 			/>
 			{showProfile ? (
 				<div className="absolute -left-[150px] top-[45px] rounded-lg bg-white p-6 w-[370px] shadow-[0px_6px_60px_rgba(0,0,0,0.1)]">
+					<Web3Button	 />
 					<div className="flex items-center justify-between rounded-md bg-[#F8F8F8] py-2 px-[10px] mb-4">
 						<div className="flex items-center gap-x-2">
 							<Image
@@ -55,11 +61,11 @@ const UserProfileNav = ({ userDetails }: UserProfileNavProps) => {
 								height={30}
 								className="rounded cursor-pointer"
 							/>
-							<p className="text-primary2 capitalize text-base">
+							{/* <p className="text-primary2 capitalize text-base">
 								{formatWalletAddress(state?.account!)}
-							</p>
+							</p> */}
 						</div>
-						<CopyToClipboard text={state.account!} />
+						{/* <CopyToClipboard text={state.account!} /> */}
 					</div>
 					<ul className="space-y-4">
 						{links.map((item, index) => (

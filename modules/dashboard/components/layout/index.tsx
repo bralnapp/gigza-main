@@ -7,7 +7,7 @@ type DashboardLayoutProps = {
 };
 
 const DashboardLayout = ({ children }: DashboardLayoutProps) => {
-	const { state } = useStoreContext();
+	// const { state } = useStoreContext();
 	return (
 		<div>
 			<Head>
@@ -18,13 +18,13 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
 			</Head>
 			<DashboardNav />
 			<main className="mt-[79px] min-h-screen bg-[#FBFAFA]">
-				{state.isWalletConnected ? (
+				{/* {state.isWalletConnected ? (
 					<>{children}</>
 				) : (
 					<p className="grid place-items-center h-[calc(100vh_-_79px)]">
 						Please connect your account first
 					</p>
-				)}
+				)} */}
 			</main>
 		</div>
 	);

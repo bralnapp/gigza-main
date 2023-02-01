@@ -9,27 +9,27 @@ type useGetAllFreelancersType = {
 };
 
 const useGetAllFreelancers = (): useGetAllFreelancersType => {
-	const { state } = useStoreContext();
+	// const { state } = useStoreContext();
 	const [usersProfile, setUsersProfile] = useState<UserProfileType[]>();
 
 	const getFreelancerProfile = async () => {
-		try {
-			const response = await initGigzaContract();
-			const contract = response.contract;
-			const usersProfile: UserProfileType[] = contract.getUserProfiles();
-			return usersProfile;
-		} catch (error) {
-			toast.error("Something went wrong, could not get user profile");
-			console.log({ error });
-		}
+		// try {
+		// 	const response = await initGigzaContract();
+		// 	const contract = response.contract;
+		// 	const usersProfile: UserProfileType[] = contract.getUserProfiles();
+		// 	return usersProfile;
+		// } catch (error) {
+		// 	toast.error("Something went wrong, could not get user profile");
+		// 	console.log({ error });
+		// }
 	};
 
-	useEffect(() => {
-		getFreelancerProfile().then((res) =>
-			setUsersProfile(res as UserProfileType[])
-		);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [state.account]);
+	// useEffect(() => {
+	// 	getFreelancerProfile().then((res) =>
+	// 		setUsersProfile(res as UserProfileType[])
+	// 	);
+	// 	// eslint-disable-next-line react-hooks/exhaustive-deps
+	// }, [state.account]);
 
 	return {
 		usersProfile
