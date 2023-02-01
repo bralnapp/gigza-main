@@ -25,8 +25,8 @@ const useGetPersistedStore = () => {
 	}
 };
 
-const GigzaContractAddress = "0xBE4230c239D96bE66B1e1E4d387adc9B73cb77A3";
-const DiaContractAddress = "0xA4d4dBd2Da4fBd7DAafD8DD66ba102025d38AE7F";
+const GigzaContractAddress = "0x6B042519F64CDf02b9D0c26885662434032bF178";
+const DiaContractAddress = "0x40fb4204dDe488f34b9d9E0056d0FE8f6ab38585";
 
 const bidState = [
 	"sent",
