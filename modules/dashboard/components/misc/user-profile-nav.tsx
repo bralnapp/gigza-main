@@ -6,10 +6,11 @@ import Link from "next/link";
 import { formatWalletAddress } from "utils/helper";
 import { useAccount, useConnect, useDisconnect } from "wagmi";
 import { InjectedConnector } from "wagmi/connectors/injected";
+import { Button } from "@/modules/common/components/input/button";
+import { useWeb3Modal } from "@web3modal/react";
 
 // images
 import profileAvatar from "@/public/asset/avatar/profile-avatar.svg";
-import { Button } from "@/modules/common/components/input/button";
 
 type UserProfileNavProps = {
 	userDetails: userDetailsType;
@@ -17,10 +18,7 @@ type UserProfileNavProps = {
 
 const UserProfileNav = ({ userDetails }: UserProfileNavProps) => {
 	const { address, isConnected } = useAccount();
-
-	const { connect } = useConnect({
-		connector: new InjectedConnector()
-	});
+	const { open } = useWeb3Modal();
 
 	const { disconnect } = useDisconnect();
 
@@ -73,7 +71,7 @@ const UserProfileNav = ({ userDetails }: UserProfileNavProps) => {
 						</div>
 					) : (
 						<Button
-							onClick={() => connect()}
+							onClick={() => open()}
 							title="Connect Wallet"
 							className="mb-4 h-10 w-[152px]"
 						/>
