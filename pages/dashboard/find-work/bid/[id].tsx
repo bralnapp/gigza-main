@@ -10,29 +10,28 @@ import { JobDetailsProps } from "@custom-types/typing";
 import { convertToNumber } from "utils/helper";
 
 const JobBid = () => {
-	const { state } = useStoreContext();
 	const [jobDetails, setJobDetails] = useState<JobDetailsProps[number]>();
 	const router = useRouter();
 	const { id: jobId } = router.query;
 
-	const getJobDetails = async () => {
-		try {
-			const response = await initGigzaContract();
-			const contract = response.contract;
-			const _jobDetails = await contract.jobs(jobId);
-			setJobDetails(_jobDetails);
-		} catch (error) {
-			toast.error("Something went wrong, could not get job details");
-			console.log({ error });
-		}
-	};
+	// const getJobDetails = async () => {
+	// 	try {
+	// 		const response = await initGigzaContract();
+	// 		const contract = response.contract;
+	// 		const _jobDetails = await contract.jobs(jobId);
+	// 		setJobDetails(_jobDetails);
+	// 	} catch (error) {
+	// 		toast.error("Something went wrong, could not get job details");
+	// 		console.log({ error });
+	// 	}
+	// };
 
-	useEffect(() => {
-		if (jobId) {
-			getJobDetails();
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [state.account, jobId]);
+	// useEffect(() => {
+	// 	if (jobId) {
+	// 		getJobDetails();
+	// 	}
+	// 	// eslint-disable-next-line react-hooks/exhaustive-deps
+	// }, [state.account, jobId]);
 
 	return (
 		<DashboardLayout>
@@ -44,7 +43,7 @@ const JobBid = () => {
 				/>
 			</div>
 			<div className="w-11/12 mx-auto max-w-3xl pt-8">
-				<h3 className="text-xl min-[540px]:text-2xl md:text-[32px] leading-6 md:leading-[38px] font-bold text-b1 capitalize text-center">
+				{/* <h3 className="text-xl min-[540px]:text-2xl md:text-[32px] leading-6 md:leading-[38px] font-bold text-b1 capitalize text-center">
 					bid for job
 				</h3>
 				<div className="my-8">
@@ -55,7 +54,7 @@ const JobBid = () => {
 						{jobDetails?.description}
 					</p>
 				</div>
-				<JobBidForm jobId={convertToNumber(jobId as string)} />
+				<JobBidForm jobId={convertToNumber(jobId as string)} /> */}
 			</div>
 		</DashboardLayout>
 	);

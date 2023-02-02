@@ -7,7 +7,6 @@ import {
 	formatUnit,
 	formatWalletAddress
 } from "utils/helper";
-import useGetJobDetails from "utils/hooks/useGetJobDetails.hook";
 
 // images
 import squareDot from "@/public/asset/icons/square-dot.svg";
@@ -17,7 +16,8 @@ import chevronLeft from "@/public/asset/icons/chevron-left.svg";
 const JobDetails = () => {
 	const router = useRouter();
 	const { id: jobId } = router.query;
-	const { jobDetails } = useGetJobDetails(jobId);
+	const jobDetails = {}
+	// const { jobDetails } = useGetJobDetails(jobId);
 
 	return jobDetails ? (
 		<DashboardLayout>
@@ -29,7 +29,7 @@ const JobDetails = () => {
 					<Image src={chevronLeft} alt="" />
 					<p className="text-base text-[#5F6062] capitalize">go back</p>
 				</button>
-				<div className="pb-6 border-b border-[#E8E8E8]">
+				{/* <div className="pb-6 border-b border-[#E8E8E8]">
 					<div className="flex items-center justify-between text-b1 font-bold">
 						<h3 className="text-xl leading-6">{jobDetails?.title}</h3>
 						<h4 className="text-[24px] leading-[29px]">
@@ -48,15 +48,15 @@ const JobDetails = () => {
 							)}
 						</p>
 					</div>
-				</div>
+				</div> */}
 				{/* project details */}
 				<div className="mt-6">
 					<h4 className="font-bold capitalize text-b1 text-base leading-[19px]">
 						project details
 					</h4>
-					<p className="mt-3 text-b4 text-sm leading-[21px]">
+					{/* <p className="mt-3 text-b4 text-sm leading-[21px]">
 						{jobDetails?.description}
-					</p>
+					</p> */}
 					{/* skills */}
 					{/* <h4 className="mt-6 font-bold text-b1 text-base leading-[19px] capitalize">
 						skills
@@ -73,7 +73,7 @@ const JobDetails = () => {
 					</div> */}
 
 					{/* client about */}
-					<div className="mt-6">
+					{/* <div className="mt-6">
 						<h3 className="font-bold text-base leading-[21px] text-black1">
 							About the client
 						</h3>
@@ -88,7 +88,7 @@ const JobDetails = () => {
 							href={`/dashboard/find-work/bid/0`}
 							className="w-full"
 						/>
-					</div>
+					</div> */}
 				</div>
 			</div>
 		</DashboardLayout>
