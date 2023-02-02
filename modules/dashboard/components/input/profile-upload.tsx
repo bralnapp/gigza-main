@@ -28,7 +28,7 @@ const ProfileUpload = ({ onChange, value, error }: ProfileUploadProps) => {
 		noKeyboard: true,
 		maxFiles: 1,
 		accept: {
-			"image/png": [".png"]
+			"image/png": [".png",".jpg"]
 		},
 		onDrop: (files) => {
 			uploadFile(files[0]);

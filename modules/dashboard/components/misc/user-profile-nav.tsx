@@ -4,8 +4,7 @@ import Image from "next/image";
 import CopyToClipboard from "@/modules/common/components/copy-to-clipboard";
 import Link from "next/link";
 import { formatWalletAddress } from "utils/helper";
-import { useAccount, useConnect, useDisconnect } from "wagmi";
-import { InjectedConnector } from "wagmi/connectors/injected";
+import { useAccount, useDisconnect } from "wagmi";
 import { Button } from "@/modules/common/components/input/button";
 import { useWeb3Modal } from "@web3modal/react";
 
@@ -49,7 +48,7 @@ const UserProfileNav = ({ userDetails }: UserProfileNavProps) => {
 				alt=""
 				width={30}
 				height={30}
-				className="cursor-pointer rounded"
+				className="cursor-pointer rounded-full w-[30px] h-[30px] object-cover"
 			/>
 			{showProfile ? (
 				<div className="absolute -left-[150px] top-[45px] w-[370px] rounded-lg bg-white p-6 shadow-[0px_6px_60px_rgba(0,0,0,0.1)]">
@@ -61,7 +60,7 @@ const UserProfileNav = ({ userDetails }: UserProfileNavProps) => {
 									alt=""
 									width={30}
 									height={30}
-									className="cursor-pointer rounded"
+									className="cursor-pointer rounded-full  w-[30px] h-[30px] object-cover"
 								/>
 								<p className="text-base capitalize text-primary2">
 									{formatWalletAddress(address!)}

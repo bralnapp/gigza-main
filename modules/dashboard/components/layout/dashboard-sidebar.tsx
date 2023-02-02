@@ -107,7 +107,7 @@ const DashboardSidebar = ({
 									alt=""
 									width={30}
 									height={30}
-									className="cursor-pointer rounded"
+									className="cursor-pointer rounded-full w-[30px] h-[30px] object-cover"
 								/>
 								<p className="text-base capitalize text-primary2">
 									{formatWalletAddress(address!)}

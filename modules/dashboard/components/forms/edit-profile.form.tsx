@@ -54,13 +54,14 @@ const EditProfileForm = () => {
 				data.skills,
 				data.profileUrl
 			);
-			const receipt = txHash.wait();
+			console.log(txHash)
+			const receipt =  await txHash.wait();
 			if (receipt) {
 				setIsCreatingProfile(false);
 				toast.success("Profile has been updated", {
 					id: notification
 				});
-				// router.push("/dashboard/profile");
+				router.push("/dashboard/profile");
 			}
 		} catch (error) {
 			setIsCreatingProfile(false);

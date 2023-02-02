@@ -10,9 +10,9 @@ import {
 	EditProfileButton,
 	SendMessageButton
 } from "@/modules/common/components/input/button";
-import { initGigzaContract } from "utils/helper/contract.helper";
-import { useStoreContext } from "context/StoreContext";
 import { toast } from "react-hot-toast";
+import { useAccount, useContractRead } from "wagmi";
+import { GigzaContractAbi, GigzaContractAddress } from "utils/helper";
 
 // images
 import profileAvatar from "@/public/asset/avatar/profile-avatar.svg";
@@ -26,59 +26,51 @@ export type userDetailsType = {
 };
 
 const Profile = () => {
-	const initialUserDetailsData = {
-		name: '',
-		bio: '',
-		skills: [],
-		profileUrl: '',
-		mainSkill: '',
-	}
-	const [userDetails, setUserDetails] = useState<userDetailsType>(initialUserDetailsData);
 	const [activeIndex, setActiveIndex] = useState(0);
 	const sections = ["reviews", "about"];
-	const { state } = useStoreContext();
 
-	const getUserProfile = async () => {
-		console.log("account", state.account);
-		try {
-			const response = await initGigzaContract();
-			const contract = response.contract;
-			const userDetails = await contract.getUser(state.account);
-			setUserDetails(userDetails);
-		} catch (error) {
-			toast.error("Something went wrong, could not user details");
-		}
-	};
+	const { address } = useAccount();
+	const { data: userDetails, isError } = useContractRead({
+		address: GigzaContractAddress,
+		abi: GigzaContractAbi,
+		functionName: "getUser",
+		args: [address]
+	});
 
 	useEffect(() => {
-		getUserProfile();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [state.account]);
+		if (isError) {
+			toast.error("Opps!!!... something went wrong");
+		}
+	}, [isError]);
+
 	return (
 		<DashboardLayout>
 			{/* header image */}
-			<div className="h-[100px] bg-profile-background bg-no-repeat bg-cover min-[540px]:h-[140px] md:h-[212px]" />
-			<div className="dashboard-layout-container flex items-center justify-between -mt-10">
-				<div className="md:flex items-center md:space-x-5">
-					<div className="w-20 h-20 rounded-full md:h-[164px] md:w-[164px]">
+			<div className="h-[100px] bg-profile-background bg-cover bg-no-repeat min-[540px]:h-[140px] md:h-[212px]" />
+			<div className="dashboard-layout-container -mt-10 flex items-center justify-between">
+				<div className="items-center md:flex md:space-x-5">
+					<div className="h-20 w-20 rounded-full md:h-[164px] md:w-[164px]">
 						<Image
+							// @ts-ignore
 							src={userDetails?.profileUrl || profileAvatar}
 							alt=""
-							className="md:h-[164px] md:w-[164px]"
+							className="w-20 h-20 md:h-[164px] md:w-[164px] rounded-full object-cover"
 							width={80}
 							height={80}
 						/>
 					</div>
 					<div className="mt-4 md:mt-8">
-						<h3 className="font-bold text-b1 capitalize text-xl md:text-[32px] leading-6  md:leading-[38px]">
+						<h3 className="text-xl font-bold capitalize leading-6 text-b1 md:text-[32px]  md:leading-[38px]">
+							{/* @ts-ignore */}
 							{userDetails?.name}
 						</h3>
-						<p className="text-b3 text-[13px] leading-4 capitalize my-[6px] md:my-2">
+						<p className="my-[6px] text-[13px] capitalize leading-4 text-b3 md:my-2">
+							{/* @ts-ignore */}
 							{userDetails?.mainSkill}
 						</p>
 						<div className="flex items-center space-x-2">
 							<Stars reviews={4} />
-							<p className="capitalize text-b4 text-sm leading-[17px]">
+							<p className="text-sm capitalize leading-[17px] text-b4">
 								4.3 (6 reviews)
 							</p>
 						</div>
@@ -88,16 +80,16 @@ const Profile = () => {
 					{activeIndex === 0 ? <SendMessageButton /> : <EditProfileButton />}
 				</div>
 			</div>
-			<div className="md:border-b border-stroke mt-[17px] md:mt-3">
-				<div className="dashboard-layout-container border-b md:border-none border-stroke">
-					<div className="hidden md:flex justify-end xl:pr-[100px]">
+			<div className="mt-[17px] border-stroke md:mt-3 md:border-b">
+				<div className="dashboard-layout-container border-b border-stroke md:border-none">
+					<div className="hidden justify-end md:flex xl:pr-[100px]">
 						{activeIndex === 0 ? <SendMessageButton /> : <EditProfileButton />}
 					</div>
 					<div className="flex items-center">
 						{sections.map((item, index) => (
 							<div
 								key={index}
-								className={`text-sm min-[540px]:text-base leading-[18px] font-bold capitalize py-2 px-4 md:pb-6 cursor-pointer ${
+								className={`cursor-pointer py-2 px-4 text-sm font-bold capitalize leading-[18px] min-[540px]:text-base md:pb-6 ${
 									activeIndex === index
 										? "border-b-2 border-primary text-primary"
 										: "text-b4"
@@ -111,10 +103,11 @@ const Profile = () => {
 				</div>
 			</div>
 
-			<section className="mt-6 min-[540px]:mt-8 dashboard-layout-container pb-[47px] lg:pb-[149px]">
+			<section className="dashboard-layout-container mt-6 pb-[47px] min-[540px]:mt-8 lg:pb-[149px]">
 				{activeIndex === 0 ? (
 					<ProfileReviews />
 				) : (
+					// @ts-ignore
 					<ProfileAbout {...{ userDetails }} />
 				)}
 			</section>
