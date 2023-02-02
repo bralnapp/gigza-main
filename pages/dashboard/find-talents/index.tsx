@@ -44,6 +44,7 @@ const FindTalents = () => {
 				</div>
 				<div className="dashboard-layout-container mt-6 mb-[51px] grid-cols-[2fr_1fr] md:mb-[76px] lg:mt-12 lg:grid lg:gap-x-[45px]">
 					{/* freelancers */}
+					{/* @ts-ignore */}
 					<TalentList {...{ usersProfile }} />
 					<ApplyFilter />
 				</div>

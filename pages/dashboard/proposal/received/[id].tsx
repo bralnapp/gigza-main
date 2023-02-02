@@ -3,7 +3,7 @@ import { Button } from "@/modules/common/components/input/button";
 import DashboardLayout from "@/modules/dashboard/components/layout";
 import { useRouter } from "next/router";
 import { covertToReadableDate, formatUnit } from "utils/helper";
-import { useGetJobBids, useWindowSize } from "utils/hooks";
+import {  useWindowSize } from "utils/hooks";
 import Image from "next/image";
 import { UserProfile } from "@/modules/dashboard/sections/received-proposal";
 
@@ -15,7 +15,7 @@ const ReceivedProposalDetails = () => {
 	const router = useRouter();
 	const { id: jobId } = router.query;
 
-	const { proposalsReceived, job } = useGetJobBids(jobId);
+	// const { proposalsReceived, job } = useGetJobBids(jobId);
 	const { width } = useWindowSize();
 	const [showMoreDetails, setShowMoreDetails] = useState(false);
 
@@ -31,7 +31,7 @@ const ReceivedProposalDetails = () => {
 				<div className=" mt-[23px] min-[540px]:mt-8 lg:grid grid-cols-[2fr_1fr] lg:gap-x-16">
 					<div className=" bg-white rounded-lg py-5 px-4 lg:py-6 lg:px-5">
 						{/* job details section */}
-						<section className="">
+						{/* <section className="">
 							<h1 className="font-bold text-b1 text-base min-[540px]:text-xl leading-[19px] min-[540px]:leading-6 mb-2">
 								{job?.title}
 							</h1>
@@ -52,23 +52,23 @@ const ReceivedProposalDetails = () => {
 								</p>
 								<Image src={arrowDown} alt="" />
 							</div>
-						</section>
+						</section> */}
 
 						{/* proposal section */}
 						<section className="mt-8">
 							<h1 className="text-b1 font-bold text-base leading-[19px] capitalize">
 								Proposal
 							</h1>
-							<div className="mt-4 space-y-6">
+							{/* <div className="mt-4 space-y-6">
 								{proposalsReceived?.map((item, index) => (
 									<div
 										key={`received-proposals-${index}`}
 										className="border-b border-[#EAECF0] pb-5"
 									>
-										{/* freelancer */}
+										freelancer comment me
 										<UserProfile freelancerAddress={item?.freelancer} />
 
-										{/* freelancer bid */}
+										freelancer bid comment me
 										<p
 											className={`mt-[13px] text-b3 leading-[21px] text-sm line-clamp-3`}
 										>
@@ -76,12 +76,12 @@ const ReceivedProposalDetails = () => {
 										</p>
 									</div>
 								))}
-							</div>
+							</div> */}
 						</section>
 					</div>
 					{/* more info about the job */}
 					<div className="hidden lg:block rounded-lg bg-white py-4 px-6 h-fit ">
-						<p className="capitalize text-sm leading-[21px] text-[#667085] pb-[5px]">
+						{/* <p className="capitalize text-sm leading-[21px] text-[#667085] pb-[5px]">
 							date posted
 						</p>
 						<p className="capitalize text-base leading-[21px] text-[#101828]">
@@ -92,7 +92,7 @@ const ReceivedProposalDetails = () => {
 						</p>
 						<p className="text-base leading-[21px] text-[#101828]">
 							${formatUnit(job?.amount)}
-						</p>
+						</p> */}
 					</div>
 				</div>
 			</div>

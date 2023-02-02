@@ -1,17 +1,17 @@
 import DashboardLayout from "@/modules/dashboard/components/layout";
-import { useGetProposals } from "utils/hooks";
+// import { useGetProposals } from "utils/hooks";
 import Link from "next/link";
 
 const Received = () => {
-	const { receivedProposals } = useGetProposals();
+	// const { receivedProposals } = useGetProposals();
 	return (
 		<DashboardLayout>
 			<div className="dashboard-layout-container pt-8 min-[540px]:pt-[42px] pb-[95px] lg:pb-[141px]">
-				<h1 className="capitalize text-xl min-[540px]:text-2xl md:text-[28px] leading-5 md:leading-[34px] font-bold text-b1">
+				{/* <h1 className="capitalize text-xl min-[540px]:text-2xl md:text-[28px] leading-5 md:leading-[34px] font-bold text-b1">
 					received proposals ({receivedProposals?.length})
-				</h1>
+				</h1> */}
 
-				<div className="mt-4 min-[540px]:mt-8 space-y-5">
+				{/* <div className="mt-4 min-[540px]:mt-8 space-y-5">
 					{receivedProposals?.map((item, index) => (
 						<Link
 							key={`received-proposals-${index}`}
@@ -46,7 +46,7 @@ const Received = () => {
 							</p>
 						</Link>
 					))}
-				</div>
+				</div> */}
 			</div>
 		</DashboardLayout>
 	);
