@@ -67,7 +67,7 @@ const ProfileUpload = ({ onChange, value, error }: ProfileUploadProps) => {
 				<input {...getInputProps()} />
 				{value ? (
 					<div className="relative h-16 w-16 md:h-[142px] md:w-[142px]">
-						<Image src={value} alt="" fill className="object-contain rounded-full" />
+						<Image src={value} alt="" fill className="object-cover rounded-full" />
 					</div>
 				) : (
 					<div className="">
