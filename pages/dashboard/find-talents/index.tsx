@@ -15,12 +15,13 @@ import filterIcon from "@/public/asset/icons/filter-icon.svg";
 
 const FindTalents = () => {
 	const [showFilterTalentModal, setShowFilterTalentModal] = useState(false);
-	const { data: usersProfile, isError } = useContractRead({
+	const { data: usersProfile } = useContractRead({
 		address: GigzaContractAddress,
 		abi: GigzaContractAbi,
 		functionName: "getUserProfiles"
 	});
 
+	console.log(usersProfile)
 	return (
 		<DashboardLayout>
 			<div className="lg:hidden">
