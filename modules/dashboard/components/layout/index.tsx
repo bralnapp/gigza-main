@@ -1,5 +1,5 @@
-import { useStoreContext } from "context/StoreContext";
 import Head from "next/head";
+import { useAccount } from "wagmi";
 import DashboardNav from "./dashboard-nav";
 
 type DashboardLayoutProps = {
@@ -8,6 +8,7 @@ type DashboardLayoutProps = {
 
 const DashboardLayout = ({ children }: DashboardLayoutProps) => {
 	// const { state } = useStoreContext();
+	const { isConnected } = useAccount();
 	return (
 		<div>
 			<Head>
@@ -18,13 +19,13 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
 			</Head>
 			<DashboardNav />
 			<main className="mt-[79px] min-h-screen bg-[#FBFAFA]">
-				{/* {state.isWalletConnected ? (
+				{isConnected ? (
 					<>{children}</>
 				) : (
-					<p className="grid place-items-center h-[calc(100vh_-_79px)]">
+					<p className="grid h-[calc(100vh_-_79px)] place-items-center">
 						Please connect your account first
 					</p>
-				)} */}
+				)}
 			</main>
 		</div>
 	);

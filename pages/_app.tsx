@@ -26,12 +26,12 @@ export default function App({ Component, pageProps }: AppProps) {
 			{ready ? (
 				<WagmiConfig client={wagmiClient}>
 					<QueryClientProvider client={queryClient}>
-						{/* <StoreContextProvider> */}
-						<Toaster toastOptions={{ style: { zIndex: 999999999999999 } }} />
-						<main className={inter.variable}>
-							<Component {...pageProps} />
-						</main>
-						{/* </StoreContextProvider> */}
+						<StoreContextProvider>
+							<Toaster toastOptions={{ style: { zIndex: 999999999999999 } }} />
+							<main className={inter.variable}>
+								<Component {...pageProps} />
+							</main>
+						</StoreContextProvider>
 					</QueryClientProvider>
 				</WagmiConfig>
 			) : null}

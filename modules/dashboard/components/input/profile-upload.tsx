@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Image from "next/image";
 import { useDropzone } from "react-dropzone";
 import { toast } from "react-hot-toast";
@@ -55,7 +55,6 @@ const ProfileUpload = ({ onChange, value, error }: ProfileUploadProps) => {
 		if (isError) {
 			toast.error("Opps!!!... something went wrong");
 		}
-		console.log("loading status", isLoading);
 	}, [isLoading, isSuccess, isError]);
 
 	return (

@@ -7,6 +7,7 @@ import {
 import { configureChains, createClient } from "wagmi";
 
 import { goerli } from "wagmi/chains";
+import { Web3Storage } from "web3.storage";
 
 const chains = [goerli];
 
@@ -26,3 +27,7 @@ const wagmiClient = createClient({
 const ethereumClient = new EthereumClient(wagmiClient, chains);
 
 export { wagmiClient, ethereumClient };
+
+
+const WEB3_STORAGE_API_TOKEN = process.env.NEXT_PUBLIC_WEB3_STORAGE_KEY;
+export const web3StorageClient = new Web3Storage({ token: WEB3_STORAGE_API_TOKEN! });
