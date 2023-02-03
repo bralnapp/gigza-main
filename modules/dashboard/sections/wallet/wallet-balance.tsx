@@ -1,7 +1,7 @@
 import { Button } from "@/modules/common/components/input/button";
 import { useStoreContext } from "context/StoreContext";
 import numeral from "numeral";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { DaiContractAbi, DiaContractAddress, formatUnit } from "utils/helper";
 import { useAccount, useContractRead } from "wagmi";

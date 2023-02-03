@@ -8,14 +8,15 @@ import MessagingNotification from "../notification-items/messaging-notification"
 import DashboardSidebar from "./dashboard-sidebar";
 import { Button } from "@/modules/common/components/input/button";
 import { UserProfileNav } from "../misc";
-import {
-	GigzaContractAbi,
-	GigzaContractAddress,
-} from "utils/helper";
+import { GigzaContractAbi, GigzaContractAddress } from "utils/helper";
 import { Web3Modal } from "@web3modal/react";
 import { ethereumClient } from "utils/config";
-import { useAccount, useContractRead } from "wagmi";
-
+import {
+	useAccount,
+	useContractRead,
+	useNetwork,
+	useSwitchNetwork
+} from "wagmi";
 // images
 import logo from "@/public/asset/logo/logo.svg";
 import menuIcon from "@/public/asset/icons/menu.svg";
@@ -24,6 +25,12 @@ const DashboardNav = () => {
 	const [isOpen, setIsOpen] = useState(false);
 
 	const { address } = useAccount();
+
+	const { chain } = useNetwork();
+	const { chains, switchNetwork,  } = useSwitchNetwork();
+
+	console.log("browser chain", chain);
+	console.log("Dapp chain", chains);
 
 	const { data: userDetails } = useContractRead({
 		address: GigzaContractAddress,
@@ -37,48 +44,64 @@ const DashboardNav = () => {
 	};
 
 	return (
-		<header className="fixed top-0 left-0 z-[999] w-full border-b border-[#E3E8EB] bg-white">
-			<Web3Modal
-				projectId={process.env.NEXT_PUBLIC_WEB3_MODAL_PROJECT_ID}
-				ethereumClient={ethereumClient}
-			/>
-			{/* @ts-ignore */}
-			<DashboardSidebar {...{ isOpen, toggleMenu, setIsOpen }} userDetails={userDetails!} />
-			<div className="dashboard-layout-container flex h-[78px] items-center justify-between">
-				<Link href="/">
-					<Image src={logo} alt="" />
-				</Link>
-				<nav className="hidden items-center space-x-[44px] lg:flex">
-					{dashboardNavLinks.map((item, index) => (
-						<NavLink key={`dashboard-navlinks-${index}`} item={item} />
-					))}
-				</nav>
-				<div className="flex">
-					<div className="mr-10 flex items-center gap-x-10 md:gap-x-8 lg:mr-[21px]">
-						<MessagingNotification isActive />
-						<NotificationBell isActive />
-					</div>
-					<Image
-						src={menuIcon}
-						alt=""
-						className="lg:hidden"
-						onClick={toggleMenu}
-					/>
-					<div className="mr-8 hidden lg:block">
-						{/* @ts-ignore */}
-						<UserProfileNav userDetails={userDetails!} />
-					</div>
+		<>
+			{chain?.id !== chains[0]?.id ? (
+				<div className="flex h-14 items-center justify-center space-x-2 bg-primary py-3 text-center text-sm leading-[17px] text-white md:text-base md:leading-[19px]">
+					<p>You are on a wrong network</p>
 					<Button
-						href="/dashboard/post-job"
-						title="Post A Job"
-						className="hidden w-[134px] lg:flex"
+						onClick={() => switchNetwork?.(chains[0]?.id)}
+						title="Switch network"
+						className="h-10 w-fit bg-blue-700 px-3 text-white"
 					/>
-					{/* <div className="hidden xl:block">
+				</div>
+			) : null}
+			<header
+				className={`fixed left-0 z-[999] w-full border-b border-[#E3E8EB] bg-white ${
+					chain?.id !== chains[0]?.id ? "top-14" : "top-0"
+				}`}
+			>
+				<Web3Modal
+					projectId={process.env.NEXT_PUBLIC_WEB3_MODAL_PROJECT_ID}
+					ethereumClient={ethereumClient}
+				/>
+				{/* @ts-ignore */}
+				<DashboardSidebar {...{ isOpen, toggleMenu, setIsOpen }} userDetails={userDetails!} />
+				<div className="dashboard-layout-container flex h-[78px] items-center justify-between">
+					<Link href="/">
+						<Image src={logo} alt="" />
+					</Link>
+					<nav className="hidden items-center space-x-[44px] lg:flex">
+						{dashboardNavLinks.map((item, index) => (
+							<NavLink key={`dashboard-navlinks-${index}`} item={item} />
+						))}
+					</nav>
+					<div className="flex">
+						<div className="mr-10 flex items-center gap-x-10 md:gap-x-8 lg:mr-[21px]">
+							<MessagingNotification isActive />
+							<NotificationBell isActive />
+						</div>
+						<Image
+							src={menuIcon}
+							alt=""
+							className="lg:hidden"
+							onClick={toggleMenu}
+						/>
+						<div className="mr-8 hidden lg:block">
+							{/* @ts-ignore */}
+							<UserProfileNav userDetails={userDetails!} />
+						</div>
+						<Button
+							href="/dashboard/post-job"
+							title="Post A Job"
+							className="hidden w-[134px] lg:flex"
+						/>
+						{/* <div className="hidden xl:block">
 						<ConnectWalletButton />
 					</div> */}
+					</div>
 				</div>
-			</div>
-		</header>
+			</header>
+		</>
 	);
 };
 
