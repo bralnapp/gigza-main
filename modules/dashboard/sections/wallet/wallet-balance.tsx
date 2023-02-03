@@ -10,7 +10,6 @@ const WalletBalance = () => {
 		functionName: "balanceOf",
 		args: [address]
 	});
-	console.log("bal", balance);
 	return (
 		<div className="mb-[22px] rounded-lg bg-white p-4 min-[540px]:py-8 min-[540px]:px-6">
 			<p className="mb-1 text-sm capitalize leading-[17px] text-b4 min-[540px]:text-[18px] min-[540px]:leading-[22px]">
