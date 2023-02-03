@@ -43,7 +43,10 @@ const JobBid = () => {
 						{jobDetails?.description}
 					</p>
 				</div>
-				<JobBidForm jobId={convertToNumber(jobId as string)} />
+				<JobBidForm
+					client={jobDetails?.client}
+					jobId={convertToNumber(jobId as string)}
+				/>
 			</div>
 		</DashboardLayout>
 	) : null;

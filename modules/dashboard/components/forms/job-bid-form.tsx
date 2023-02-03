@@ -9,6 +9,7 @@ import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { convertToNumber, currentEpochTime } from "utils/helper";
 import { useStoreContext } from "context/StoreContext";
+import { useAccount } from "wagmi";
 
 const schema = yup
 	.object()
@@ -25,14 +26,16 @@ type FormData = {
 
 type JobBidFormProps = {
 	jobId: number;
+	client: `0x${string}`;
 };
 
-const JobBidForm = ({ jobId }: JobBidFormProps) => {
+const JobBidForm = ({ jobId, client }: JobBidFormProps) => {
 	const router = useRouter();
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const timeDurationOptions = ["2", "4", "6", "8"];
 
 	const { initGigzaContract } = useStoreContext();
+	const { address } = useAccount();
 
 	const {
 		register,
@@ -44,6 +47,10 @@ const JobBidForm = ({ jobId }: JobBidFormProps) => {
 	});
 
 	const onSubmit = async (data: FormData) => {
+		if (address == client) {
+			toast.error("You can not bid for your job");
+			return;
+		}
 		const notification = toast.loading("Please wait...Submitting Proposal");
 		try {
 			// @ts-ignore
