@@ -1,26 +1,27 @@
 import DashboardLayout from "@/modules/dashboard/components/layout";
 import Image from "next/image";
-// import { useGetProposals } from "utils/hooks";
 import {
 	covertToReadableDate,
 	formatUnit,
 	formatWalletAddress
 } from "utils/helper";
 import Link from "next/link";
+import { useGetProposals } from "utils/hooks";
 
 // images
 import squareDot from "@/public/asset/icons/square-dot.svg";
 
 const Sent = () => {
-	// const { sentProposals } = useGetProposals();
+	const { sentProposals } = useGetProposals();
+	console.log(sentProposals)
 	return (
 		<DashboardLayout>
 			<div className="dashboard-layout-container pt-8 min-[540px]:pt-[42px] pb-[95px] lg:pb-[141px]">
-				{/* <h1 className="capitalize text-xl min-[540px]:text-2xl md:text-[28px] leading-5 md:leading-[34px] font-bold text-b1">
+				<h1 className="capitalize text-xl min-[540px]:text-2xl md:text-[28px] leading-5 md:leading-[34px] font-bold text-b1">
 					Sent proposals ({sentProposals?.length})
-				</h1> */}
+				</h1>
 
-				{/* <div className="mt-4 min-[540px]:mt-8 space-y-5">
+				<div className="mt-4 min-[540px]:mt-8 space-y-5">
 					{sentProposals.map((item, index) => (
 						<Link
 							href={`/dashboard/proposal/sent/${Math.round(
@@ -61,7 +62,7 @@ const Sent = () => {
 							</div>
 						</Link>
 					))}
-				</div> */}
+				</div>
 			</div>
 		</DashboardLayout>
 	);

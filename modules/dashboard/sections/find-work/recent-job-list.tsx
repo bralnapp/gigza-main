@@ -7,13 +7,13 @@ import {
 	formatWalletAddress
 } from "utils/helper";
 import { JobDetailsProps } from "@custom-types/typing";
+import numeral from "numeral";
 
 // images
 import squareDot from "@/public/asset/icons/square-dot.svg";
-import numeral from "numeral";
 
 type RecentJobListProps = {
-	jobList: JobDetailsProps;
+	jobList: JobDetailsProps | undefined;
 	activeIndex: number;
 	handleSelect: (value: number) => void;
 };
@@ -30,7 +30,7 @@ const RecentJobList = ({
 		if (width! >= 1024) {
 			handleSelect(index);
 		} else {
-			router.push(`/dashboard/find-work/${parseInt(jobList[index]?.jobId)}`);
+			router.push(`/dashboard/find-work/${parseInt(jobList![index]?.jobId)}`);
 		}
 	};
 	return (

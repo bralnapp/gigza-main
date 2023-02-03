@@ -13,17 +13,16 @@ import squareDot from "@/public/asset/icons/square-dot.svg";
 import avatar from "@/public/asset/avatar/profile-avatar.svg";
 
 type RecentJobListDetailsProps = {
-	jobDetails: JobDetailsProps[number];
+	jobDetails: JobDetailsProps[number] | undefined;
 };
 
 const RecentJobListDetails = ({ jobDetails }: RecentJobListDetailsProps) => {
-
 	return jobDetails ? (
 		<div className="sticky top-[94px] hidden h-fit rounded-[10px] bg-white py-6 px-5 lg:block">
 			<div className="border-b border-[#E8E8E8] pb-6">
 				<div className="flex items-start justify-between text-xl font-bold leading-[29px] text-b1">
 					<h3 className="w-4/5">{jobDetails?.title}</h3>
-					<h4>${numeral(formatUnit(jobDetails?.amount)).format(',')}</h4>
+					<h4>${numeral(formatUnit(jobDetails?.amount)).format(",")}</h4>
 					{/* <p className="mt-2 mb-4 text-b1 text- leading-[21px]">{jobDetails?.jobDescription}</p> */}
 				</div>
 				<div className="mt-[13px] flex items-center gap-x-2 text-[13px] leading-4 text-[#5F6062]">
