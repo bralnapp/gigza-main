@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Image from "next/image";
 import { useDropzone } from "react-dropzone";
 import { toast } from "react-hot-toast";
@@ -28,7 +28,7 @@ const ProfileUpload = ({ onChange, value, error }: ProfileUploadProps) => {
 		noKeyboard: true,
 		maxFiles: 1,
 		accept: {
-			"image/png": [".png"]
+			"image/png": [".png",".jpg"]
 		},
 		onDrop: (files) => {
 			uploadFile(files[0]);
@@ -55,7 +55,6 @@ const ProfileUpload = ({ onChange, value, error }: ProfileUploadProps) => {
 		if (isError) {
 			toast.error("Opps!!!... something went wrong");
 		}
-		console.log("loading status", isLoading);
 	}, [isLoading, isSuccess, isError]);
 
 	return (
@@ -68,7 +67,7 @@ const ProfileUpload = ({ onChange, value, error }: ProfileUploadProps) => {
 				<input {...getInputProps()} />
 				{value ? (
 					<div className="relative h-16 w-16 md:h-[142px] md:w-[142px]">
-						<Image src={value} alt="" fill className="object-contain rounded-full" />
+						<Image src={value} alt="" fill className="object-cover rounded-full" />
 					</div>
 				) : (
 					<div className="">

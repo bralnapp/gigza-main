@@ -2,11 +2,11 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import { toast } from "react-hot-toast";
 import { Button } from "@/modules/common/components/input/button";
-import { initGigzaContract } from "utils/helper/contract.helper";
 import { ProfileUpload, TagInput, TextArea, TextInput } from "../input";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { Controller, useForm } from "react-hook-form";
+import { useStoreContext } from "context/StoreContext";
 
 const schema = yup
 	.object()
@@ -30,6 +30,7 @@ type FormData = {
 const EditProfileForm = () => {
 	const [isCreatingProfile, setIsCreatingProfile] = useState(false);
 	const router = useRouter();
+	const { initGigzaContract } = useStoreContext();
 
 	const {
 		register,
@@ -42,19 +43,18 @@ const EditProfileForm = () => {
 
 	const onSubmit = async (data: FormData) => {
 		const notification = toast.loading("Please wait...Updating profile");
+		setIsCreatingProfile(true);
 
 		try {
-			const response = await initGigzaContract();
 			// @ts-ignore
-			const contract = response.contract;
-			const txHash = await contract.createProfile(
+			const txHash = await initGigzaContract!.createProfile(
 				data.name,
 				data.bio,
 				data.mainSkill,
 				data.skills,
 				data.profileUrl
 			);
-			const receipt = await txHash.wait();
+			const receipt =  await txHash.wait();
 			if (receipt) {
 				setIsCreatingProfile(false);
 				toast.success("Profile has been updated", {
@@ -64,9 +64,11 @@ const EditProfileForm = () => {
 			}
 		} catch (error) {
 			setIsCreatingProfile(false);
-			toast.error("Opps! Something went wrong.", {
+			// @ts-ignore
+			toast.error(error?.reason || "Opps, something went wrong", {
 				id: notification
 			});
+			console.log({ error });
 		}
 	};
 
@@ -123,7 +125,7 @@ const EditProfileForm = () => {
 			</div>
 			<Button
 				title="Save Changes"
-				className="w-full mt-[37px] md:w-[161px]"
+				className="mt-[37px] w-full md:w-[161px]"
 				disabled={isCreatingProfile}
 			/>
 		</form>
@@ -131,3 +133,9 @@ const EditProfileForm = () => {
 };
 
 export default EditProfileForm;
+
+// {
+//     "reason": "sending a transaction requires a signer",
+//     "code": "UNSUPPORTED_OPERATION",
+//     "operation": "sendTransaction"
+// }

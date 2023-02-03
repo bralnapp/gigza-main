@@ -1,48 +1,37 @@
-import { useEffect, useState } from "react";
+import React, { useState } from "react";
+import {
+	EditProfileButton,
+	SendMessageButton
+} from "@/modules/common/components/input/button";
 import DashboardLayout from "@/modules/dashboard/components/layout";
-import Image from "next/image";
 import Stars from "@/modules/dashboard/components/stars";
 import {
 	ProfileAbout,
 	ProfileReviews
 } from "@/modules/dashboard/sections/profile";
-import {
-	EditProfileButton,
-	SendMessageButton
-} from "@/modules/common/components/input/button";
-import { toast } from "react-hot-toast";
+import Image from "next/image";
 import { useAccount, useContractRead } from "wagmi";
 import { GigzaContractAbi, GigzaContractAddress } from "utils/helper";
+import { useRouter } from "next/router";
 
 // images
 import profileAvatar from "@/public/asset/avatar/profile-avatar.svg";
 
-export type userDetailsType = {
-	name: string;
-	bio: string;
-	skills: string[];
-	profileUrl: string;
-	mainSkill: string;
-};
+const UserProfile = () => {
+	const router = useRouter();
+	const { id: freelancerAddress } = router.query;
 
-const Profile = () => {
 	const [activeIndex, setActiveIndex] = useState(0);
 	const sections = ["reviews", "about"];
 
 	const { address } = useAccount();
-	const { data: userDetails, isError } = useContractRead({
+
+	const { data: userDetails } = useContractRead({
 		address: GigzaContractAddress,
 		abi: GigzaContractAbi,
 		functionName: "getUser",
-		args: [address]
+		args: [freelancerAddress]
 	});
-
-	useEffect(() => {
-		if (isError) {
-			toast.error("Opps!!!... something went wrong");
-		}
-	}, [isError]);
-
 	return (
 		<DashboardLayout>
 			{/* header image */}
@@ -54,7 +43,7 @@ const Profile = () => {
 							// @ts-ignore
 							src={userDetails?.profileUrl || profileAvatar}
 							alt=""
-							className="w-20 h-20 md:h-[164px] md:w-[164px] rounded-full object-cover"
+							className="h-20 w-20 rounded-full object-cover md:h-[164px] md:w-[164px]"
 							width={80}
 							height={80}
 						/>
@@ -77,13 +66,21 @@ const Profile = () => {
 					</div>
 				</div>
 				<div className="md:hidden">
-					{activeIndex === 0 ? <SendMessageButton /> : <EditProfileButton />}
+					{freelancerAddress === address ? (
+						<EditProfileButton />
+					) : (
+						<SendMessageButton />
+					)}
 				</div>
 			</div>
 			<div className="mt-[17px] border-stroke md:mt-3 md:border-b">
 				<div className="dashboard-layout-container border-b border-stroke md:border-none">
 					<div className="hidden justify-end md:flex xl:pr-[100px]">
-						{activeIndex === 0 ? <SendMessageButton /> : <EditProfileButton />}
+						{freelancerAddress === address ? (
+							<EditProfileButton />
+						) : (
+							<SendMessageButton />
+						)}
 					</div>
 					<div className="flex items-center">
 						{sections.map((item, index) => (
@@ -115,4 +112,4 @@ const Profile = () => {
 	);
 };
 
-export default Profile;
+export default UserProfile;

@@ -7,12 +7,13 @@ import ProposalSidebarLink from "@/modules/common/misc/proposal-sidebar-link";
 import { userDetailsType } from "@/pages/dashboard/profile";
 import { formatWalletAddress } from "utils/helper";
 import CopyToClipboard from "@/modules/common/components/copy-to-clipboard";
-import { useStoreContext } from "context/StoreContext";
+import { useAccount, useConnect, useDisconnect } from "wagmi";
+import { Button } from "@/modules/common/components/input/button";
+import { InjectedConnector } from "wagmi/connectors/injected";
 
 // images
 import closeIcon from "@/public/asset/icons/close.svg";
 import profileAvatar from "@/public/asset/avatar/profile-avatar.svg";
-
 
 type Props = {
 	isOpen: boolean;
@@ -47,25 +48,32 @@ const DashboardSidebar = ({
 	userDetails
 }: Props) => {
 	const sideBarRef = useRef(null);
-	const { state } = useStoreContext();
+	const { address, isConnected } = useAccount();
+
 	const clickOutsideHandler = () => {
 		setIsOpen(false);
 	};
 	useOnClickOutside(sideBarRef, clickOutsideHandler);
 
+	const { connect } = useConnect({
+		connector: new InjectedConnector()
+	});
+
+	const { disconnect } = useDisconnect();
+
 	return isOpen ? (
 		<div
-			className={`bg-black/80 w-full fixed h-screen top-0 left-0 z-[200] overflow-y-hidden xl:hidden`}
+			className={`fixed top-0 left-0 z-[200] h-screen w-full overflow-y-hidden bg-black/80 xl:hidden`}
 		>
 			<aside
 				ref={sideBarRef}
-				className={`bg-white pb-5 pl-5 pt-[17px] pr-[33px] w-full fixed top-0 overflow-hidden z-[9999] h-screen ${
+				className={`fixed top-0 z-[9999] h-screen w-full overflow-hidden bg-white pb-5 pl-5 pt-[17px] pr-[33px] ${
 					isOpen
 						? "right-0 transition-all ease-in-out "
 						: "right-[-100%] transition-all ease-in-out"
 				}`}
 			>
-				<div className="flex justify-between items-center mb-[45px]">
+				<div className="mb-[45px] flex items-center justify-between">
 					<div onClick={toggleMenu} className="ml-auto">
 						<Image src={closeIcon} alt="" />
 					</div>
@@ -81,7 +89,7 @@ const DashboardSidebar = ({
 							) : (
 								<Link
 									href={item.to}
-									className="text-b3  text-base leading-[19px] capitalize"
+									className="text-base  capitalize leading-[19px] text-b3"
 									onClick={() => setIsOpen(false)}
 								>
 									{item.title}
@@ -90,28 +98,37 @@ const DashboardSidebar = ({
 						</li>
 					))}
 				</ul>
-				<div className="border-t border-stroke mt-6 py-4">
-					<div className="flex items-center justify-between rounded-md bg-[#F8F8F8] py-2 px-[10px] mb-4">
-						<div className="flex items-center gap-x-2">
-							<Image
-								src={userDetails?.profileUrl || profileAvatar}
-								alt=""
-								width={30}
-								height={30}
-								className="rounded cursor-pointer"
-							/>
-							<p className="text-primary2 capitalize text-base">
-								{formatWalletAddress(state?.account!)}
-							</p>
+				<div className="mt-6 border-t border-stroke py-4">
+					{isConnected ? (
+						<div className="mb-4 flex items-center justify-between rounded-md bg-[#F8F8F8] py-2 px-[10px]">
+							<div className="flex items-center gap-x-2">
+								<Image
+									src={userDetails?.profileUrl || profileAvatar}
+									alt=""
+									width={30}
+									height={30}
+									className="cursor-pointer rounded-full w-[30px] h-[30px] object-cover"
+								/>
+								<p className="text-base capitalize text-primary2">
+									{formatWalletAddress(address!)}
+								</p>
+							</div>
+							<CopyToClipboard text={address!} />
 						</div>
-						<CopyToClipboard text={state.account!} />
-					</div>
+					) : (
+						<Button
+							onClick={() => connect()}
+							title="Connect Wallet"
+							className="mb-4 h-10 w-[152px]"
+						/>
+					)}
+
 					<ul className="mt-[18px] space-y-6">
 						{links.map((item, index) => (
 							<li key={`mobile-dashboard-links-${index}`}>
 								<Link
 									href={item.to}
-									className="text-b3 capitalize text-base leading-[21px]"
+									className="text-base capitalize leading-[21px] text-b3"
 								>
 									{item.name}
 								</Link>
