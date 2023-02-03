@@ -1,7 +1,12 @@
 import { IstoreContextInterface } from "@custom-types/store-context";
 import { createContext, useContext } from "react";
 
-import { GigzaContractAbi, GigzaContractAddress } from "utils/helper";
+import {
+	DaiContractAbi,
+	DiaContractAddress,
+	GigzaContractAbi,
+	GigzaContractAddress
+} from "utils/helper";
 import { useContract, useSigner } from "wagmi";
 
 const StoreContext = createContext<IstoreContextInterface | null>(null);
@@ -17,10 +22,16 @@ const StoreContextProvider = ({ children }: StoreContextProviderProps) => {
 		abi: GigzaContractAbi,
 		signerOrProvider: signer
 	});
+	const initDaiContract = useContract({
+		address: DiaContractAddress,
+		abi: DaiContractAbi,
+		signerOrProvider: signer
+	});
 	return (
 		<StoreContext.Provider
 			value={{
-				initGigzaContract
+				initGigzaContract,
+				initDaiContract
 			}}
 		>
 			{children}

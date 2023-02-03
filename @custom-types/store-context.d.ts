@@ -1,4 +1,5 @@
 
 export interface IstoreContextInterface {
-	initGigzaContract: unknown
+	initGigzaContract: unknown,
+	initDaiContract: unknown
 }

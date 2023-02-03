@@ -54,7 +54,6 @@ const EditProfileForm = () => {
 				data.skills,
 				data.profileUrl
 			);
-			console.log(txHash)
 			const receipt =  await txHash.wait();
 			if (receipt) {
 				setIsCreatingProfile(false);
