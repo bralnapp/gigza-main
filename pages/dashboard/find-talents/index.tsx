@@ -21,7 +21,6 @@ const FindTalents = () => {
 		functionName: "getUserProfiles"
 	});
 
-	console.log(usersProfile)
 	return (
 		<DashboardLayout>
 			<div className="lg:hidden">

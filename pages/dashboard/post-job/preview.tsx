@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useStoreContext } from "context/StoreContext";
 import { useRouter } from "next/router";
 import DashboardLayout from "@/modules/dashboard/components/layout";
 import { Button } from "@/modules/common/components/input/button";
@@ -6,11 +7,14 @@ import Image from "next/image";
 import { useAccount, useContractRead } from "wagmi";
 import {
 	convertToNumber,
+	currentEpochTime,
 	DaiContractAbi,
 	DiaContractAddress,
 	formatUnit,
-	GigzaContractAddress
+	GigzaContractAddress,
+	parseUnit
 } from "utils/helper";
+import { toast } from "react-hot-toast";
 
 // images
 import chevronLeft from "@/public/asset/icons/chevron-left.svg";
@@ -26,7 +30,80 @@ type FormDataProps = {
 
 const Preview = () => {
 	const [formData, setFormData] = useState<FormDataProps>();
+	const [isApproving, setIsApproving] = useState(false);
+	const [isPostingJob, setIsPostingJob] = useState(false);
 	const router = useRouter();
+
+	const { initDaiContract, initGigzaContract } = useStoreContext();
+
+	const { address } = useAccount();
+
+	const { data: allowanceBalance, refetch } = useContractRead({
+		address: DiaContractAddress,
+		abi: DaiContractAbi,
+		functionName: "allowance",
+		args: [address, GigzaContractAddress]
+	});
+
+	const approveTransaction = async () => {
+		const notification = toast.loading("Approving your transaction");
+		setIsApproving(true);
+		try {
+			// @ts-ignore
+			const txHash = await initDaiContract!.approve(
+				GigzaContractAddress,
+				parseUnit(formData?.amount)
+			);
+			const receipt = await txHash.wait();
+			if (receipt) {
+				refetch();
+				setIsApproving(false);
+				toast.success("Approval was successful", {
+					id: notification
+				});
+			}
+		} catch (error) {
+			setIsApproving(false);
+			// @ts-ignore
+			toast.error(error?.reason || "Opps, something went wrong", {
+				id: notification
+			});
+			console.log({ error });
+		}
+	};
+
+	const handlePostJob = async () => {
+		const options = {
+			value: parseUnit(0.01)
+		};
+		const notifyJobPost = toast.loading("Posting job");
+		setIsPostingJob(false);
+		try {
+			// @ts-ignore
+			const txHash = await initGigzaContract!.createJobPost(
+				formData?.title,
+				formData?.description,
+				formData?.skills,
+				currentEpochTime + 604800 * formData?.timeline!,
+				parseUnit(convertToNumber(formData?.amount!)),
+				options
+			);
+			const receipt = await txHash.wait();
+			if (receipt) {
+				setIsPostingJob(false);
+				toast.success("Job has been created", {
+					id: notifyJobPost
+				});
+				router.push("/dashboard/find-work");
+			}
+		} catch (error) {
+			setIsPostingJob(false);
+			// @ts-ignore
+			toast.error(error?.reason || "Opps, something went wrong", {
+				id: notifyJobPost
+			});
+		}
+	};
 
 	useEffect(() => {
 		if (!router.query.data) {
@@ -38,18 +115,6 @@ const Preview = () => {
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
-
-	const { address } = useAccount();
-
-	const { data: allowanceBalance } = useContractRead({
-		address: DiaContractAddress,
-		abi: DaiContractAbi,
-		functionName: "allowance",
-		args: [address, GigzaContractAddress]
-	});
-
-	console.log(formData);
-	console.log("allowance balance", formatUnit(allowanceBalance));
 
 	return (
 		<DashboardLayout>
@@ -127,10 +192,24 @@ const Preview = () => {
 								title="Cancel"
 								className="w-[92px] bg-[#EBEEF2] text-b1"
 							/>
-							{
-								allowanceBalance! >= convertToNumber(formData?.amount!)
-							}
-							<Button title="Post" className="w-[92px]" />
+							{!(
+								formatUnit(allowanceBalance)! >=
+								convertToNumber(formData?.amount!)
+							) ? (
+								<Button
+									onClick={approveTransaction}
+									disabled={isApproving}
+									title={`${isApproving ? "Approving" : "Approve"}`}
+									className="h-10 px-3"
+								/>
+							) : (
+								<Button
+									onClick={handlePostJob}
+									disabled={isPostingJob}
+									title="Post"
+									className="w-[92px]"
+								/>
+							)}
 						</div>
 					</div>
 				</div>

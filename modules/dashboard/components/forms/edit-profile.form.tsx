@@ -68,7 +68,6 @@ const EditProfileForm = () => {
 			toast.error(error?.reason || "Opps, something went wrong", {
 				id: notification
 			});
-			console.log({ error });
 		}
 	};
 
