@@ -7,11 +7,8 @@ import Select from "../input/select";
 import { toast } from "react-hot-toast";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import {
-	convertToNumber,
-	currentEpochTime,
-	initGigzaContract
-} from "utils/helper";
+import { convertToNumber, currentEpochTime } from "utils/helper";
+import { useStoreContext } from "context/StoreContext";
 
 const schema = yup
 	.object()
@@ -35,6 +32,8 @@ const JobBidForm = ({ jobId }: JobBidFormProps) => {
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const timeDurationOptions = ["2", "4", "6", "8"];
 
+	const { initGigzaContract } = useStoreContext();
+
 	const {
 		register,
 		handleSubmit,
@@ -47,23 +46,24 @@ const JobBidForm = ({ jobId }: JobBidFormProps) => {
 	const onSubmit = async (data: FormData) => {
 		const notification = toast.loading("Please wait...Submitting Proposal");
 		try {
-			const response = await initGigzaContract();
-			const contract = response.contract;
-			const txHash = await contract.submitProposal(
+			// @ts-ignore
+			const txHash = await initGigzaContract!.submitProposal(
 				jobId,
 				data.description,
 				currentEpochTime + 604800 * convertToNumber(data.timeline)
 			);
+
 			const receipt = await txHash.wait();
 			if (receipt) {
 				setIsSubmitting(false);
 				toast.success("Your proposal have been sent", {
 					id: notification
 				});
+				router.push("/dashboard/proposal/sent");
 			}
 			setIsSubmitting(false);
-		} catch (error) {
-			toast.error("Something went wrong", {
+		} catch (error: any) {
+			toast.error(error?.reason || "Something went wrong", {
 				id: notification
 			});
 			console.log(error);
@@ -103,7 +103,7 @@ const JobBidForm = ({ jobId }: JobBidFormProps) => {
 				/>
 				<Button
 					title="submit proposal"
-					className="w-[182px] lg:w-full disabled:bg-gray-600 disabled:cursor-not-allowed"
+					className="w-[182px] disabled:cursor-not-allowed disabled:bg-gray-600 lg:w-full"
 					disabled={isSubmitting}
 				/>
 			</div>

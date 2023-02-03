@@ -6,7 +6,7 @@ import {
 	formatWalletAddress
 } from "utils/helper";
 import { JobDetailsProps } from "@custom-types/typing";
-import { useEnsName, useProvider } from "wagmi";
+import numeral from "numeral";
 
 // images
 import squareDot from "@/public/asset/icons/square-dot.svg";
@@ -23,7 +23,7 @@ const RecentJobListDetails = ({ jobDetails }: RecentJobListDetailsProps) => {
 			<div className="border-b border-[#E8E8E8] pb-6">
 				<div className="flex items-start justify-between text-xl font-bold leading-[29px] text-b1">
 					<h3 className="w-4/5">{jobDetails?.title}</h3>
-					<h4>${formatUnit(jobDetails?.amount)}</h4>
+					<h4>${numeral(formatUnit(jobDetails?.amount)).format(',')}</h4>
 					{/* <p className="mt-2 mb-4 text-b1 text- leading-[21px]">{jobDetails?.jobDescription}</p> */}
 				</div>
 				<div className="mt-[13px] flex items-center gap-x-2 text-[13px] leading-4 text-[#5F6062]">
@@ -76,7 +76,7 @@ const RecentJobListDetails = ({ jobDetails }: RecentJobListDetailsProps) => {
 					<Button
 						title="Send Proposal"
 						className="w-[163px]"
-						href={`/dashboard/find-work/bid/0`}
+						href={`/dashboard/find-work/bid/${parseInt(jobDetails?.jobId)}`}
 					/>
 				</div>
 			</div>

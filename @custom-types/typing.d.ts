@@ -1,7 +1,7 @@
 export interface IuserBids {
 	bidState: number;
 	description: string;
-	freelancer: string;
+	freelancer: `0x${string}`;
 	jobId: any;
 	timeline: any;
 }
