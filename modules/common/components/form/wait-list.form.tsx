@@ -17,7 +17,11 @@ type FormData = {
 	email: string;
 };
 
-const WaitListForm = () => {
+type WaitListFormProps = {
+	setShowWaitList: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+const WaitListForm = ({ setShowWaitList }: WaitListFormProps) => {
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const {
 		register,
@@ -38,7 +42,6 @@ const WaitListForm = () => {
 			},
 			method: "POST"
 		});
-
 		const { error } = await res.json();
 		if (error) {
 			setIsSubmitting(false);
@@ -49,6 +52,7 @@ const WaitListForm = () => {
 		}
 		reset({ email: "" });
 		setIsSubmitting(false);
+		setShowWaitList(false);
 		toast.success("Success! 🎉  You've been added to the list!.", {
 			id: notificationId
 		});
@@ -66,7 +70,7 @@ const WaitListForm = () => {
 			/>
 			<Button
 				title="submit"
-				className="w-[178px] mt-4"
+				className="mt-4 w-[178px]"
 				disabled={isSubmitting}
 			/>
 		</form>
