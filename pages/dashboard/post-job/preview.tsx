@@ -4,10 +4,6 @@ import DashboardLayout from "@/modules/dashboard/components/layout";
 import { Button } from "@/modules/common/components/input/button";
 import Image from "next/image";
 import { useAccount, useContractRead } from "wagmi";
-
-// images
-import chevronLeft from "@/public/asset/icons/chevron-left.svg";
-import usdtLogo from "@/public/asset/icons/usdt-logo.svg";
 import {
 	convertToNumber,
 	DaiContractAbi,
@@ -15,6 +11,10 @@ import {
 	formatUnit,
 	GigzaContractAddress
 } from "utils/helper";
+
+// images
+import chevronLeft from "@/public/asset/icons/chevron-left.svg";
+import usdtLogo from "@/public/asset/icons/usdt-logo.svg";
 
 type FormDataProps = {
 	title: string;

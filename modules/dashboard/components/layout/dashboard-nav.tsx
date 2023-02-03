@@ -11,12 +11,7 @@ import { UserProfileNav } from "../misc";
 import { GigzaContractAbi, GigzaContractAddress } from "utils/helper";
 import { Web3Modal } from "@web3modal/react";
 import { ethereumClient } from "utils/config";
-import {
-	useAccount,
-	useContractRead,
-	useNetwork,
-	useSwitchNetwork
-} from "wagmi";
+import { useAccount, useContractRead } from "wagmi";
 // images
 import logo from "@/public/asset/logo/logo.svg";
 import menuIcon from "@/public/asset/icons/menu.svg";
@@ -25,12 +20,6 @@ const DashboardNav = () => {
 	const [isOpen, setIsOpen] = useState(false);
 
 	const { address } = useAccount();
-
-	const { chain } = useNetwork();
-	const { chains, switchNetwork,  } = useSwitchNetwork();
-
-	console.log("browser chain", chain);
-	console.log("Dapp chain", chains);
 
 	const { data: userDetails } = useContractRead({
 		address: GigzaContractAddress,
@@ -44,21 +33,8 @@ const DashboardNav = () => {
 	};
 
 	return (
-		<>
-			{chain?.id !== chains[0]?.id ? (
-				<div className="flex h-14 items-center justify-center space-x-2 bg-primary py-3 text-center text-sm leading-[17px] text-white md:text-base md:leading-[19px]">
-					<p>You are on a wrong network</p>
-					<Button
-						onClick={() => switchNetwork?.(chains[0]?.id)}
-						title="Switch network"
-						className="h-10 w-fit bg-blue-700 px-3 text-white"
-					/>
-				</div>
-			) : null}
 			<header
-				className={`fixed left-0 z-[999] w-full border-b border-[#E3E8EB] bg-white ${
-					chain?.id !== chains[0]?.id ? "top-14" : "top-0"
-				}`}
+				className="fixed left-0 z-[999] w-full border-b border-[#E3E8EB] bg-white top-0"
 			>
 				<Web3Modal
 					projectId={process.env.NEXT_PUBLIC_WEB3_MODAL_PROJECT_ID}
@@ -101,7 +77,6 @@ const DashboardNav = () => {
 					</div>
 				</div>
 			</header>
-		</>
 	);
 };
 
