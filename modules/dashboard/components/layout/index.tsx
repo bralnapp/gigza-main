@@ -3,6 +3,7 @@ import Head from "next/head";
 import { useAccount } from "wagmi";
 import DashboardNav from "./dashboard-nav";
 import { useWeb3Modal } from "@web3modal/react";
+import { useEffect, useState } from "react";
 
 type DashboardLayoutProps = {
 	children: React.ReactNode;
@@ -10,9 +11,13 @@ type DashboardLayoutProps = {
 
 const DashboardLayout = ({ children }: DashboardLayoutProps) => {
 	const { isConnected } = useAccount();
+	const [ready, setReady] = useState(false);
 	const { open } = useWeb3Modal();
+	useEffect(() => {
+		setReady(true);
+	}, []);
 
-	return (
+	return ready ? (
 		<div>
 			<Head>
 				<title>Giza | Home</title>
@@ -38,7 +43,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
 				)}
 			</main>
 		</div>
-	);
+	) : null;
 };
 
 export default DashboardLayout;

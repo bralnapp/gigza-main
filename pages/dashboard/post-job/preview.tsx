@@ -77,7 +77,7 @@ const Preview = () => {
 			value: parseUnit(0.01)
 		};
 		const notifyJobPost = toast.loading("Posting job");
-		setIsPostingJob(false);
+		setIsPostingJob(true);
 		try {
 			// @ts-ignore
 			const txHash = await initGigzaContract!.createJobPost(

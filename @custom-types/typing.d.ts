@@ -9,7 +9,7 @@ export interface IuserBids {
 export type JobDetailsProps = {
 	title: string;
 	amount: number;
-	client: string;
+	client: `0x${string}`;
 	skills: string[];
 	timestamp: any;
 	description: string;
@@ -35,3 +35,4 @@ export type UserProfileType = {
 };
 
 export type ReceivedProposalType = JobDetailsProps
+

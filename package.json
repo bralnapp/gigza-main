@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "0xsequence": "^0.43.7",
     "@headlessui/react": "^1.7.7",
     "@hookform/resolvers": "^2.9.10",
     "@mailchimp/mailchimp_marketing": "^3.0.80",

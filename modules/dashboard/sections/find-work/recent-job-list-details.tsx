@@ -6,6 +6,7 @@ import {
 	formatWalletAddress
 } from "utils/helper";
 import { JobDetailsProps } from "@custom-types/typing";
+import { useEnsName, useProvider } from "wagmi";
 
 // images
 import squareDot from "@/public/asset/icons/square-dot.svg";
@@ -16,17 +17,16 @@ type RecentJobListDetailsProps = {
 };
 
 const RecentJobListDetails = ({ jobDetails }: RecentJobListDetailsProps) => {
-	console.log( jobDetails);
 
 	return jobDetails ? (
-		<div className="hidden lg:block py-6 px-5 bg-white rounded-[10px] h-fit sticky top-[94px]">
-			<div className="pb-6 border-b border-[#E8E8E8]">
-				<div className="flex items-start justify-between text-xl leading-[29px] text-b1 font-bold">
+		<div className="sticky top-[94px] hidden h-fit rounded-[10px] bg-white py-6 px-5 lg:block">
+			<div className="border-b border-[#E8E8E8] pb-6">
+				<div className="flex items-start justify-between text-xl font-bold leading-[29px] text-b1">
 					<h3 className="w-4/5">{jobDetails?.title}</h3>
 					<h4>${formatUnit(jobDetails?.amount)}</h4>
 					{/* <p className="mt-2 mb-4 text-b1 text- leading-[21px]">{jobDetails?.jobDescription}</p> */}
 				</div>
-				<div className="flex items-center gap-x-2 text-[#5F6062] mt-[13px] text-[13px] leading-4">
+				<div className="mt-[13px] flex items-center gap-x-2 text-[13px] leading-4 text-[#5F6062]">
 					<p className="capitalize">
 						{formatWalletAddress(jobDetails?.client)}
 					</p>
@@ -41,21 +41,21 @@ const RecentJobListDetails = ({ jobDetails }: RecentJobListDetailsProps) => {
 			</div>
 			{/* project details */}
 			<div className="mt-6">
-				<h4 className="font-bold capitalize text-b1 text-base leading-[19px]">
+				<h4 className="text-base font-bold capitalize leading-[19px] text-b1">
 					project details
 				</h4>
-				<p className="mt-3 text-b4 text-sm leading-[21px]">
+				<p className="mt-3 text-sm leading-[21px] text-b4">
 					{jobDetails?.description}
 				</p>
 				{/* skills */}
-				<h4 className="mt-6 font-bold text-b1 text-base leading-[19px] capitalize">
+				<h4 className="mt-6 text-base font-bold capitalize leading-[19px] text-b1">
 					skills
 				</h4>
 				<div className="mt-3 mb-6 flex gap-[11px]">
 					{jobDetails?.skills?.map((item, index) => (
 						<div
 							key={`job-details-skills-${index}`}
-							className="rounded capitalize bg-[#F5F5F5] py-[9px] px-[14px] text-[#333] text-[13px] leading-[18px]"
+							className="rounded bg-[#F5F5F5] py-[9px] px-[14px] text-[13px] capitalize leading-[18px] text-[#333]"
 						>
 							{item}
 						</div>
@@ -64,12 +64,12 @@ const RecentJobListDetails = ({ jobDetails }: RecentJobListDetailsProps) => {
 
 				{/* client about */}
 				<div className="">
-					<h3 className="font-bold text-base leading-[21px] text-black1">
+					<h3 className="text-base font-bold leading-[21px] text-black1">
 						About the client
 					</h3>
-					<div className="mt-[18px] gap-x-[10px] mb-8 flex items-center">
-						<Image src={avatar} alt="" className="w-10 h-10" />
-						<p className="lg:text-xs xl:text-base xl:leading-5 text-[#101828] capitalize">
+					<div className="mt-[18px] mb-8 flex items-center gap-x-[10px]">
+						<Image src={avatar} alt="" className="h-10 w-10" />
+						<p className="capitalize text-[#101828] lg:text-xs xl:text-base xl:leading-5">
 							{jobDetails?.client}
 						</p>
 					</div>

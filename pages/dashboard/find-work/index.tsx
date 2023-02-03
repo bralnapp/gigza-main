@@ -1,15 +1,19 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import DashboardLayout from "@/modules/dashboard/components/layout";
-// import { initGigzaContract } from "utils/helper/contract.helper";
 import {
 	RecentJobList,
 	RecentJobListDetails
 } from "@/modules/dashboard/sections/find-work";
-// import { useGetJobs } from "utils/hooks";
+import { GigzaContractAbi, GigzaContractAddress } from "utils/helper";
+import { useContractRead } from "wagmi";
 
 const FindWork = () => {
 	const [activeIndex, setActiveIndex] = useState(0);
-	// const { totalJobs } = useGetJobs();
+	const { data: totalJobs } = useContractRead({
+		address: GigzaContractAddress,
+		abi: GigzaContractAbi,
+		functionName: "getTotalJobs"
+	});
 
 	const handleSelect = (index: number) => {
 		setActiveIndex(index);
@@ -18,14 +22,13 @@ const FindWork = () => {
 	return (
 		<DashboardLayout>
 			<div className="dashboard-layout-container">
-				<div className="lg:grid grid-cols-2 gap-x-[46px] pt-6 md:pt-8 pb-[45px]">
+				<div className="grid-cols-2 gap-x-[46px] pt-6 pb-[45px] md:pt-8 lg:grid">
 					{/* job list */}
-					{/* <RecentJobList
-						jobList={totalJobs}
-						{...{ activeIndex, handleSelect }}
-					/> */}
+					{/* @ts-ignore */}
+					<RecentJobList jobList={totalJobs} {...{ activeIndex, handleSelect }} />
 					{/* job details for desktop screen */}
-					{/* <RecentJobListDetails jobDetails={totalJobs[activeIndex]} /> */}
+					{/* @ts-ignore */}
+					<RecentJobListDetails jobDetails={totalJobs?.[activeIndex]} />
 				</div>
 			</div>
 		</DashboardLayout>
