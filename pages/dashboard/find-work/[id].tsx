@@ -11,7 +11,7 @@ import {
 } from "utils/helper";
 import { useContractRead } from "wagmi";
 import numeral from "numeral";
-import { JobDetailsProps } from "@custom-types/typing";
+import { JobDetailsProps, UserProfileType } from "@custom-types/typing";
 
 // images
 import squareDot from "@/public/asset/icons/square-dot.svg";
@@ -28,6 +28,14 @@ const JobDetails = () => {
 			abi: GigzaContractAbi,
 			functionName: "jobs",
 			args: [jobId]
+		});
+
+	const { data: profile }: { data: UserProfileType | undefined } =
+		useContractRead({
+			address: GigzaContractAddress,
+			abi: GigzaContractAbi,
+			functionName: "getUser",
+			args: [jobDetails?.client]
 		});
 
 	return jobDetails ? (
@@ -89,7 +97,13 @@ const JobDetails = () => {
 							About the client
 						</h3>
 						<div className="mt-[18px] mb-8 flex items-center gap-x-[10px]">
-							<Image src={avatar} alt="" className="h-10 w-10" />
+							<Image
+								src={profile?.profileUrl || avatar}
+								alt=""
+								className="h-10 w-10 rounded-full object-cover"
+								height={40}
+								width={40}
+							/>
 							<p className="text-[10px] capitalize leading-5 text-[#101828] min-[540px]:text-base">
 								{jobDetails?.client}
 							</p>

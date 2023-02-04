@@ -49,7 +49,7 @@ const useGetProposals = (): useGetProposalsProps => {
 		for (let index = 0; index < totalJobs!.length; index++) {
 			// get all jobs posted by a user
 			const _job: JobDetailsProps[number] = totalJobs![index];
-			if (_job.client === "0x5c12DB1E016bEa19aeD67C125dc5b036e39320Cb") {
+			if (_job?.client?.toLowerCase() === address?.toLowerCase()) {
 				jobsPostedByUser.push(_job);
 			}
 		}
@@ -65,7 +65,7 @@ const useGetProposals = (): useGetProposalsProps => {
 			getProposals();
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [totalJobs]);
+	}, [totalJobs,address]);
 
 	return {
 		sentProposals,

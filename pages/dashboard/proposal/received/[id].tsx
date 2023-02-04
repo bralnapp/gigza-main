@@ -3,7 +3,7 @@ import { Button } from "@/modules/common/components/input/button";
 import DashboardLayout from "@/modules/dashboard/components/layout";
 import { useRouter } from "next/router";
 import { covertToReadableDate, formatUnit } from "utils/helper";
-import {  useWindowSize } from "utils/hooks";
+import { useGetJobBids, useWindowSize } from "utils/hooks";
 import Image from "next/image";
 import { UserProfile } from "@/modules/dashboard/sections/received-proposal";
 
@@ -15,28 +15,45 @@ const ReceivedProposalDetails = () => {
 	const router = useRouter();
 	const { id: jobId } = router.query;
 
-	// const { proposalsReceived, job } = useGetJobBids(jobId);
+	const { proposalsReceived, job } = useGetJobBids(jobId);
 	const { width } = useWindowSize();
 	const [showMoreDetails, setShowMoreDetails] = useState(false);
 
+	const handleClick = (
+		freelancerAddress: `0x${string}`,
+		description: string
+	) => {
+		const data = {
+			jobId,
+			freelancerAddress,
+			bid: description
+		};
+		router.push({
+			pathname: `/dashboard/proposal/received/bid/${jobId}`,
+			query: {
+				data: JSON.stringify(data)
+			}
+		});
+	};
+	console.log('jooob',job);
 	return (
 		<DashboardLayout>
-			<div className="w-11/12 mx-auto pt-[31px] md:pt-[41px] max-w-5xl">
+			<div className="mx-auto w-11/12 max-w-5xl pt-[31px] md:pt-[41px]">
 				<Button
 					onClick={() => router.back()}
 					icon={chevronLeft}
 					title="Go Back"
-					className="bg-[#F5F5F5] border border-[#D9D9D9] text-base leading-[18px] w-28 md:w-[137px] text-[#5F6062]"
+					className="w-28 border border-[#D9D9D9] bg-[#F5F5F5] text-base leading-[18px] text-[#5F6062] md:w-[137px]"
 				/>
-				<div className=" mt-[23px] min-[540px]:mt-8 lg:grid grid-cols-[2fr_1fr] lg:gap-x-16">
-					<div className=" bg-white rounded-lg py-5 px-4 lg:py-6 lg:px-5">
+				<div className=" mt-[23px] grid-cols-[2fr_1fr] min-[540px]:mt-8 lg:grid lg:gap-x-16">
+					<div className=" rounded-lg bg-white py-5 px-4 lg:py-6 lg:px-5">
 						{/* job details section */}
-						{/* <section className="">
-							<h1 className="font-bold text-b1 text-base min-[540px]:text-xl leading-[19px] min-[540px]:leading-6 mb-2">
+						<section className="">
+							<h1 className="mb-2 text-base font-bold leading-[19px] text-b1 min-[540px]:text-xl min-[540px]:leading-6">
 								{job?.title}
 							</h1>
 							<p
-								className={`text-b1 text-sm leading-[21px] ${
+								className={`text-sm leading-[21px] text-b1 ${
 									width! < 1024 && !showMoreDetails ? "line-clamp-3" : ""
 								} `}
 							>
@@ -44,55 +61,57 @@ const ReceivedProposalDetails = () => {
 							</p>
 
 							<div
-								className="flex lg:hidden items-center gap-x-2 mt-2"
+								className="mt-2 flex items-center gap-x-2 lg:hidden"
 								onClick={() => setShowMoreDetails(!showMoreDetails)}
 							>
-								<p className="text-b2 font-bold text-sm leading-[18px] capitalize">
+								<p className="text-sm font-bold capitalize leading-[18px] text-b2">
 									View {showMoreDetails ? "less" : "more"} details
 								</p>
 								<Image src={arrowDown} alt="" />
 							</div>
-						</section> */}
+						</section>
 
 						{/* proposal section */}
 						<section className="mt-8">
-							<h1 className="text-b1 font-bold text-base leading-[19px] capitalize">
+							<h1 className="text-base font-bold capitalize leading-[19px] text-b1">
 								Proposal
 							</h1>
-							{/* <div className="mt-4 space-y-6">
+							<div className="mt-4 space-y-6 ">
 								{proposalsReceived?.map((item, index) => (
 									<div
 										key={`received-proposals-${index}`}
-										className="border-b border-[#EAECF0] pb-5"
+										className="cursor-pointer border-b border-[#EAECF0] pb-5"
+										onClick={() =>
+											handleClick(item?.freelancer, item?.description)
+										}
 									>
-										freelancer comment me
+										{/* freelancer  */}
 										<UserProfile freelancerAddress={item?.freelancer} />
-
-										freelancer bid comment me
+										{/* freelancer bid  */}
 										<p
-											className={`mt-[13px] text-b3 leading-[21px] text-sm line-clamp-3`}
+											className={`mt-[13px] text-sm leading-[21px] text-b3 line-clamp-3`}
 										>
-											{item.description}
+											{item?.description}
 										</p>
 									</div>
 								))}
-							</div> */}
+							</div>
 						</section>
 					</div>
 					{/* more info about the job */}
-					<div className="hidden lg:block rounded-lg bg-white py-4 px-6 h-fit ">
-						{/* <p className="capitalize text-sm leading-[21px] text-[#667085] pb-[5px]">
+					<div className="hidden h-fit rounded-lg bg-white py-4 px-6 lg:block ">
+						<p className="pb-[5px] text-sm capitalize leading-[21px] text-[#667085]">
 							date posted
 						</p>
-						<p className="capitalize text-base leading-[21px] text-[#101828]">
+						<p className="text-base capitalize leading-[21px] text-[#101828]">
 							{covertToReadableDate(formatUnit(job?.timestamp)! * 10 ** 18)}
 						</p>
-						<p className="mt-6 capitalize text-sm leading-[21px] text-[#667085] pb-[5px]">
+						<p className="mt-6 pb-[5px] text-sm capitalize leading-[21px] text-[#667085]">
 							budget
 						</p>
 						<p className="text-base leading-[21px] text-[#101828]">
 							${formatUnit(job?.amount)}
-						</p> */}
+						</p>
 					</div>
 				</div>
 			</div>

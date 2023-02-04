@@ -38,7 +38,6 @@ const useGetJobBids = (
 		try {
 			// @ts-ignore
 			const jobBids: IuserBids[] = await initGigzaContract!.getJobBids(jobId);
-			console.log("jobBids", jobBids);
 			for (let index = 0; index < jobBids.length; index++) {
 				const jobBid = jobBids[index];
 				if (jobBid?.freelancer?.toLowerCase() === address!.toLowerCase()) {

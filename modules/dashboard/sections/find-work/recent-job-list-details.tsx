@@ -7,7 +7,7 @@ import {
 	GigzaContractAbi,
 	GigzaContractAddress
 } from "utils/helper";
-import { JobDetailsProps } from "@custom-types/typing";
+import { JobDetailsProps, UserProfileType } from "@custom-types/typing";
 import numeral from "numeral";
 import { useContractRead } from "wagmi";
 
@@ -20,12 +20,13 @@ type RecentJobListDetailsProps = {
 };
 
 const RecentJobListDetails = ({ jobDetails }: RecentJobListDetailsProps) => {
-	const { data: userDetails } = useContractRead({
-		address: GigzaContractAddress,
-		abi: GigzaContractAbi,
-		functionName: "getUser",
-		args: [jobDetails?.client]
-	});
+	const { data: userDetails }: { data: UserProfileType | undefined } =
+		useContractRead({
+			address: GigzaContractAddress,
+			abi: GigzaContractAbi,
+			functionName: "getUser",
+			args: [jobDetails?.client]
+		});
 	return jobDetails ? (
 		<div className="sticky top-[94px] hidden h-fit rounded-[10px] bg-white py-6 px-5 lg:block">
 			<div className="border-b border-[#E8E8E8] pb-6">

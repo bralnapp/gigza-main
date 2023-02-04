@@ -1,27 +1,41 @@
 import React from "react";
 import Image from "next/image";
 import Stars from "../../components/stars";
+import { useContractRead } from "wagmi";
+import { GigzaContractAbi, GigzaContractAddress } from "utils/helper";
 
 // images
 import avatar from "@/public/asset/avatar/profile-avatar.svg";
+import { UserProfileType } from "@custom-types/typing";
 
 type UserProfileProp = {
-	freelancerAddress: string;
+	freelancerAddress: `0x${string}`;
 };
 
 const UserProfile = ({ freelancerAddress }: UserProfileProp) => {
-	// const { name, profileUrl } = useGetUserProfile(freelancerAddress);
+	const {
+		data: userDetails
+	}: {
+		data: UserProfileType | undefined;
+	} = useContractRead({
+		address: GigzaContractAddress,
+		abi: GigzaContractAbi,
+		functionName: "getUser",
+		args: [freelancerAddress]
+	});
 	return (
 		<div className="flex items-center gap-x-2">
-			{/* <Image
-				src={profileUrl || avatar}
+			<Image
+				src={userDetails?.profileUrl || avatar}
 				alt=""
 				width={40}
 				height={40}
-				className="error rounded-full"
-			/> */}
+				className="h-10 w-10 rounded-full"
+			/>
 			<div className="">
-				{/* <p className="capitalize text-b1 font-bold text-sm leading-4">{name}</p> */}
+				<p className="text-sm font-bold capitalize leading-4 text-b1">
+					{userDetails?.name}
+				</p>
 				<Stars reviews={4} />
 			</div>
 		</div>
