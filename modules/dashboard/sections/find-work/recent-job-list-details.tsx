@@ -3,10 +3,13 @@ import { Button } from "@/modules/common/components/input/button";
 import {
 	covertToReadableDate,
 	formatUnit,
-	formatWalletAddress
+	formatWalletAddress,
+	GigzaContractAbi,
+	GigzaContractAddress
 } from "utils/helper";
 import { JobDetailsProps } from "@custom-types/typing";
 import numeral from "numeral";
+import { useContractRead } from "wagmi";
 
 // images
 import squareDot from "@/public/asset/icons/square-dot.svg";
@@ -17,6 +20,12 @@ type RecentJobListDetailsProps = {
 };
 
 const RecentJobListDetails = ({ jobDetails }: RecentJobListDetailsProps) => {
+	const { data: userDetails } = useContractRead({
+		address: GigzaContractAddress,
+		abi: GigzaContractAbi,
+		functionName: "getUser",
+		args: [jobDetails?.client]
+	});
 	return jobDetails ? (
 		<div className="sticky top-[94px] hidden h-fit rounded-[10px] bg-white py-6 px-5 lg:block">
 			<div className="border-b border-[#E8E8E8] pb-6">
@@ -67,7 +76,13 @@ const RecentJobListDetails = ({ jobDetails }: RecentJobListDetailsProps) => {
 						About the client
 					</h3>
 					<div className="mt-[18px] mb-8 flex items-center gap-x-[10px]">
-						<Image src={avatar} alt="" className="h-10 w-10" />
+						<Image
+							src={userDetails?.profileUrl || avatar}
+							alt=""
+							className="h-10 w-10 rounded-full object-cover"
+							width={40}
+							height={40}
+						/>
 						<p className="capitalize text-[#101828] lg:text-xs xl:text-base xl:leading-5">
 							{jobDetails?.client}
 						</p>

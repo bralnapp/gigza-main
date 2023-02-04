@@ -47,10 +47,11 @@ const JobBidForm = ({ jobId, client }: JobBidFormProps) => {
 	});
 
 	const onSubmit = async (data: FormData) => {
-		if (address == client) {
+		if (address?.toLowerCase() == client?.toLowerCase()) {
 			toast.error("You can not bid for your job");
 			return;
 		}
+		setIsSubmitting(true);
 		const notification = toast.loading("Please wait...Submitting Proposal");
 		try {
 			// @ts-ignore

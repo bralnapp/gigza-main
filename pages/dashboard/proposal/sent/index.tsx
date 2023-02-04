@@ -13,30 +13,27 @@ import squareDot from "@/public/asset/icons/square-dot.svg";
 
 const Sent = () => {
 	const { sentProposals } = useGetProposals();
-	console.log(sentProposals)
 	return (
 		<DashboardLayout>
-			<div className="dashboard-layout-container pt-8 min-[540px]:pt-[42px] pb-[95px] lg:pb-[141px]">
-				<h1 className="capitalize text-xl min-[540px]:text-2xl md:text-[28px] leading-5 md:leading-[34px] font-bold text-b1">
+			<div className="dashboard-layout-container pt-8 pb-[95px] min-[540px]:pt-[42px] lg:pb-[141px]">
+				<h1 className="text-xl font-bold capitalize leading-5 text-b1 min-[540px]:text-2xl md:text-[28px] md:leading-[34px]">
 					Sent proposals ({sentProposals?.length})
 				</h1>
 
-				<div className="mt-4 min-[540px]:mt-8 space-y-5">
+				<div className="mt-4 space-y-5 min-[540px]:mt-8">
 					{sentProposals.map((item, index) => (
 						<Link
-							href={`/dashboard/proposal/sent/${Math.round(
-                                formatUnit(item?.job?.jobId)! * 10 ** 18
-                            )}`}
+							href={`/dashboard/proposal/sent/${parseInt(item?.job?.jobId)}`}
 							key={`sent-proposals-${index}`}
-							className="bg-white rounded-lg py-4 min-[540px]:py-6 px-3 min-[540px]:px-5 block"
+							className="block rounded-lg bg-white py-4 px-3 min-[540px]:py-6 min-[540px]:px-5"
 						>
 							<div>
 								<div className="flex items-start justify-between">
-									<h4 className="font-bold text-b2 text-base leading-[19px] w-11/12">
+									<h4 className="w-11/12 text-base font-bold leading-[19px] text-b2">
 										{item?.job?.title}
 									</h4>
 									<p
-										className={`capitalize italic text-sm leading-[19px] ${
+										className={`text-sm capitalize italic leading-[19px] ${
 											item?.job?.state === 0
 												? "text-[#0E9802]"
 												: "text-[#F02323]"
@@ -46,10 +43,10 @@ const Sent = () => {
 									</p>
 								</div>
 
-								<p className="my-[15px] text-b4 text-sm leading-[21px] min-[540px]:w-4/5 line-clamp-3">
+								<p className="my-[15px] text-sm leading-[21px] text-b4 line-clamp-3 min-[540px]:w-4/5">
 									{item?.job?.description}
 								</p>
-								<div className="flex items-center space-x-2 capitalize text-b1 text-sm leading-[17px]">
+								<div className="flex items-center space-x-2 text-sm capitalize leading-[17px] text-b1">
 									<p className="">{formatWalletAddress(item?.job?.client)}</p>
 									<Image src={squareDot} alt="" />
 									<p>
@@ -57,7 +54,7 @@ const Sent = () => {
 										{covertToReadableDate(
 											formatUnit(item?.job?.timestamp)! * 10 ** 18
 										)}
-									</p>
+										</p>
 								</div>
 							</div>
 						</Link>
