@@ -14,7 +14,6 @@ import arrowDown from "@/public/asset/navbar/arrow-down.svg";
 const ReceivedProposalDetails = () => {
 	const router = useRouter();
 	const { id: jobId } = router.query;
-
 	const { proposalsReceived, job } = useGetJobBids(jobId);
 	const { width } = useWindowSize();
 	const [showMoreDetails, setShowMoreDetails] = useState(false);

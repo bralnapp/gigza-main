@@ -74,7 +74,6 @@ const JobBidForm = ({ jobId, client }: JobBidFormProps) => {
 			toast.error(error?.reason || "Something went wrong", {
 				id: notification
 			});
-			console.log(error);
 			setIsSubmitting(false);
 		}
 	};

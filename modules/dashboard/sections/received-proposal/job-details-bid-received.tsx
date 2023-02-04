@@ -39,7 +39,7 @@ const JobDetailsBidReceived = ({ pageData }: JobDetailsBidReceivedProps) => {
 			args: [pageData?.jobId]
 		});
 	return (
-		<div className="space-y-6 bg-white py-5 px-4">
+		<div className="space-y-6 bg-white py-5 px-4 h-fit">
 			{/* date posted */}
 			<div className="">
 				<h3 className="mb-[5px] text-sm capitalize leading-[21px] text-[#667085]">

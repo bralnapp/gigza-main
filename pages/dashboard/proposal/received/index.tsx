@@ -30,7 +30,7 @@ const Received = () => {
 						<div
 							key={`received-proposals-${index}`}
 							onClick={() => handleClick(item.jobId, item?.userBids)}
-							className="block rounded-lg bg-white py-4 px-3 min-[540px]:py-6 min-[540px]:px-5"
+							className="block rounded-lg bg-white py-4 px-3 min-[540px]:py-6 min-[540px]:px-5 cursor-pointer"
 						>
 							<div className="flex items-start justify-between">
 								<h4 className="w-11/12 text-base font-bold leading-[19px] text-b2">
