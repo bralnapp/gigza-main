@@ -1,18 +1,29 @@
 import Image from "next/image";
+import { Button } from "@/modules/common/components/input/button";
+import { PageData, UserProfileType } from "@custom-types/typing";
+import { GigzaContractAbi, GigzaContractAddress } from "utils/helper";
+import { useContractRead } from "wagmi";
+
+// images
 import profileAvatar from "@/public/asset/avatar/profile-avatar.svg";
 
-const FreelancerBid = () => {
+type FreelancerBidSectionProps = {
+	pageData: PageData;
+};
+
+const FreelancerBidSection = ({ pageData }: FreelancerBidSectionProps) => {
+	const { data: freelancerDetails }: { data: UserProfileType | undefined } =
+		useContractRead({
+			address: GigzaContractAddress,
+			abi: GigzaContractAbi,
+			functionName: "getUser",
+			args: [pageData?.freelancerAddress]
+		});
 	return (
 		<div className="bg-white py-5 px-4">
 			{/* freelancer profile */}
 			<div className="flex items-center gap-x-2">
-				<Image
-					src={freelancerDetails?.profileUrl || profileAvatar}
-					alt=""
-					height={48}
-					width={48}
-					className="h-12 w-12 rounded-full object-cover"
-				/>
+				
 				<div className="">
 					<p className="mb-2 text-base font-bold capitalize leading-[19px] text-b1">
 						{freelancerDetails?.name}
@@ -30,4 +41,4 @@ const FreelancerBid = () => {
 	);
 };
 
-export default FreelancerBid;
+export default FreelancerBidSection;

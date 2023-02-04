@@ -3,38 +3,24 @@ import DashboardLayout from "@/modules/dashboard/components/layout";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { JobDetailsProps, UserProfileType } from "@custom-types/typing";
+import { JobDetailsProps, PageData, UserProfileType } from "@custom-types/typing";
 import { useContractRead } from "wagmi";
 import { GigzaContractAbi, GigzaContractAddress } from "utils/helper";
+import { FreelancerBidSection, JobDetailsBidReceived } from "@/modules/dashboard/sections/received-proposal";
 
 // images
 import chevronLeft from "@/public/asset/icons/chevron-left.svg";
 import profileAvatar from "@/public/asset/avatar/profile-avatar.svg";
 
-type PageData =
-	| {
-			jobId: string;
-			bid: string;
-			freelancerAddress: `0x${string}`;
-	  }
-	| undefined;
+
 
 const FreelancerBid = () => {
 	const router = useRouter();
 	const [pageData, setPageData] = useState<PageData>();
 
-	const { data: freelancerDetails }: { data: UserProfileType | undefined } =
-		useContractRead({
-			address: GigzaContractAddress,
-			abi: GigzaContractAbi,
-			functionName: "getUser",
-			args: [pageData?.freelancerAddress]
-		});
-
-
 	useEffect(() => {
 		if (!router.query.data) {
-			router.push("/dashboard/received");
+			router.push("/dashboard/proposal/received");
 		} else {
 			const data = JSON.parse(router.query.data as string);
 			setPageData(data);
@@ -43,7 +29,7 @@ const FreelancerBid = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	console.log(pageData?.job);
+	// console.log('joooobbbb ooo',pageData?.job);
 	return (
 		<DashboardLayout>
 			<div className="dashboard-layout-container pt-6">
@@ -56,9 +42,10 @@ const FreelancerBid = () => {
 
 				<div className="mt-6">
 					{/* freelancer bid */}
-					
+					<FreelancerBidSection {...{pageData}} />
 
                     {/* job details */}
+					<JobDetailsBidReceived {...{pageData}}/>
 
 				</div>
 			</div>

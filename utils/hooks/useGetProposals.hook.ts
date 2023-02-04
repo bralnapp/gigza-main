@@ -37,7 +37,6 @@ const useGetProposals = (): useGetProposalsProps => {
 			const jobBids = _job.userBids.filter(
 				(item) => item?.freelancer?.toLowerCase() === address?.toLowerCase()
 			);
-			console.log("job", jobBids);
 			if (jobBids.length) {
 				proposal.push({
 					job: _job,

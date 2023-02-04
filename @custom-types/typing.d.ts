@@ -36,3 +36,10 @@ export type UserProfileType = {
 
 export type ReceivedProposalType = JobDetailsProps
 
+export type PageData =
+	| {
+			jobId: string;
+			bid: string;
+			freelancerAddress: `0x${string}`;
+	  }
+	| undefined;
