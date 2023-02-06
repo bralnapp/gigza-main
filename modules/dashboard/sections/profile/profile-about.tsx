@@ -23,7 +23,7 @@ const ProfileAbout = ({ userDetails }: ProfileAboutProps) => {
 			value: 7
 		}
 	];
-	return (
+	return userDetails?.name ? (
 		<section className="md:grid grid-cols-[2fr_1fr] lg:grid-cols-2 xl:grid-cols-[1fr_2fr] md:gap-x-8">
 			<div className="md:order-1">
 				<h4 className="text-b2 text-base min-[540px]:text-xl leading-[19px] min-[540px]:leading-6 font-bold mb-3">
@@ -72,6 +72,8 @@ const ProfileAbout = ({ userDetails }: ProfileAboutProps) => {
 				</div>
 			</div>
 		</section>
+	) : (
+		<p>Please create your profile</p>
 	);
 };
 

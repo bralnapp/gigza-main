@@ -6,9 +6,7 @@ import {
 	ProfileAbout,
 	ProfileReviews
 } from "@/modules/dashboard/sections/profile";
-import {
-	EditProfileButton,
-} from "@/modules/common/components/input/button";
+import { Button, EditProfileButton } from "@/modules/common/components/input/button";
 import { toast } from "react-hot-toast";
 import { useAccount, useContractRead } from "wagmi";
 import { GigzaContractAbi, GigzaContractAddress } from "utils/helper";
@@ -49,6 +47,8 @@ const Profile = () => {
 		}
 	}, [isError]);
 
+	console.log("userDetails", userDetails?.name);
+
 	return (
 		<DashboardLayout>
 			{/* header image */}
@@ -83,13 +83,18 @@ const Profile = () => {
 					</div>
 				</div>
 				<div className="md:hidden">
-					<EditProfileButton />
+					{/* {userDetails?.name ? <EditProfileButton /> : null } */}
 				</div>
 			</div>
 			<div className="mt-[17px] border-stroke md:mt-3 md:border-b">
 				<div className="dashboard-layout-container border-b border-stroke md:border-none">
 					<div className="hidden justify-end md:flex xl:pr-[100px]">
-						<EditProfileButton />
+						<Button
+							href={userDetails?.name ? "/dashboard/profile/edit" : "/dashboard/profile/create"}
+							title={userDetails?.name ? "Edit Profile" : "Create Profile"}
+							className="h-[42px] w-[125px] border border-primary bg-white text-primary"
+						/>
+						{/* {userDetails?.name ? <EditProfileButton /> : null} */}
 					</div>
 					<div className="flex items-center">
 						{sections.map((item, index) => (

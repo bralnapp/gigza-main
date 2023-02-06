@@ -1,7 +1,10 @@
 import GigzaContractAbi from "../constants/Gigza.json";
 import DaiContractAbi from "../constants/Dia.json";
 
-const GigzaContractAddress = "0x6B042519F64CDf02b9D0c26885662434032bF178";
+// new proxy
+const GigzaContractAddress = "0x81D4523ECC0655929248efe220bcBB805030b79d";
+// old
+// const GigzaContractAddress = "0x6B042519F64CDf02b9D0c26885662434032bF178";
 const DiaContractAddress = "0x40fb4204dDe488f34b9d9E0056d0FE8f6ab38585";
 
 const bidState = [

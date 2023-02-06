@@ -27,7 +27,7 @@ type FormData = {
 	profileUrl: string;
 };
 
-const EditProfileForm = () => {
+const CreateProfileForm = () => {
 	const [isCreatingProfile, setIsCreatingProfile] = useState(false);
 	const router = useRouter();
 	const { initGigzaContract } = useStoreContext();
@@ -47,7 +47,7 @@ const EditProfileForm = () => {
 
 		try {
 			// @ts-ignore
-			const txHash = await initGigzaContract!.editProfile(
+			const txHash = await initGigzaContract!.createProfile(
 				data.name,
 				data.bio,
 				data.mainSkill,
@@ -64,7 +64,6 @@ const EditProfileForm = () => {
 			}
 		} catch (error) {
 			setIsCreatingProfile(false);
-			console.log(error)
 			// @ts-ignore
 			toast.error(error?.reason || "Opps, something went wrong", {
 				id: notification
@@ -132,7 +131,7 @@ const EditProfileForm = () => {
 	);
 };
 
-export default EditProfileForm;
+export default CreateProfileForm;
 
 // {
 //     "reason": "sending a transaction requires a signer",
