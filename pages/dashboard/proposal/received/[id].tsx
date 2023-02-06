@@ -10,12 +10,25 @@ import { UserProfile } from "@/modules/dashboard/sections/received-proposal";
 // images
 import chevronLeft from "@/public/asset/icons/chevron-left.svg";
 import arrowDown from "@/public/asset/navbar/arrow-down.svg";
+import doubleGood from "@/public/asset/icons/double-good.svg";
+
+const bidState = {
+	1: "Already sent",
+	2: "Contract awarded",
+	3: "Job has been completed",
+	4: "has been paid",
+	5: "Contract has been cancelled"
+};
 
 const ReceivedProposalDetails = () => {
 	const router = useRouter();
+
 	const { id: jobId } = router.query;
+
 	const { proposalsReceived, job } = useGetJobBids(jobId);
+
 	const { width } = useWindowSize();
+
 	const [showMoreDetails, setShowMoreDetails] = useState(false);
 
 	const handleClick = (
@@ -91,6 +104,15 @@ const ReceivedProposalDetails = () => {
 										>
 											{item?.description}
 										</p>
+
+										{item?.bidState > 0 ? (
+											<div className="mt-4 flex items-center text-base leading-[18px] text-primary">
+												<Image src={doubleGood} alt="" />
+												<p>
+													{bidState[item?.bidState as keyof typeof bidState]}
+												</p>
+											</div>
+										) : null}
 									</div>
 								))}
 							</div>

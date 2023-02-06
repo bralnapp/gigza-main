@@ -61,6 +61,7 @@ const Preview = () => {
 				toast.success("Approval was successful", {
 					id: notification
 				});
+				router.push("/dashboard/post-job");
 			}
 		} catch (error) {
 			setIsApproving(false);
@@ -106,15 +107,17 @@ const Preview = () => {
 	};
 
 	useEffect(() => {
-		if (!router.query.data) {
-			router.push("/dashboard/hire");
-		} else {
-			const data = JSON.parse(router.query.data as string);
-			setFormData(data);
+		if (router.isReady) {
+			if (!router.query.data) {
+				router.push("/dashboard/post-job");
+			} else {
+				const data = JSON.parse(router.query.data as string);
+				setFormData(data);
+			}
 		}
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [router.isReady]);
 
 	return (
 		<DashboardLayout>
@@ -190,6 +193,7 @@ const Preview = () => {
 						<div className="flex items-center justify-between">
 							<Button
 								title="Cancel"
+								onClick={() => router.back()}
 								className="w-[92px] bg-[#EBEEF2] text-b1"
 							/>
 							{!(

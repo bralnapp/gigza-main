@@ -8,7 +8,6 @@ import {
 } from "@/modules/dashboard/sections/profile";
 import {
 	EditProfileButton,
-	SendMessageButton
 } from "@/modules/common/components/input/button";
 import { toast } from "react-hot-toast";
 import { useAccount, useContractRead } from "wagmi";
@@ -16,6 +15,7 @@ import { GigzaContractAbi, GigzaContractAddress } from "utils/helper";
 
 // images
 import profileAvatar from "@/public/asset/avatar/profile-avatar.svg";
+import { UserProfileType } from "@custom-types/typing";
 
 export type userDetailsType = {
 	name: string;
@@ -30,7 +30,13 @@ const Profile = () => {
 	const sections = ["reviews", "about"];
 
 	const { address } = useAccount();
-	const { data: userDetails, isError } = useContractRead({
+	const {
+		data: userDetails,
+		isError
+	}: {
+		data: UserProfileType | undefined;
+		isError: boolean;
+	} = useContractRead({
 		address: GigzaContractAddress,
 		abi: GigzaContractAbi,
 		functionName: "getUser",
@@ -54,7 +60,7 @@ const Profile = () => {
 							// @ts-ignore
 							src={userDetails?.profileUrl || profileAvatar}
 							alt=""
-							className="w-20 h-20 md:h-[164px] md:w-[164px] rounded-full object-cover"
+							className="h-20 w-20 rounded-full object-cover md:h-[164px] md:w-[164px]"
 							width={80}
 							height={80}
 						/>
@@ -77,13 +83,13 @@ const Profile = () => {
 					</div>
 				</div>
 				<div className="md:hidden">
-					{activeIndex === 0 ? <SendMessageButton /> : <EditProfileButton />}
+					<EditProfileButton />
 				</div>
 			</div>
 			<div className="mt-[17px] border-stroke md:mt-3 md:border-b">
 				<div className="dashboard-layout-container border-b border-stroke md:border-none">
 					<div className="hidden justify-end md:flex xl:pr-[100px]">
-						{activeIndex === 0 ? <SendMessageButton /> : <EditProfileButton />}
+						<EditProfileButton />
 					</div>
 					<div className="flex items-center">
 						{sections.map((item, index) => (

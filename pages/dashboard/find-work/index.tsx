@@ -24,6 +24,8 @@ const FindWork = () => {
 		setActiveIndex(index);
 	};
 
+	console.log(totalJobs)
+
 	return (
 		<DashboardLayout>
 			<div className="dashboard-layout-container">

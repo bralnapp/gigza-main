@@ -31,7 +31,7 @@ export type UserProfileType = {
 	bio: string;
 	profileUrl: string;
 	skills: string[];
-	user: string;
+	user: `0x${string}`;
 };
 
 export type ReceivedProposalType = JobDetailsProps

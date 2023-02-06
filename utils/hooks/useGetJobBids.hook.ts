@@ -20,7 +20,7 @@ const useGetJobBids = (
 	const [proposalsReceived, setProposalsReceived] = useState<
 		IuserBids[] | undefined
 	>();
-    const [job, setJob] = useState<undefined | JobDetailsProps[number]>();
+	const [job, setJob] = useState<undefined | JobDetailsProps[number]>();
 
 	const { address } = useAccount();
 	const { initGigzaContract } = useStoreContext();
@@ -46,7 +46,7 @@ const useGetJobBids = (
 			}
 			setProposalByAFreelancer(freelancerProposal);
 			setProposalsReceived(jobBids);
-            setJob(_job)
+			setJob(_job);
 		} catch (error: any) {
 			toast.error(error?.message);
 		}
@@ -55,7 +55,7 @@ const useGetJobBids = (
 	useEffect(() => {
 		getJobBids();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [jobId]);
 	return {
 		proposalByAFreelancer,
 		job,
