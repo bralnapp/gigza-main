@@ -61,7 +61,6 @@ const Preview = () => {
 				toast.success("Approval was successful", {
 					id: notification
 				});
-				router.push("/dashboard/post-job");
 			}
 		} catch (error) {
 			setIsApproving(false);
@@ -194,7 +193,7 @@ const Preview = () => {
 							<Button
 								title="Cancel"
 								onClick={() => router.back()}
-								className="w-[92px] bg-[#EBEEF2] text-b1"
+								className="w-[92px] bg-[#EBEEF2] text-b1 cursor-pointer"
 							/>
 							{!(
 								formatUnit(allowanceBalance)! >=
@@ -204,14 +203,14 @@ const Preview = () => {
 									onClick={approveTransaction}
 									disabled={isApproving}
 									title={`${isApproving ? "Approving" : "Approve"}`}
-									className="h-10 px-3"
+									className="h-10 px-3 cursor-pointer"
 								/>
 							) : (
 								<Button
 									onClick={handlePostJob}
 									disabled={isPostingJob}
 									title="Post"
-									className="w-[92px]"
+									className="w-[92px] cursor-pointer"
 								/>
 							)}
 						</div>

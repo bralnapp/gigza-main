@@ -67,7 +67,7 @@ const TalentList = ({ usersProfile }: TalentListProps) => {
 						</div>
 					</div>
 					<Button
-						href={`/dashboard/profile/${item?.user}`}
+						href={`/dashboard/profile/${item?.userAddress}`}
 						title="View Profile"
 						className="h-8 w-full border border-stroke bg-white text-sm leading-[18px] text-primary md:w-[100px]"
 					/>
