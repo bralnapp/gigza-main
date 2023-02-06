@@ -28,7 +28,7 @@ type FormData = {
 };
 
 const EditProfileForm = () => {
-	const [isCreatingProfile, setIsCreatingProfile] = useState(false);
+const [isEditing, setIsEditing] = useState(false)
 	const router = useRouter();
 	const { initGigzaContract } = useStoreContext();
 
@@ -43,7 +43,7 @@ const EditProfileForm = () => {
 
 	const onSubmit = async (data: FormData) => {
 		const notification = toast.loading("Please wait...Updating profile");
-		setIsCreatingProfile(true);
+		setIsEditing(true);
 
 		try {
 			// @ts-ignore
@@ -56,15 +56,14 @@ const EditProfileForm = () => {
 			);
 			const receipt =  await txHash.wait();
 			if (receipt) {
-				setIsCreatingProfile(false);
+				setIsEditing(false);
 				toast.success("Profile has been updated", {
 					id: notification
 				});
 				router.push("/dashboard/profile");
 			}
 		} catch (error) {
-			setIsCreatingProfile(false);
-			console.log(error)
+			setIsEditing(false);
 			// @ts-ignore
 			toast.error(error?.reason || "Opps, something went wrong", {
 				id: notification
@@ -126,7 +125,7 @@ const EditProfileForm = () => {
 			<Button
 				title="Save Changes"
 				className="mt-[37px] w-full md:w-[161px]"
-				disabled={isCreatingProfile}
+				disabled={isEditing}
 			/>
 		</form>
 	);
@@ -134,8 +133,3 @@ const EditProfileForm = () => {
 
 export default EditProfileForm;
 
-// {
-//     "reason": "sending a transaction requires a signer",
-//     "code": "UNSUPPORTED_OPERATION",
-//     "operation": "sendTransaction"
-// }

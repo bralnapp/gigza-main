@@ -42,7 +42,7 @@ const CreateProfileForm = () => {
 	});
 
 	const onSubmit = async (data: FormData) => {
-		const notification = toast.loading("Please wait...Updating profile");
+		const notification = toast.loading("Please wait...Creating profile");
 		setIsCreatingProfile(true);
 
 		try {
@@ -133,8 +133,3 @@ const CreateProfileForm = () => {
 
 export default CreateProfileForm;
 
-// {
-//     "reason": "sending a transaction requires a signer",
-//     "code": "UNSUPPORTED_OPERATION",
-//     "operation": "sendTransaction"
-// }
