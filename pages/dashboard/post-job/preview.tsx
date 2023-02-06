@@ -19,6 +19,7 @@ import { toast } from "react-hot-toast";
 // images
 import chevronLeft from "@/public/asset/icons/chevron-left.svg";
 import usdtLogo from "@/public/asset/icons/usdt-logo.svg";
+import numeral from "numeral";
 
 type FormDataProps = {
 	title: string;
@@ -145,7 +146,7 @@ const Preview = () => {
 						<p className="mb-3 text-base leading-[19px] text-b1">
 							Describe your brief
 						</p>
-						<p className="mb-7 text-sm leading-[17px] text-b2">
+						<p className="mb-7 text-sm leading-[17px] text-b2 whitespace-pre-wrap">
 							{formData?.description}
 						</p>
 
@@ -179,7 +180,7 @@ const Preview = () => {
 							<p className="capitalize leading-[21px] text-b1">budget</p>
 							<div className="mb-[25px] mt-[13px] flex items-center justify-between rounded-[5px] border border-[#E8E8EF] py-[9px] px-3">
 								<p className="text-base leading-[19px] text-b1 ">
-									${formData?.amount}
+									${numeral(formData?.amount).format(',')}
 								</p>
 								<div className="flex w-fit items-center gap-x-[9px] rounded bg-[#F5F5F5] py-[5px] px-[6px]">
 									<Image src={usdtLogo} alt="" />

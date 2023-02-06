@@ -53,7 +53,7 @@ const RecentJobListDetails = ({ jobDetails }: RecentJobListDetailsProps) => {
 				<h4 className="text-base font-bold capitalize leading-[19px] text-b1">
 					project details
 				</h4>
-				<p className="mt-3 text-sm leading-[21px] text-b4">
+				<p className="mt-3 text-sm leading-[21px] text-b4 whitespace-pre-wrap">
 					{jobDetails?.description}
 				</p>
 				{/* skills */}

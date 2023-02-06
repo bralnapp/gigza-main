@@ -37,7 +37,7 @@ const JobDetails = () => {
 			functionName: "getUser",
 			args: [jobDetails?.client]
 		});
-
+console.log(profile)
 	return jobDetails ? (
 		<DashboardLayout>
 			<div className="rounded-[10px] bg-white py-6 px-5 pb-[100px]">
@@ -73,7 +73,7 @@ const JobDetails = () => {
 					<h4 className="text-base font-bold capitalize leading-[19px] text-b1">
 						project details
 					</h4>
-					<p className="mt-3 text-sm leading-[21px] text-b4">
+					<p className="mt-3 text-sm leading-[21px] text-b4 whitespace-pre-wrap">
 						{jobDetails?.description}
 					</p>
 					{/* skills */}
