@@ -20,22 +20,23 @@ const ContractButtonSection = ({
 	const [isAcceptingContract, setIsAcceptingContract] = useState(false);
 
 	const { initGigzaContract } = useStoreContext();
-    const router = useRouter()
+	const router = useRouter();
 
 	const handleAcceptContract = async () => {
 		const acceptContractNotification = toast.loading("Accepting contract");
 		setIsAcceptingContract(true);
-        console.log(jobId)
 		try {
 			// @ts-ignore
-			const txHash = await initGigzaContract!.acceptContract(formatUnit(jobId));
+			const txHash = await initGigzaContract!.acceptContract(
+				formatUnit(jobId)! * 10 ** 18
+			);
 			const receipt = await txHash.wait();
 			if (receipt) {
 				setIsAcceptingContract(false);
 				toast.success("Contract has been accepted", {
 					id: acceptContractNotification
 				});
-                router.push('/dashboard/contract')
+				router.push("/dashboard/contract");
 			}
 		} catch (error) {
 			setIsAcceptingContract(false);
@@ -49,7 +50,9 @@ const ContractButtonSection = ({
 
 	return freelancerBid?.length ? (
 		<>
-			<DeclineOfferModal {...{ isDeclineModalOpen, setIsDeclineModalOpen }} />
+			<DeclineOfferModal
+				{...{ isDeclineModalOpen, setIsDeclineModalOpen, jobId }}
+			/>
 
 			{freelancerBid[0]?.bidState === 1 ? (
 				<div className="mt-4 mb-6 flex items-center gap-x-5">

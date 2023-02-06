@@ -43,7 +43,7 @@ const JobDetailsBidReceived = ({ pageData }: JobDetailsBidReceivedProps) => {
 			{/* date posted */}
 			<div className="">
 				<h3 className="mb-[5px] text-sm capitalize leading-[21px] text-[#667085]">
-					Skills
+					Date posted
 				</h3>
 				<p className="text-sm capitalize leading-[21px] text-[#101828]">
 					{covertToReadableDate(parseInt(jobDetails?.timestamp))}

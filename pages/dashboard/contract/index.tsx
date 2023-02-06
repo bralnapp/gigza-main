@@ -52,9 +52,7 @@ const Contract = () => {
 	const close = usersContracts?.filter(
 		(item) => item![1][0]?.bidState === 4 || item![1][0]?.bidState === 5
 	);
-	const pending = usersContracts?.filter(
-		(item) => item![1][0]?.bidState === 1 || item![1][0]?.bidState === 3
-	);
+	const pending = usersContracts?.filter((item) => item![1][0]?.bidState === 1);
 
 	const pendingJobs: (JobDetailsProps | undefined)[] | undefined = pending
 		?.flatMap((item) => item as [JobDetailsProps | undefined] | undefined)
@@ -70,7 +68,6 @@ const Contract = () => {
 		["close", closeJobs],
 		["pending", pendingJobs]
 	]);
-console.log(totalJobs)
 	return (
 		<DashboardLayout>
 			<div className="dashboard-layout-container pt-8 pb-[95px] min-[540px]:pt-[42px]">
@@ -131,7 +128,7 @@ console.log(totalJobs)
 										{item?.description}
 									</p>
 								</div>
-								<p className="ml-auto text-sm capitalize leading-[19px] text-b4">
+								<div className="ml-auto text-sm capitalize leading-[19px] text-b4">
 									{activeSection === "active" ? (
 										// @ts-ignore
 										`End Date: ${covertToReadableDate(item?.timeline)}`
@@ -139,7 +136,7 @@ console.log(totalJobs)
 										// @ts-ignore
 										<ContractStatus bids={item?.userBids} />
 									)}
-								</p>
+								</div>
 							</div>
 							<div className="mt-[15px] flex items-center space-x-2 text-sm capitalize leading-[17px] text-b1">
 								{/* @ts-ignore */}

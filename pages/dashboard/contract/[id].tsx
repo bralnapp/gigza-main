@@ -50,14 +50,11 @@ const ContractDetails = () => {
 	});
 
 	const thisJob = totalJobs?.filter((item) => {
-		return parseInt(item?.jobId) === formatUnit(pageData?.[0]);
+		return parseInt(item?.jobId) === formatUnit(pageData?.[0])! * 10 ** 18;
 	});
-
-	console.log(thisJob);
 	const freelancerBid = thisJob?.[0]?.userBids?.filter(
 		(item) => item?.freelancer === address
 	);
-
 	return (
 		<DashboardLayout>
 			<div className="dashboard-layout-container mb-7 pt-[26px] min-[540px]:pb-[118px] lg:pt-[42px]">
