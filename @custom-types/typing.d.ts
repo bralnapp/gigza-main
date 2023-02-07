@@ -34,7 +34,7 @@ export type UserProfileType = {
 	userAddress: `0x${string}`;
 };
 
-export type ReceivedProposalType = JobDetailsProps
+export type ReceivedProposalType = JobDetailsProps;
 
 export type PageData =
 	| {
@@ -43,3 +43,8 @@ export type PageData =
 			freelancerAddress: `0x${string}`;
 	  }
 	| undefined;
+
+export interface BigNumberData {
+	type: "BigNumber";
+	hex: string;
+}

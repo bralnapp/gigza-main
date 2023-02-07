@@ -6,7 +6,7 @@ import {
 	ProfileAbout,
 	ProfileReviews
 } from "@/modules/dashboard/sections/profile";
-import { Button, EditProfileButton } from "@/modules/common/components/input/button";
+import { Button } from "@/modules/common/components/input/button";
 import { toast } from "react-hot-toast";
 import { useAccount, useContractRead } from "wagmi";
 import { GigzaContractAbi, GigzaContractAddress } from "utils/helper";
@@ -46,8 +46,6 @@ const Profile = () => {
 			toast.error("Opps!!!... something went wrong");
 		}
 	}, [isError]);
-
-	console.log("userDetails", userDetails?.name);
 
 	return (
 		<DashboardLayout>
@@ -90,7 +88,11 @@ const Profile = () => {
 				<div className="dashboard-layout-container border-b border-stroke md:border-none">
 					<div className="hidden justify-end md:flex xl:pr-[100px]">
 						<Button
-							href={userDetails?.name ? "/dashboard/profile/edit" : "/dashboard/profile/create"}
+							href={
+								userDetails?.name
+									? "/dashboard/profile/edit"
+									: "/dashboard/profile/create"
+							}
 							title={userDetails?.name ? "Edit Profile" : "Create Profile"}
 							className="h-[42px] w-[125px] border border-primary bg-white text-primary"
 						/>

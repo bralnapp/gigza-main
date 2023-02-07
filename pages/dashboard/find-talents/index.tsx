@@ -9,13 +9,16 @@ import { Button } from "@/modules/common/components/input/button";
 import { FilterTalentListModal } from "@/modules/dashboard/components/modal";
 import { useContractRead } from "wagmi";
 import { GigzaContractAbi, GigzaContractAddress } from "utils/helper";
+import {UserProfileType} from "@custom-types/typing"
 
 // images
 import filterIcon from "@/public/asset/icons/filter-icon.svg";
 
 const FindTalents = () => {
 	const [showFilterTalentModal, setShowFilterTalentModal] = useState(false);
-	const { data: usersProfile } = useContractRead({
+	const { data: usersProfile } : {
+		data: UserProfileType[] | undefined
+	} = useContractRead({
 		address: GigzaContractAddress,
 		abi: GigzaContractAbi,
 		functionName: "getUserProfiles"
@@ -43,7 +46,6 @@ const FindTalents = () => {
 				</div>
 				<div className="dashboard-layout-container mt-6 mb-[51px] grid-cols-[2fr_1fr] md:mb-[76px] lg:mt-12 lg:grid lg:gap-x-[45px]">
 					{/* freelancers */}
-					{/* @ts-ignore */}
 					<TalentList {...{ usersProfile }} />
 					<ApplyFilter />
 				</div>

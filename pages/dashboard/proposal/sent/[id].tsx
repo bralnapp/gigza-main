@@ -25,14 +25,14 @@ const SentProposalDetails = () => {
 				<h1 className="mb-4 text-base font-bold leading-[19px] text-b1 md:text-[32px] md:leading-[38px]">
 					{job?.title}
 				</h1>
-				<p className="mb-8 text-sm leading-[21px] text-b3">
+				<p className="mb-8 whitespace-pre-wrap text-sm leading-[21px] text-b3">
 					{job?.description}
 				</p>
 				{/* proposal  */}
 				<h3 className="mb-4 text-base font-bold capitalize leading-[19px] text-b1 md:mb-8 md:text-xl md:leading-6">
 					Your proposal
 				</h3>
-				<p className="text-sm leading-[17px] text-b3">
+				<p className="whitespace-pre-wrap text-sm leading-[17px] text-b3">
 					{proposalByAFreelancer[0]?.description}
 				</p>
 				{/* project timeline  */}
@@ -60,6 +60,5 @@ const SentProposalDetails = () => {
 		</DashboardLayout>
 	);
 };
-
 
 export default SentProposalDetails;

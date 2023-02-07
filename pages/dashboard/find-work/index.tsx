@@ -5,26 +5,30 @@ import {
 	RecentJobListDetails
 } from "@/modules/dashboard/sections/find-work";
 import { GigzaContractAbi, GigzaContractAddress } from "utils/helper";
-import { useContractRead } from "wagmi";
-import { JobDetailsProps } from "@custom-types/typing";
+import { BigNumberData, JobDetailsProps } from "@custom-types/typing";
+import { readContract } from "@wagmi/core";
 
-const FindWork = () => {
+export type ItotalJobs = {
+	0: BigNumberData;
+	1: string;
+	2: string;
+	3: BigNumberData;
+	4: `0x${string}`;
+	5: string[];
+	6: BigNumberData;
+	9: BigNumberData;
+}[];
+
+type FindWorkProps = {
+	totalJobs: ItotalJobs;
+};
+
+const FindWork = ({ totalJobs }: FindWorkProps) => {
 	const [activeIndex, setActiveIndex] = useState(0);
-	const {
-		data: totalJobs
-	}: {
-		data: JobDetailsProps | undefined;
-	} = useContractRead({
-		address: GigzaContractAddress,
-		abi: GigzaContractAbi,
-		functionName: "getTotalJobs"
-	});
 
 	const handleSelect = (index: number) => {
 		setActiveIndex(index);
 	};
-
-	console.log(totalJobs)
 
 	return (
 		<DashboardLayout>
@@ -41,6 +45,20 @@ const FindWork = () => {
 			</div>
 		</DashboardLayout>
 	);
+};
+
+export const getServerSideProps = async () => {
+	const totalJobs = (await readContract({
+		address: GigzaContractAddress,
+		abi: GigzaContractAbi,
+		functionName: "getTotalJobs"
+	})) as JobDetailsProps;
+
+	return {
+		props: {
+			totalJobs: JSON.parse(JSON.stringify(totalJobs))
+		}
+	};
 };
 
 export default FindWork;
