@@ -12,7 +12,6 @@ import {
 import {
 	BigNumberData,
 	JobDetailsProps,
-	UserProfileType
 } from "@custom-types/typing";
 import { NextPageContext } from "next";
 import { readContract } from "@wagmi/core";

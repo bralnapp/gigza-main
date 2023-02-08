@@ -23,7 +23,13 @@ const Sent = () => {
 				<div className="mt-4 space-y-5 min-[540px]:mt-8">
 					{sentProposals.map((item, index) => (
 						<Link
-							href={`/dashboard/proposal/sent/${parseInt(item?.job?.jobId)}`}
+							// href={`/dashboard/proposal/sent/${parseInt(item?.job?.jobId)}`}
+							href={{
+								pathname: "/dashboard/proposal/sent/[jobId]",
+								query: {
+									jobId: parseInt(item?.job?.jobId)
+								}
+							}}
 							key={`sent-proposals-${index}`}
 							className="block rounded-lg bg-white py-4 px-3 min-[540px]:py-6 min-[540px]:px-5"
 						>
@@ -54,7 +60,7 @@ const Sent = () => {
 										{covertToReadableDate(
 											formatUnit(item?.job?.timestamp)! * 10 ** 18
 										)}
-										</p>
+									</p>
 								</div>
 							</div>
 						</Link>

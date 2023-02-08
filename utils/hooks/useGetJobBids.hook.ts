@@ -38,6 +38,9 @@ const useGetJobBids = (
 		try {
 			// @ts-ignore
 			const jobBids: IuserBids[] = await initGigzaContract!.getJobBids(jobId);
+			console.log('jobBids',jobBids)
+			const _freelancerProposal = jobBids.filter(item => item.freelancer?.toLowerCase() === address!.toLowerCase())
+			console.log("freelancerProposal",_freelancerProposal)
 			for (let index = 0; index < jobBids.length; index++) {
 				const jobBid = jobBids[index];
 				if (jobBid?.freelancer?.toLowerCase() === address!.toLowerCase()) {
@@ -51,6 +54,24 @@ const useGetJobBids = (
 			toast.error(error?.message);
 		}
 	};
+	// const getJobBids = async () => {
+	// 	let freelancerProposal: IuserBids[] = [];
+	// 	try {
+	// 		// @ts-ignore
+	// 		const jobBids: IuserBids[] = await initGigzaContract!.getJobBids(jobId);
+	// 		for (let index = 0; index < jobBids.length; index++) {
+	// 			const jobBid = jobBids[index];
+	// 			if (jobBid?.freelancer?.toLowerCase() === address!.toLowerCase()) {
+	// 				freelancerProposal.push(jobBid);
+	// 			}
+	// 		}
+	// 		setProposalByAFreelancer(freelancerProposal);
+	// 		setProposalsReceived(jobBids);
+	// 		setJob(_job);
+	// 	} catch (error: any) {
+	// 		toast.error(error?.message);
+	// 	}
+	// };
 
 	useEffect(() => {
 		getJobBids();

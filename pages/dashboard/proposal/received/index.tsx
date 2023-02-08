@@ -1,5 +1,4 @@
 import DashboardLayout from "@/modules/dashboard/components/layout";
-import Link from "next/link";
 import { useGetProposals } from "utils/hooks";
 import { IuserBids } from "@custom-types/typing";
 import { toast } from "react-hot-toast";
@@ -26,40 +25,42 @@ const Received = () => {
 				</h1>
 
 				<div className="mt-4 space-y-5 min-[540px]:mt-8">
-					{receivedProposals?.map((item, index) => (
-						<div
-							key={`received-proposals-${index}`}
-							onClick={() => handleClick(item.jobId, item?.userBids)}
-							className="block rounded-lg bg-white py-4 px-3 min-[540px]:py-6 min-[540px]:px-5 cursor-pointer"
-						>
-							<div className="flex items-start justify-between">
-								<h4 className="w-11/12 text-base font-bold leading-[19px] text-b2">
-									{item?.title}
-								</h4>
-								<p
-									className={`text-sm capitalize italic leading-[19px] ${
-										item?.state === 0 ? "text-[#0E9802]" : "text-[#F02323]"
-									}`}
-								>
-									{item?.state === 0 ? "opened" : "closed"}
+					{receivedProposals
+						?.filter((item) => item?.userBids.length)
+						.map((item, index) => (
+							<div
+								key={`received-proposals-${index}`}
+								onClick={() => handleClick(item.jobId, item?.userBids)}
+								className="block cursor-pointer rounded-lg bg-white py-4 px-3 min-[540px]:py-6 min-[540px]:px-5"
+							>
+								<div className="flex items-start justify-between">
+									<h4 className="w-11/12 text-base font-bold leading-[19px] text-b2">
+										{item?.title}
+									</h4>
+									<p
+										className={`text-sm capitalize italic leading-[19px] ${
+											item?.state === 0 ? "text-[#0E9802]" : "text-[#F02323]"
+										}`}
+									>
+										{item?.state === 0 ? "opened" : "closed"}
+									</p>
+								</div>
+
+								<p className="my-[15px] text-sm leading-[21px] text-b4 line-clamp-3 min-[540px]:w-4/5">
+									{item?.description}
+								</p>
+								<p className="text-sm capitalize leading-[17px] text-b1">
+									{item?.userBids.length ? (
+										<>
+											{item?.userBids.length} application
+											{`${item?.userBids.length > 1 ? "s" : ""}`}
+										</>
+									) : (
+										<>no application yet</>
+									)}
 								</p>
 							</div>
-
-							<p className="my-[15px] text-sm leading-[21px] text-b4 line-clamp-3 min-[540px]:w-4/5">
-								{item?.description}
-							</p>
-							<p className="text-sm capitalize leading-[17px] text-b1">
-								{item?.userBids.length ? (
-									<>
-										{item?.userBids.length} application
-										{`${item?.userBids.length > 1 ? "s" : ""}`}
-									</>
-								) : (
-									<>no application yet</>
-								)}
-							</p>
-						</div>
-					))}
+						))}
 				</div>
 			</div>
 		</DashboardLayout>
