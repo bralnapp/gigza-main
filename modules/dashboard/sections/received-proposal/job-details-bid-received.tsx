@@ -13,11 +13,11 @@ import {
 } from "utils/helper";
 import { useContractRead } from "wagmi";
 import { Button } from "@/modules/common/components/input/button";
+import numeral from "numeral";
 
 // images
 import profileAvatar from "@/public/asset/avatar/profile-avatar.svg";
 import chatIconBlack from "@/public/asset/icons/chat-icon-black.svg";
-import numeral from "numeral";
 
 type JobDetailsBidReceivedProps = {
 	pageData: PageData;

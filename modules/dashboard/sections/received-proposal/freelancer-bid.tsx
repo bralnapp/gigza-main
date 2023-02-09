@@ -6,6 +6,7 @@ import { useContractRead } from "wagmi";
 import { toast } from "react-hot-toast";
 import { useState } from "react";
 import { useStoreContext } from "context/StoreContext";
+import { useRouter } from "next/router";
 
 // images
 import profileAvatar from "@/public/asset/avatar/profile-avatar.svg";
@@ -17,6 +18,7 @@ type FreelancerBidSectionProps = {
 const FreelancerBidSection = ({ pageData }: FreelancerBidSectionProps) => {
 	const [isSendingContract, setIsSendingContract] = useState(false);
 
+	const router = useRouter();
 	const { initGigzaContract } = useStoreContext();
 
 	const { data: freelancerDetails }: { data: UserProfileType | undefined } =
@@ -26,7 +28,6 @@ const FreelancerBidSection = ({ pageData }: FreelancerBidSectionProps) => {
 			functionName: "getUser",
 			args: [pageData?.freelancerAddress]
 		});
-
 	const handleSendContract = async () => {
 		setIsSendingContract(true);
 		const notification = toast.loading("Sending contract");
@@ -42,7 +43,7 @@ const FreelancerBidSection = ({ pageData }: FreelancerBidSectionProps) => {
 				toast.success("Your contract has been sent", {
 					id: notification
 				});
-				// router.push("/dashboard/proposal/sent");
+				router.push(`/dashboard/proposal/received/${pageData?.jobId}`);
 			}
 			setIsSendingContract(false);
 		} catch (error: any) {

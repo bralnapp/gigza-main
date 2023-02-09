@@ -1,7 +1,7 @@
 import { Button } from "@/modules/common/components/input/button";
 import React, { useState } from "react";
 import { useStoreContext } from "context/StoreContext";
-import { IuserBids } from "@custom-types/typing";
+import { BigNumberData, IuserBids } from "@custom-types/typing";
 import { DeclineOfferModal } from "../../components/modal";
 import { toast } from "react-hot-toast";
 import { formatUnit } from "utils/helper";
@@ -9,7 +9,13 @@ import { useRouter } from "next/router";
 
 type ContractButtonSectionProps = {
 	jobId: number | undefined;
-	freelancerBid: IuserBids[] | undefined;
+	freelancerBid: {
+	0:BigNumberData;
+	1:string;
+	2:BigNumberData;
+	3: `0x${string}`;
+	4: number;
+	}[];
 };
 
 const ContractButtonSection = ({
@@ -40,7 +46,6 @@ const ContractButtonSection = ({
 			}
 		} catch (error) {
 			setIsAcceptingContract(false);
-			console.log(error);
 			// @ts-ignore
 			toast.error(error?.reason || "Opps, something went wrong", {
 				id: acceptContractNotification
@@ -54,7 +59,7 @@ const ContractButtonSection = ({
 				{...{ isDeclineModalOpen, setIsDeclineModalOpen, jobId }}
 			/>
 
-			{freelancerBid[0]?.bidState === 1 ? (
+			{freelancerBid[0]?.[4] === 1 ? (
 				<div className="mt-4 mb-6 flex items-center gap-x-5">
 					<Button
 						title="decline offer"
