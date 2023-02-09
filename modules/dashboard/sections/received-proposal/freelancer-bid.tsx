@@ -34,7 +34,7 @@ const FreelancerBidSection = ({ pageData }: FreelancerBidSectionProps) => {
 			// @ts-ignore
 			const txHash = await initGigzaContract!.sendContract(
 				pageData?.jobId,
-				freelancerDetails?.user
+				freelancerDetails?.userAddress
 			);
 			const receipt = await txHash.wait();
 			if (receipt) {
@@ -74,7 +74,7 @@ const FreelancerBidSection = ({ pageData }: FreelancerBidSectionProps) => {
 
 			{/* bid */}
 			<div className="mt-3 mb-8 text-sm leading-[21px] text-b3">
-				<p className="">{pageData?.bid}</p>
+				<p className="whitespace-pre-wrap">{pageData?.bid}</p>
 				<Button
 					onClick={handleSendContract}
 					disabled={isSendingContract}

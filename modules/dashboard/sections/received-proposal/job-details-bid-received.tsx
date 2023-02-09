@@ -17,6 +17,7 @@ import { Button } from "@/modules/common/components/input/button";
 // images
 import profileAvatar from "@/public/asset/avatar/profile-avatar.svg";
 import chatIconBlack from "@/public/asset/icons/chat-icon-black.svg";
+import numeral from "numeral";
 
 type JobDetailsBidReceivedProps = {
 	pageData: PageData;
@@ -38,8 +39,9 @@ const JobDetailsBidReceived = ({ pageData }: JobDetailsBidReceivedProps) => {
 			functionName: "jobs",
 			args: [pageData?.jobId]
 		});
+
 	return (
-		<div className="space-y-6 bg-white py-5 px-4 h-fit">
+		<div className="h-fit space-y-6 bg-white py-5 px-4">
 			{/* date posted */}
 			<div className="">
 				<h3 className="mb-[5px] text-sm capitalize leading-[21px] text-[#667085]">
@@ -55,7 +57,7 @@ const JobDetailsBidReceived = ({ pageData }: JobDetailsBidReceivedProps) => {
 					Budget
 				</h3>
 				<p className="text-sm capitalize leading-[21px] text-[#101828]">
-					${formatUnit(jobDetails?.amount)}
+					${numeral(formatUnit(jobDetails?.amount)).format(",")}
 				</p>
 			</div>
 			{/* about freelancer */}
@@ -78,7 +80,7 @@ const JobDetailsBidReceived = ({ pageData }: JobDetailsBidReceivedProps) => {
 			</div>
 			<div className="space-y-4">
 				<Button
-					href={`/dashboard/profile/${freelancerDetails?.user}`}
+					href={`/dashboard/profile/${freelancerDetails?.userAddress}`}
 					title="View profile"
 					className="h-[44px] w-full border border-primary bg-white text-primary"
 				/>
