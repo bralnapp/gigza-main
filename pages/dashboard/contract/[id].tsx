@@ -89,7 +89,6 @@ const ContractDetails = ({ pageData, totalJobs }: ContractDetailsProps) => {
 		(item) => item?.[3].toLowerCase() === address?.toLowerCase()
 	) as unknown;
 
-	console.log("freelancerBid", freelancerBid);
 	return (
 		<DashboardLayout>
 			<div className="dashboard-layout-container mb-7 pt-[26px] min-[540px]:pb-[118px] lg:pt-[42px]">
@@ -100,69 +99,70 @@ const ContractDetails = ({ pageData, totalJobs }: ContractDetailsProps) => {
 					<Image src={chevronLeft} alt="" />
 					<p className="text-base capitalize text-[#5F6062]">go back</p>
 				</button>
-			</div>
-			<Button
-				title="Cancel"
-				onClick={() => router.back()}
-				className="hidden w-[115px] border border-[#D9D9D9] bg-[#F3F4F5] text-[#5F6062] lg:flex"
-			/>
-			<div className="grid-cols-2 lg:mt-[47px] lg:grid lg:gap-x-16 xl:grid-cols-[2fr_1fr]">
-				<div className="lg:py-6 lg:px-5">
-					<h3 className="mb-4 text-xl font-bold capitalize leading-6 text-b1 min-[540px]:mb-8 min-[540px]:text-[24px] min-[540px]:leading-[29px]">
-						contract
-					</h3>
-					<h4 className="text-base font-bold capitalize leading-5 text-b1 min-[540px]:text-lg min-[540px]:leading-5">
-						{pageData?.[1]}
-					</h4>
-					<p className="my-4 whitespace-pre-wrap text-sm leading-[17px] text-b3 min-[540px]:mb-8 min-[540px]:leading-[21px]">
-						{pageData?.[2]}
-					</p>
 
-					{/* duration */}
-					<h4 className="mb-2 text-base font-bold capitalize leading-[19px] min-[540px]:mb-4">
-						duration
-					</h4>
-					<p className="text-sm leading-[17px] text-b2">
-						{covertToReadableDate(formatUnit(pageData?.[6])! * 10 ** 18)}
-					</p>
-					<ContractButtonSection
-						freelancerBid={freelancerBid as FreelancerBid}
-						jobId={formatUnit(pageData?.[0])! * 10 ** 18}
-					/>
-				</div>
-
-				<div className="mt-[83px] py-4 px-6 lg:mt-0 ">
-					<div className="mb-4 text-sm capitalize leading-[21px] min-[540px]:mb-6">
-						<p className="mb-[5px] text-[#667085]">date posted</p>
-						<p className="text-[#101828]">
-							{covertToReadableDate(formatUnit(pageData?.[9])! * 10 ** 18)}
+				<Button
+					title="Cancel"
+					onClick={() => router.back()}
+					className="hidden w-[115px] border border-[#D9D9D9] bg-[#F3F4F5] text-[#5F6062] lg:flex"
+				/>
+				<div className="grid-cols-2 lg:mt-[47px] lg:grid lg:gap-x-16 xl:grid-cols-[2fr_1fr]">
+					<div className="lg:py-6 lg:px-5">
+						<h3 className="mb-4 text-xl font-bold capitalize leading-6 text-b1 min-[540px]:mb-8 min-[540px]:text-[24px] min-[540px]:leading-[29px]">
+							contract
+						</h3>
+						<h4 className="text-base font-bold capitalize leading-5 text-b1 min-[540px]:text-lg min-[540px]:leading-5">
+							{pageData?.[1]}
+						</h4>
+						<p className="my-4 whitespace-pre-wrap text-sm leading-[17px] text-b3 min-[540px]:mb-8 min-[540px]:leading-[21px]">
+							{pageData?.[2]}
 						</p>
+
+						{/* duration */}
+						<h4 className="mb-2 text-base font-bold capitalize leading-[19px] min-[540px]:mb-4">
+							duration
+						</h4>
+						<p className="text-sm leading-[17px] text-b2">
+							{covertToReadableDate(formatUnit(pageData?.[6])! * 10 ** 18)}
+						</p>
+						<ContractButtonSection
+							freelancerBid={freelancerBid as FreelancerBid}
+							jobId={formatUnit(pageData?.[0])! * 10 ** 18}
+						/>
 					</div>
 
-					{/* budget */}
-					<p className="mb-[5px] text-sm capitalize leading-[21px] text-[#667085]">
-						Budget
-					</p>
-					<p className="text-base capitalize leading-[21px] text-[#101828]">
-						${numeral(formatUnit(pageData?.[3])).format(",")}
-					</p>
+					<div className="mt-[83px] py-4 px-6 lg:mt-0 ">
+						<div className="mb-4 text-sm capitalize leading-[21px] min-[540px]:mb-6">
+							<p className="mb-[5px] text-[#667085]">date posted</p>
+							<p className="text-[#101828]">
+								{covertToReadableDate(formatUnit(pageData?.[9])! * 10 ** 18)}
+							</p>
+						</div>
 
-					{/* about client */}
-					<div className="my-4 min-[540px]:mt-6 min-[540px]:mb-4">
-						<p className="mb-2 text-sm leading-[21px] text-[#667085]">
-							About the client
+						{/* budget */}
+						<p className="mb-[5px] text-sm capitalize leading-[21px] text-[#667085]">
+							Budget
 						</p>
-						<ContractClientProfile address={pageData?.[4]!} />
-					</div>
-					<div>
-						{/* @ts-ignore */}
-						{freelancerBid?.length ? (
-							<Button
-								title="Send A Message"
-								icon={chatIcon}
-								className="w-full border border-[#D9D9D9] bg-white text-b2"
-							/>
-						) : null}
+						<p className="text-base capitalize leading-[21px] text-[#101828]">
+							${numeral(formatUnit(pageData?.[3])).format(",")}
+						</p>
+
+						{/* about client */}
+						<div className="my-4 min-[540px]:mt-6 min-[540px]:mb-4">
+							<p className="mb-2 text-sm leading-[21px] text-[#667085]">
+								About the client
+							</p>
+							<ContractClientProfile address={pageData?.[4]!} />
+						</div>
+						<div>
+							{/* @ts-ignore */}
+							{freelancerBid?.length ? (
+								<Button
+									title="Send A Message"
+									icon={chatIcon}
+									className="w-full border border-[#D9D9D9] bg-white text-b2"
+								/>
+							) : null}
+						</div>
 					</div>
 				</div>
 			</div>

@@ -53,6 +53,8 @@ const ContractButtonSection = ({
 		}
 	};
 
+	console.log('bid state',freelancerBid[0]?.[4])
+
 	return freelancerBid?.length ? (
 		<>
 			<DeclineOfferModal
