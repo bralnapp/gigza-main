@@ -18,7 +18,7 @@ const WalletBalance = () => {
 	});
 
 	const fundWallet = async () => {
-		const notification = toast.loading("Funding wallet");
+		const notification = toast.loading("Minting testnet Dai");
 		setIsFundingWallet(true);
 
 		try {
@@ -28,7 +28,7 @@ const WalletBalance = () => {
 			if (receipt) {
 				setIsFundingWallet(false);
 				refetch();
-				toast.success("Wallet has been funded", {
+				toast.success("Testnet Dai has been minted successfully", {
 					id: notification
 				});
 			}
@@ -50,12 +50,19 @@ const WalletBalance = () => {
 				DAI {numeral(formatUnit(balance)).format(",") || 0}
 			</h3>
 
-			<Button
-				disabled={isFundingWallet}
-				onClick={() => fundWallet()}
-				title="Fund wallet"
-				className="mt-10 h-10 w-[120px]"
-			/>
+			<div className="mt-10 flex items-center space-x-10">
+				<Button
+					disabled={isFundingWallet}
+					onClick={() => fundWallet()}
+					title="Mint testnet Dai"
+					className="h-10 px-2"
+				/>
+				<Button
+					href="/dashboard/contract"
+					title="My contracts"
+					className="h-10 bg-[#EBEEF2] px-3 text-[#5F6062]"
+				/>
+			</div>
 		</div>
 	);
 };

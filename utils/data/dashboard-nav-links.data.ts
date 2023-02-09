@@ -21,10 +21,10 @@ export const dashboardNavLinks = [
 			},
 		]
 	},
-	// {
-	// 	title: "contract",
-	// 	to: "/dashboard/contract"
-	// },
+	{
+		title: "contract",
+		to: "/dashboard/contract"
+	},
 	// {
 	// 	title: "wallet",
 	// 	to: "/dashboard/wallet"

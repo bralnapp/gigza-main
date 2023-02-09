@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FormEvent, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { AmountTextInput, TagInput, TextArea, TextInput } from "../input";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -6,6 +6,11 @@ import * as yup from "yup";
 import Select from "../input/select";
 import { Button } from "@/modules/common/components/input/button";
 import { useRouter } from "next/router";
+import { toast } from "react-hot-toast";
+import { useAccount, useContractRead } from "wagmi";
+import { DaiContractAbi, DiaContractAddress, formatUnit } from "utils/helper";
+import numeral from "numeral";
+import { useStoreContext } from "context/StoreContext";
 
 const schema = yup.object().shape({
 	title: yup.string().required(),
@@ -27,6 +32,42 @@ type FormData = {
 const PostJobForm = () => {
 	const timeDurationOptions = ["2", "4", "6", "8"];
 	const router = useRouter();
+
+	const { address } = useAccount();
+	const [isFundingWallet, setIsFundingWallet] = useState(false);
+	const { initDaiContract } = useStoreContext();
+
+	const { data: balance, refetch } = useContractRead({
+		address: DiaContractAddress,
+		abi: DaiContractAbi,
+		functionName: "balanceOf",
+		args: [address]
+	});
+
+	const fundWallet = async (e: FormEvent<HTMLButtonElement>) => {
+		e.preventDefault();
+		const notification = toast.loading("Minting testnet Dai");
+		setIsFundingWallet(true);
+
+		try {
+			// @ts-ignore
+			const txHash = await initDaiContract!.mint();
+			const receipt = await txHash.wait();
+			if (receipt) {
+				setIsFundingWallet(false);
+				refetch();
+				toast.success("Testnet Dai has been minted successfully", {
+					id: notification
+				});
+			}
+		} catch (error) {
+			setIsFundingWallet(false);
+			// @ts-ignore
+			toast.error(error?.reason || "Opps, something went wrong", {
+				id: notification
+			});
+		}
+	};
 
 	const {
 		register,
@@ -99,7 +140,15 @@ const PostJobForm = () => {
 				type="text"
 				{...{ register, errors }}
 			/>
-			<Button title="Preview" className="w-full md:w-[253px] md:mx-auto" />
+			<div className="flex flex-col gap-y-10 md:flex-row md:justify-between md:gap-y-0">
+				<Button title="Preview" className="h-10 w-full md:w-[253px]" />
+				<Button
+					disabled={isFundingWallet}
+					onClick={fundWallet}
+					title="Mint testnet Dai"
+					className="h-10 w-full bg-[#EBEEF2] text-[#5F6062] disabled:text-white md:w-[253px]"
+				/>
+			</div>
 		</form>
 	);
 };
