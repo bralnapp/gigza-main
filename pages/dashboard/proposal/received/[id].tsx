@@ -11,15 +11,16 @@ import {
 import { useWindowSize } from "utils/hooks";
 import Image from "next/image";
 import { UserProfile } from "@/modules/dashboard/sections/received-proposal";
+import { readContract } from "@wagmi/core";
+import { BigNumberData, IuserBids } from "@custom-types/typing";
+import { NextPageContext } from "next";
+import { useAccount } from "wagmi";
+import numeral from "numeral";
 
 // images
 import chevronLeft from "@/public/asset/icons/chevron-left.svg";
 import arrowDown from "@/public/asset/navbar/arrow-down.svg";
 import doubleGood from "@/public/asset/icons/double-good.svg";
-import { readContract } from "@wagmi/core";
-import { BigNumberData, IuserBids } from "@custom-types/typing";
-import { NextPageContext } from "next";
-import { useAccount } from "wagmi";
 
 const bidState = {
 	1: "Already sent",
@@ -64,18 +65,14 @@ const ReceivedProposalDetails = ({
 	const { address } = useAccount();
 
 	const handleClick = (
-		freelancerAddress: `0x${string}`,
-		description: string
+		freelancerAddress: `0x${string}`
+		// description: string
 	) => {
-		const data = {
-			jobId,
-			freelancerAddress,
-			bid: description
-		};
 		router.push({
 			pathname: `/dashboard/proposal/received/bid/${jobId}`,
 			query: {
-				data: JSON.stringify(data)
+				jobId: JSON.stringify(jobId),
+				freelancerAddress: JSON.stringify(freelancerAddress)
 			}
 		});
 	};
@@ -125,7 +122,7 @@ const ReceivedProposalDetails = ({
 										<div
 											key={`received-proposals-${index}`}
 											className="cursor-pointer border-b border-[#EAECF0] pb-5"
-											onClick={() => handleClick(item?.[3], item?.[1])}
+											onClick={() => handleClick(item?.[3])}
 										>
 											{/* freelancer  */}
 											<UserProfile freelancerAddress={item?.[3]} />
@@ -159,7 +156,7 @@ const ReceivedProposalDetails = ({
 								budget
 							</p>
 							<p className="text-base leading-[21px] text-[#101828]">
-								${formatUnit(job?.[3])}
+								${numeral(formatUnit(job?.[3])).format(",")}
 							</p>
 						</div>
 					</div>

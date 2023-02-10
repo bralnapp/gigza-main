@@ -1,5 +1,9 @@
 import { Button } from "@/modules/common/components/input/button";
-import { PageData, UserProfileType } from "@custom-types/typing";
+import {
+	BigNumberData,
+	JobDetailsProps,
+	UserProfileType
+} from "@custom-types/typing";
 import Image from "next/image";
 import { GigzaContractAbi, GigzaContractAddress } from "utils/helper";
 import { useContractRead } from "wagmi";
@@ -11,13 +15,44 @@ import { useRouter } from "next/router";
 // images
 import profileAvatar from "@/public/asset/avatar/profile-avatar.svg";
 
+type Bids = {
+	0: BigNumberData;
+	1: string;
+	2: BigNumberData;
+	3: `0x${string}`;
+	4: number;
+}[];
+
 type FreelancerBidSectionProps = {
-	pageData: PageData;
+	freelancerBid: {
+		0: BigNumberData;
+		1: string;
+		2: BigNumberData;
+		3: `0x${string}`;
+		4: number;
+	}[];
+	jobId: string;
+	job: {
+		0: BigNumberData;
+		1: string;
+		2: string;
+		3: BigNumberData;
+		4: `0x${string}`;
+		5: string[];
+		6: BigNumberData;
+		7: `0x${string}`;
+		8: Bids;
+		9: BigNumberData;
+		10: number;
+	};
 };
 
-const FreelancerBidSection = ({ pageData }: FreelancerBidSectionProps) => {
+const FreelancerBidSection = ({
+	freelancerBid,
+	jobId,
+	job
+}: FreelancerBidSectionProps) => {
 	const [isSendingContract, setIsSendingContract] = useState(false);
-
 	const router = useRouter();
 	const { initGigzaContract } = useStoreContext();
 
@@ -26,7 +61,7 @@ const FreelancerBidSection = ({ pageData }: FreelancerBidSectionProps) => {
 			address: GigzaContractAddress,
 			abi: GigzaContractAbi,
 			functionName: "getUser",
-			args: [pageData?.freelancerAddress]
+			args: [freelancerBid?.[3]]
 		});
 	const handleSendContract = async () => {
 		setIsSendingContract(true);
@@ -34,7 +69,7 @@ const FreelancerBidSection = ({ pageData }: FreelancerBidSectionProps) => {
 		try {
 			// @ts-ignore
 			const txHash = await initGigzaContract!.sendContract(
-				pageData?.jobId,
+				+jobId,
 				freelancerDetails?.userAddress
 			);
 			const receipt = await txHash.wait();
@@ -43,7 +78,7 @@ const FreelancerBidSection = ({ pageData }: FreelancerBidSectionProps) => {
 				toast.success("Your contract has been sent", {
 					id: notification
 				});
-				router.push(`/dashboard/proposal/received/${pageData?.jobId}`);
+				router.push(`/dashboard/proposal/received/${jobId}`);
 			}
 			setIsSendingContract(false);
 		} catch (error: any) {
@@ -53,8 +88,9 @@ const FreelancerBidSection = ({ pageData }: FreelancerBidSectionProps) => {
 			setIsSendingContract(false);
 		}
 	};
+	console.log(freelancerBid);
 
-	return (
+	return freelancerBid?.length ? (
 		<div className="bg-white py-5 px-4">
 			{/* freelancer profile */}
 			<div className="flex items-center gap-x-2">
@@ -75,15 +111,20 @@ const FreelancerBidSection = ({ pageData }: FreelancerBidSectionProps) => {
 
 			{/* bid */}
 			<div className="mt-3 mb-8 text-sm leading-[21px] text-b3">
-				<p className="whitespace-pre-wrap">{pageData?.bid}</p>
-				<Button
-					onClick={handleSendContract}
-					disabled={isSendingContract}
-					title="send contract"
-					className="mt-[43px] mb-[15px] w-full lg:w-[283px]"
-				/>
+				{/* @ts-ignore */}
+				<p className="whitespace-pre-wrap">{freelancerBid?.[1]}</p>
+				{job?.[10] > 0 ? null : (
+					<Button
+						onClick={handleSendContract}
+						disabled={isSendingContract}
+						title="send contract"
+						className="mt-[43px] mb-[15px] w-full lg:w-[283px]"
+					/>
+				)}
 			</div>
 		</div>
+	) : (
+		<p>Nothing to see here</p>
 	);
 };
 

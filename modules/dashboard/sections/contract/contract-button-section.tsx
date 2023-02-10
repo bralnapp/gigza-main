@@ -1,8 +1,8 @@
 import { Button } from "@/modules/common/components/input/button";
 import React, { useState } from "react";
 import { useStoreContext } from "context/StoreContext";
-import { BigNumberData, IuserBids } from "@custom-types/typing";
-import { DeclineOfferModal } from "../../components/modal";
+import { BigNumberData } from "@custom-types/typing";
+import { DeclineOfferModal, SubmitJobModal } from "../../components/modal";
 import { toast } from "react-hot-toast";
 import { formatUnit } from "utils/helper";
 import { useRouter } from "next/router";
@@ -10,11 +10,11 @@ import { useRouter } from "next/router";
 type ContractButtonSectionProps = {
 	jobId: number | undefined;
 	freelancerBid: {
-	0:BigNumberData;
-	1:string;
-	2:BigNumberData;
-	3: `0x${string}`;
-	4: number;
+		0: BigNumberData;
+		1: string;
+		2: BigNumberData;
+		3: `0x${string}`;
+		4: number;
 	}[];
 };
 
@@ -23,6 +23,7 @@ const ContractButtonSection = ({
 	freelancerBid
 }: ContractButtonSectionProps) => {
 	const [isDeclineModalOpen, setIsDeclineModalOpen] = useState(false);
+	const [isSubmitJobModalOpen, setIsSubmitJobModalOpen] = useState(true);
 	const [isAcceptingContract, setIsAcceptingContract] = useState(false);
 
 	const { initGigzaContract } = useStoreContext();
@@ -53,13 +54,14 @@ const ContractButtonSection = ({
 		}
 	};
 
-	console.log('bid state',freelancerBid[0]?.[4])
+	console.log("bid state", freelancerBid[0]?.[4]);
 
 	return freelancerBid?.length ? (
 		<>
 			<DeclineOfferModal
 				{...{ isDeclineModalOpen, setIsDeclineModalOpen, jobId }}
 			/>
+			<SubmitJobModal {...{ isSubmitJobModalOpen, setIsSubmitJobModalOpen }} />
 
 			{freelancerBid[0]?.[4] === 1 ? (
 				<div className="mt-4 mb-6 flex items-center gap-x-5">
@@ -76,6 +78,11 @@ const ContractButtonSection = ({
 					/>
 				</div>
 			) : null}
+
+			<Button
+				title="mark project as complete"
+				className="h-10 w-full md:w-[283px]"
+			/>
 		</>
 	) : (
 		<p className="text-red-500">

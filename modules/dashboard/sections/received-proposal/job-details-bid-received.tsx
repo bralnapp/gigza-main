@@ -1,9 +1,5 @@
 import React from "react";
-import {
-	JobDetailsProps,
-	PageData,
-	UserProfileType
-} from "@custom-types/typing";
+import { BigNumberData, UserProfileType } from "@custom-types/typing";
 import Image from "next/image";
 import {
 	covertToReadableDate,
@@ -19,25 +15,41 @@ import numeral from "numeral";
 import profileAvatar from "@/public/asset/avatar/profile-avatar.svg";
 import chatIconBlack from "@/public/asset/icons/chat-icon-black.svg";
 
+type Bids = {
+	0: BigNumberData;
+	1: string;
+	2: BigNumberData;
+	3: `0x${string}`;
+	4: number;
+}[];
+
 type JobDetailsBidReceivedProps = {
-	pageData: PageData;
+	job: {
+		0: BigNumberData;
+		1: string;
+		2: string;
+		3: BigNumberData;
+		4: `0x${string}`;
+		5: string[];
+		6: BigNumberData;
+		7: `0x${string}`;
+		8: Bids;
+		9: BigNumberData;
+		10: number;
+	};
+	freelancerAddress: `0x${string}`;
 };
 
-const JobDetailsBidReceived = ({ pageData }: JobDetailsBidReceivedProps) => {
+const JobDetailsBidReceived = ({
+	job,
+	freelancerAddress
+}: JobDetailsBidReceivedProps) => {
 	const { data: freelancerDetails }: { data: UserProfileType | undefined } =
 		useContractRead({
 			address: GigzaContractAddress,
 			abi: GigzaContractAbi,
 			functionName: "getUser",
-			args: [pageData?.freelancerAddress]
-		});
-
-	const { data: jobDetails }: { data: JobDetailsProps[number] | undefined } =
-		useContractRead({
-			address: GigzaContractAddress,
-			abi: GigzaContractAbi,
-			functionName: "jobs",
-			args: [pageData?.jobId]
+			args: [freelancerAddress]
 		});
 
 	return (
@@ -48,7 +60,7 @@ const JobDetailsBidReceived = ({ pageData }: JobDetailsBidReceivedProps) => {
 					Date posted
 				</h3>
 				<p className="text-sm capitalize leading-[21px] text-[#101828]">
-					{covertToReadableDate(parseInt(jobDetails?.timestamp))}
+					{covertToReadableDate(formatUnit(job?.[7])! * 10 ** 18)}
 				</p>
 			</div>
 			{/* budget */}
@@ -57,7 +69,7 @@ const JobDetailsBidReceived = ({ pageData }: JobDetailsBidReceivedProps) => {
 					Budget
 				</h3>
 				<p className="text-sm capitalize leading-[21px] text-[#101828]">
-					${numeral(formatUnit(jobDetails?.amount)).format(",")}
+					${numeral(formatUnit(job?.[3])).format(",")}
 				</p>
 			</div>
 			{/* about freelancer */}
