@@ -77,12 +77,12 @@ const ContractButtonSection = ({
 						className="w-[180px] font-normal"
 					/>
 				</div>
-			) : null}
-
-			<Button
-				title="mark project as complete"
-				className="h-10 w-full md:w-[283px]"
-			/>
+			) : (
+				<Button
+					title="mark project as complete"
+					className="h-10 w-full md:w-[283px]"
+				/>
+			)}
 		</>
 	) : (
 		<p className="text-red-500">

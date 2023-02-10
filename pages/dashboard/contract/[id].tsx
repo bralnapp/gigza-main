@@ -13,7 +13,7 @@ import {
 	ContractButtonSection,
 	ContractClientProfile
 } from "@/modules/dashboard/sections/contract";
-import { useAccount, useContractRead } from "wagmi";
+import { useAccount } from "wagmi";
 import { BigNumberData, JobDetailsProps } from "@custom-types/typing";
 import numeral from "numeral";
 import { NextPageContext } from "next";

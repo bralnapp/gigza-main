@@ -76,6 +76,7 @@ const ReceivedProposalDetails = ({
 			}
 		});
 	};
+
 	return (
 		<DashboardLayout>
 			<div className="mx-auto w-11/12 max-w-5xl pt-[31px] md:pt-[41px]">

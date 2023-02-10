@@ -74,7 +74,7 @@ const FreelancerBidSection = ({
 			);
 			const receipt = await txHash.wait();
 			if (receipt) {
-				setIsSendingContract(false);
+				// setIsSendingContract(false);
 				toast.success("Your contract has been sent", {
 					id: notification
 				});

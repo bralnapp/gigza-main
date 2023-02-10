@@ -51,7 +51,6 @@ const JobDetailsBidReceived = ({
 			functionName: "getUser",
 			args: [freelancerAddress]
 		});
-
 	return (
 		<div className="h-fit space-y-6 bg-white py-5 px-4">
 			{/* date posted */}
@@ -60,7 +59,7 @@ const JobDetailsBidReceived = ({
 					Date posted
 				</h3>
 				<p className="text-sm capitalize leading-[21px] text-[#101828]">
-					{covertToReadableDate(formatUnit(job?.[7])! * 10 ** 18)}
+					{covertToReadableDate(formatUnit(job?.[6])! * 10 ** 18)}
 				</p>
 			</div>
 			{/* budget */}

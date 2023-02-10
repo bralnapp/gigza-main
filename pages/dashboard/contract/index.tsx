@@ -40,6 +40,18 @@ const Contract = () => {
 		functionName: "getTotalJobs"
 	});
 
+	// all jobs that the job state is no longer posted i.e 0
+	const jobByClient = totalJobs?.filter(
+		(item) =>
+			item?.client.toLowerCase() === address?.toLowerCase() && item?.state >= 1
+	);
+	const jobByClientWithFreelancer = jobByClient?.map((item) => [
+		item,
+		item?.userBids.filter((item) => item?.bidState > 0)
+	]);
+	console.log("jobByClient", jobByClient);
+	console.log("jobByClientWithFreelancer", jobByClientWithFreelancer);
+
 	// all bids to a job by a freelancer
 	const allBids: AllBids[] | undefined = totalJobs?.map((item) => [
 		item,
@@ -68,6 +80,8 @@ const Contract = () => {
 		["close", closeJobs],
 		["pending", pendingJobs]
 	]);
+
+	console.log("pending", pending);
 	return (
 		<DashboardLayout>
 			<div className="dashboard-layout-container pt-8 pb-[95px] min-[540px]:pt-[42px]">
