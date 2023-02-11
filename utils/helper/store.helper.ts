@@ -28,10 +28,10 @@ const jobState = [
 const bidStatus = {
 	1: "Pending",
 	2: "Awarded",
-	3: "Accepted",
-	4: "Awaiting payment",
-	5: "Paid",
-	6: "Cancelled"
+	3: "Awaiting payment",
+	4: "paid",
+	// 5: "Paid",
+	// 6: "Cancelled"
 };
 export {
 	// initialState,

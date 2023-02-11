@@ -88,7 +88,6 @@ const FreelancerBidSection = ({
 			setIsSendingContract(false);
 		}
 	};
-	console.log(freelancerBid);
 
 	return freelancerBid?.length ? (
 		<div className="bg-white py-5 px-4">

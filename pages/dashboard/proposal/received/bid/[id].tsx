@@ -49,15 +49,13 @@ const FreelancerBid = ({
 	const router = useRouter();
 
 	const { address } = useAccount();
-	console.log("jobId", jobId);
-	console.log("freelancerAddress", freelancerAddress);
+
 	const jobPostedByUserbyId = totalJobs.filter(
 		(item) =>
 			item?.[4].toLowerCase() === address?.toLowerCase() &&
 			formatUnit(item?.[0])! * 10 ** 18 === +jobId
 	);
 
-	console.log("jobPostedByUserbyId [0]", jobPostedByUserbyId[0]);
 
 	const bids = jobPostedByUserbyId.map((item) => item?.[8]);
 	const freelancerBid = bids

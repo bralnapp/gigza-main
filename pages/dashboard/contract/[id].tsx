@@ -50,6 +50,7 @@ type ContractDetailsProps = {
 				4: number;
 			}[]
 		];
+		10: number;
 	}[];
 	pageData: {
 		0: BigNumberData;
@@ -60,15 +61,13 @@ type ContractDetailsProps = {
 		5: string[];
 		6: BigNumberData;
 		7: `0x${string}`;
-		8: [
-			{
-				0: BigNumberData;
-				1: string;
-				2: BigNumberData;
-				3: `0x${string}`;
-				4: number;
-			}[]
-		];
+		8: {
+			0: BigNumberData;
+			1: string;
+			2: BigNumberData;
+			3: `0x${string}`;
+			4: number;
+		}[];
 		9: BigNumberData;
 	};
 };
@@ -83,12 +82,12 @@ const ContractDetails = ({ pageData, totalJobs }: ContractDetailsProps) => {
 			formatUnit(pageData?.[0])! * 10 ** 18
 		);
 	});
-	console.log("thisJob new", thisJob);
 	const freelancerBid = thisJob?.[0]?.[8]?.filter(
 		// @ts-ignore
 		(item) => item?.[3].toLowerCase() === address?.toLowerCase()
 	) as unknown;
-
+	console.log("job poster", thisJob?.[0]?.[4]);
+	console.log("freelancer ", pageData?.[8]?.[0]?.[3]);
 	return (
 		<DashboardLayout>
 			<div className="dashboard-layout-container mb-7 pt-[26px] min-[540px]:pb-[118px] lg:pt-[42px]">
@@ -125,6 +124,7 @@ const ContractDetails = ({ pageData, totalJobs }: ContractDetailsProps) => {
 							{covertToReadableDate(formatUnit(pageData?.[6])! * 10 ** 18)}
 						</p>
 						<ContractButtonSection
+							thisJob={thisJob[0]}
 							freelancerBid={freelancerBid as FreelancerBid}
 							jobId={formatUnit(pageData?.[0])! * 10 ** 18}
 						/>
@@ -149,9 +149,18 @@ const ContractDetails = ({ pageData, totalJobs }: ContractDetailsProps) => {
 						{/* about client */}
 						<div className="my-4 min-[540px]:mt-6 min-[540px]:mb-4">
 							<p className="mb-2 text-sm leading-[21px] text-[#667085]">
-								About the client
+								About the{" "}
+								{thisJob?.[0]?.[4]?.toLowerCase() === address?.toLowerCase()
+									? "freelancer"
+									: "client"}
 							</p>
-							<ContractClientProfile address={pageData?.[4]!} />
+							<ContractClientProfile
+								address={
+									thisJob?.[0]?.[4]?.toLowerCase() === address?.toLowerCase()
+										? pageData?.[8]?.[0]?.[3]!
+										: thisJob?.[0]?.[4]
+								}
+							/>
 						</div>
 						<div>
 							{/* @ts-ignore */}

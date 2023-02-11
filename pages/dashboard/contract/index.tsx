@@ -45,12 +45,24 @@ const Contract = () => {
 		(item) =>
 			item?.client.toLowerCase() === address?.toLowerCase() && item?.state >= 1
 	);
-	const jobByClientWithFreelancer = jobByClient?.map((item) => [
-		item,
-		item?.userBids.filter((item) => item?.bidState > 0)
-	]);
-	console.log("jobByClient", jobByClient);
-	console.log("jobByClientWithFreelancer", jobByClientWithFreelancer);
+
+	// this job contract has been sent but the freelancer has not accepted the contract yet
+	const pendingJobsByClient = jobByClient?.filter((item) => item?.state === 1);
+
+	// this job contract has been accepted by the freelance hence the contract is active
+	const activeJobsByClient = jobByClient?.filter((item) => item?.state === 2);
+
+	// this job contract has been completed by the freelancer
+	const closeJobsByClient = jobByClient?.filter(
+		(item) => item?.state === 3 || item?.state === 4
+	);
+	console.log("closeJobsByClient", jobByClient);
+	// const jobByClientWithFreelancer = jobByClient?.map((item) => [
+	// 	item
+	// 	// item?.userBids.filter((item) => item?.bidState > 0)
+	// ]);
+	// console.log("jobByClient", jobByClient);
+	// console.log("jobByClientWithFreelancer", jobByClientWithFreelancer);
 
 	// all bids to a job by a freelancer
 	const allBids: AllBids[] | undefined = totalJobs?.map((item) => [
@@ -62,7 +74,7 @@ const Contract = () => {
 	const usersContracts = allBids?.filter((item) => item![1].length === 1);
 	const active = usersContracts?.filter((item) => item![1][0]?.bidState === 2);
 	const close = usersContracts?.filter(
-		(item) => item![1][0]?.bidState === 4 || item![1][0]?.bidState === 5
+		(item) => item![1][0]?.bidState === 3 || item![1][0]?.bidState === 4
 	);
 	const pending = usersContracts?.filter((item) => item![1][0]?.bidState === 1);
 
@@ -75,13 +87,20 @@ const Contract = () => {
 	const closeJobs = close
 		?.flatMap((item) => item as [JobDetailsProps | undefined] | undefined)
 		?.filter((item) => item![1]);
+
+	const _pendingJobs = pendingJobs?.concat(pendingJobsByClient);
+	const _activeJobs = activeJobs?.concat(activeJobsByClient);
+	const _closeJobs = closeJobs?.concat(closeJobsByClient);
 	const contracts = new Map([
-		["active", activeJobs],
-		["close", closeJobs],
-		["pending", pendingJobs]
+		["active", _activeJobs],
+		["closed", _closeJobs],
+		["pending", _pendingJobs]
 	]);
 
-	console.log("pending", pending);
+	console.log("usersContracts", usersContracts);
+	// console.log("pending", pending);
+	// console.log("pending jobs contracts -", contracts.get("pending"));
+	// console.log("pending newwwww", pendingJobs);
 	return (
 		<DashboardLayout>
 			<div className="dashboard-layout-container pt-8 pb-[95px] min-[540px]:pt-[42px]">
@@ -107,7 +126,7 @@ const Contract = () => {
 							{item.toLowerCase() === "pending" ? (
 								<>
 									{item} {width! < 540 ? null : "contracts"}{" "}
-									{pendingJobs?.length ? <Image src={redDot} alt="" /> : null}
+									{_pendingJobs?.length ? <Image src={redDot} alt="" /> : null}
 								</>
 							) : (
 								<>
@@ -148,7 +167,7 @@ const Contract = () => {
 										`End Date: ${covertToReadableDate(item?.timeline)}`
 									) : (
 										// @ts-ignore
-										<ContractStatus bids={item?.userBids} />
+										<ContractStatus job={item} bids={item?.userBids} />
 									)}
 								</div>
 							</div>
