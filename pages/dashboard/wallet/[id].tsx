@@ -12,7 +12,7 @@ const TransactionDetails = () => {
 	const [showDisputeModal, setShowDisputeModal] = useState(false);
 	return (
 		<DashboardLayout>
-			<OpenDisputeModal {...{ showDisputeModal, setShowDisputeModal }} />
+			{/* <OpenDisputeModal {...{ showDisputeModal, setShowDisputeModal }} /> */}
 			<div className="layout-container max-w-[700px] pt-8">
 				<section className="py-6 px-4">
 					<GoBack />
