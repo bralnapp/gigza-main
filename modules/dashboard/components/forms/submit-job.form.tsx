@@ -10,7 +10,7 @@ import { TextArea, TextInput } from "../input";
 
 const schema = yup.object().shape({
 	message: yup.string().required(),
-	url: yup.string().url()
+	url: yup.string().url().required()
 });
 
 type FormData = {

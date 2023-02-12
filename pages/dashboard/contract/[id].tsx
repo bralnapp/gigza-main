@@ -88,8 +88,7 @@ const ContractDetails = ({ pageData, totalJobs }: ContractDetailsProps) => {
 		// @ts-ignore
 		(item) => item?.[3].toLowerCase() === address?.toLowerCase()
 	) as unknown;
-	console.log("job poster", thisJob?.[0]?.[4]);
-	console.log("freelancer ", pageData?.[8]?.[0]?.[3]);
+
 	return (
 		<DashboardLayout>
 			<div className="dashboard-layout-container mb-7 pt-[26px] min-[540px]:pb-[118px] lg:pt-[42px]">

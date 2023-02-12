@@ -2,7 +2,11 @@ import { Button } from "@/modules/common/components/input/button";
 import React, { useState } from "react";
 import { useStoreContext } from "context/StoreContext";
 import { BigNumberData } from "@custom-types/typing";
-import { DeclineOfferModal, SubmitJobModal } from "../../components/modal";
+import {
+	DeclineOfferModal,
+	OpenDisputeModal,
+	SubmitJobModal
+} from "../../components/modal";
 import { toast } from "react-hot-toast";
 import { formatUnit } from "utils/helper";
 import { useRouter } from "next/router";
@@ -48,6 +52,7 @@ const ContractButtonSection = ({
 }: ContractButtonSectionProps) => {
 	const [isDeclineModalOpen, setIsDeclineModalOpen] = useState(false);
 	const [isSubmitJobModalOpen, setIsSubmitJobModalOpen] = useState(false);
+	const [showDisputeModal, setShowDisputeModal] = useState(false);
 	const [isAcceptingContract, setIsAcceptingContract] = useState(false);
 	const [isReleasingPayment, setIsReleasingPayment] = useState(false);
 
@@ -107,7 +112,8 @@ const ContractButtonSection = ({
 		}
 	};
 
-	console.log("thisJob", thisJob);
+	const handleOpenDisputeModal = () => setShowDisputeModal(true);
+
 	return freelancerBid?.length ||
 		thisJob?.[4]?.toLowerCase() === address?.toLowerCase() ? (
 		<>
@@ -117,6 +123,7 @@ const ContractButtonSection = ({
 			<SubmitJobModal
 				{...{ isSubmitJobModalOpen, setIsSubmitJobModalOpen, jobId }}
 			/>
+			<OpenDisputeModal {...{ showDisputeModal, setShowDisputeModal, jobId }} />
 
 			{freelancerBid[0]?.[4] === 1 ? (
 				<div className="mt-8 mb-6 flex items-center gap-x-5">
@@ -162,28 +169,38 @@ const ContractButtonSection = ({
 								/>
 								<Button
 									title="Open dispute"
+									onClick={handleOpenDisputeModal}
 									className="w-full border border-b4 bg-white text-b2 md:w-[158px]"
 								/>
 							</div>
 						</section>
 					) : thisJob?.[10] === 4 ? (
 						<p className="">Payment has been made</p>
+					) : thisJob?.[10] === 6 ? (
+						<p className="text-red-500">This job is in dispute</p>
 					) : null}
 				</div>
 			) : freelancerBid?.[0]?.[4] === 2 || freelancerBid?.[0]?.[4] === 3 ? (
-				<div className="mt-8 flex flex-col items-center gap-y-6 md:flex-row md:gap-y-0 md:gap-x-4">
-					<Button
-						title="mark project as complete"
-						className="w-full md:w-[283px]"
-						onClick={() => setIsSubmitJobModalOpen(true)}
-					/>
-					{freelancerBid?.[0]?.[4] === 3 ? (
-						<Button
-							title="Open dispute"
-							className="w-full border border-b4 bg-white text-b2 md:w-[158px]"
-						/>
-					) : null}
-				</div>
+				<>
+					{thisJob?.[10] === 6 ? (
+						<p className="text-red-500 mt-8">This job is in dispute</p>
+					) : (
+						<div className="mt-8 flex flex-col items-center gap-y-6 md:flex-row md:gap-y-0 md:gap-x-4">
+							<Button
+								title="mark project as complete"
+								className="w-full md:w-[283px]"
+								onClick={() => setIsSubmitJobModalOpen(true)}
+							/>
+							{freelancerBid?.[0]?.[4] === 3 ? (
+								<Button
+									title="Open dispute"
+									onClick={handleOpenDisputeModal}
+									className="w-full border border-b4 bg-white text-b2 md:w-[158px]"
+								/>
+							) : null}
+						</div>
+					)}
+				</>
 			) : thisJob?.[10] === 4 ? (
 				<p className="mt-8">Payment has been made</p>
 			) : null}
