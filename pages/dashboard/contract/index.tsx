@@ -54,7 +54,7 @@ const Contract = () => {
 
 	// this job contract has been completed by the freelancer
 	const closeJobsByClient = jobByClient?.filter(
-		(item) => item?.state === 3 || item?.state === 4
+		(item) => item?.state === 3 || item?.state === 4 || item?.state === 6
 	);
 	console.log("closeJobsByClient", jobByClient);
 	// const jobByClientWithFreelancer = jobByClient?.map((item) => [

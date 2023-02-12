@@ -31,7 +31,7 @@ const bidStatus = {
 	3: "Awaiting payment",
 	4: "paid",
 	// 5: "Paid",
-	// 6: "Cancelled"
+	6: "Indispute"
 };
 export {
 	// initialState,
