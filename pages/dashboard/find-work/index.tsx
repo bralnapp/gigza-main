@@ -16,7 +16,11 @@ export type ItotalJobs = {
 	4: `0x${string}`;
 	5: string[];
 	6: BigNumberData;
+	7: `0x${string}`;
 	9: BigNumberData;
+	10: number;
+	11: string;
+	12:string;
 }[];
 
 type FindWorkProps = {

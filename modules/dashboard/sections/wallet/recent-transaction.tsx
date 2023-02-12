@@ -4,49 +4,81 @@ import { recentTransactionHeading, recentTransactions } from "utils/data";
 import Image from "next/image";
 import Status from "@/modules/dashboard/components/status";
 import useWindowSize from "utils/hooks/useWindowSize.hook";
+import { ItotalJobs } from "@/pages/dashboard/find-work";
+import { useAccount } from "wagmi";
+import { covertToReadableDate, formatUnit } from "utils/helper";
+import numeral from "numeral";
+import { UserProfileTransaction } from "../transactions";
 
 // images
 import chevronRight from "@/public/asset/icons/chevron-right.svg";
 
 export type RecentTransactionSections = "sent" | "received";
+type RecentTransactionProps = {
+	totalJobs: ItotalJobs;
+};
 
-const RecentTransaction = () => {
+const RecentTransaction = ({ totalJobs }: RecentTransactionProps) => {
+	const { address } = useAccount();
+	const { width } = useWindowSize();
+
 	const sections = ["sent", "received"];
 	const [activeSection, setActiveSection] = useState<RecentTransactionSections>(
 		sections[0] as RecentTransactionSections
 	);
-	const { width } = useWindowSize();
+
+	const sentTransactions = totalJobs.filter(
+		(item) =>
+			item?.[4]?.toLowerCase() === address?.toLowerCase() &&
+			(item?.[10] === 3 || item?.[10] === 4)
+	);
+
+	const receivedTransactions = totalJobs?.filter(
+		(item) =>
+			item?.[7]?.toLowerCase() === address?.toLowerCase() &&
+			(item?.[10] === 3 || item?.[10] === 4)
+	);
+
+	const transactions = new Map([
+		["sent", sentTransactions],
+		["received", receivedTransactions]
+	]);
+
 	return (
-		<div className="bg-white rounded-lg min-[540px]:rounded-2xl py-5 px-3 min-[540px]:p-6">
+		<div className="rounded-lg bg-white py-5 px-3 min-[540px]:rounded-2xl min-[540px]:p-6">
 			<div className="flex items-center justify-between">
-				<h3 className="capitalize font-bold text-base min-[540px]:text-xl leading-[19px] min-[540px]:leading-6 text-[#192839]">
+				<h3 className="text-base font-bold capitalize leading-[19px] text-[#192839] min-[540px]:text-xl min-[540px]:leading-6">
 					recent transactions
 				</h3>
-				<Link
-					href="/dashboard/wallet/transactions"
-					className="text-[#657795] capitalize text-sm min-[540px]:text-base leading-[17px] min-[540px]:leading-[19px]"
-				>
-					{width! < 540 ? (
-						"see all"
-					) : (
-						<div className="flex items-center gap-x-[17px]">
-							<p>all transactions</p>
-							<Image src={chevronRight} alt="" />
-						</div>
-					)}
-				</Link>
+				{sentTransactions?.length || receivedTransactions?.length ? (
+					<Link
+						href="/dashboard/wallet/transactions"
+						className="text-sm capitalize leading-[17px] text-[#657795] min-[540px]:text-base min-[540px]:leading-[19px]"
+					>
+						{width! < 540 ? (
+							"see all"
+						) : (
+							<div className="flex items-center gap-x-[17px]">
+								<p>all transactions</p>
+								<Image src={chevronRight} alt="" />
+							</div>
+						)}
+					</Link>
+				) : null}
 			</div>
 
-			<div className="flex items-center border-b border-[#E8E8E8] my-6">
+			<div className="my-6 flex items-center border-b border-[#E8E8E8]">
 				{sections.map((item, index) => (
 					<div
 						key={index}
-						className={`text-sm min-[540px]:text-base leading-[18px] font-bold capitalize py-1 px-4  cursor-pointer ${
+						className={`cursor-pointer py-1 px-4 text-sm font-bold capitalize leading-[18px]  min-[540px]:text-base ${
 							activeSection === item
 								? "border-b-2 border-primary text-primary"
 								: "text-b4"
 						} `}
-						onClick={() => setActiveSection(sections[index] as RecentTransactionSections)}
+						onClick={() =>
+							setActiveSection(sections[index] as RecentTransactionSections)
+						}
 					>
 						{item}
 					</div>
@@ -55,11 +87,11 @@ const RecentTransaction = () => {
 
 			{/* recent transaction */}
 			{/* table heading */}
-			<div className="grid grid-cols-4 gap-x-5 md:gap-x-10 border-b border-[#F0F0F0]">
+			<div className="grid grid-cols-4 gap-x-5 border-b border-[#F0F0F0] md:gap-x-10">
 				{recentTransactionHeading.map((item, index) => (
 					<div
 						key={`recent-transaction-heading-${index}`}
-						className="capitalize text-b3 font-bold py-[13px] text-xs min-[540px]:text-sm leading-[18px]"
+						className="py-[13px] text-xs font-bold capitalize leading-[18px] text-b3 min-[540px]:text-sm"
 					>
 						{item}
 					</div>
@@ -69,26 +101,30 @@ const RecentTransaction = () => {
 			{/* data */}
 			<div className="">
 				<>
-					{recentTransactions[activeSection].slice(0, 5)?.map((item, index) => (
-						<Link
-							href={`/dashboard/wallet/${index}`}
-							key={`recent-transactions-${index}`}
-							className="grid grid-cols-4 border-b border-[#F0F0F0] capitalize text-b1 text-[11px] min-[540px]:text-base leading-5 py-2 md:py-[10px] items-center gap-x-5 md:gap-x-10"
-						>
-							<div className="md:flex items-center md:space-x-2">
-								<div className="hidden md:block">
-									<Image src={item.avatar} alt="" className="w-10 h-10" />
+					{transactions
+						?.get(activeSection)
+						?.slice(0, 5)
+						?.map((item, index) => (
+							<Link
+								href={`/dashboard/wallet/${index}`}
+								key={`recent-transactions-${index}`}
+								className="grid grid-cols-4 items-center gap-x-5 border-b border-[#F0F0F0] py-2 text-[11px] capitalize leading-5 text-b1 min-[540px]:text-base md:gap-x-10 md:py-[10px]"
+							>
+								<UserProfileTransaction
+									address={activeSection === "sent" ? item?.[7] : item?.[4]}
+								/>
+								<div>${numeral(formatUnit(item?.[3])).format(",")}</div>
+								<div>
+									{covertToReadableDate(formatUnit(item?.[9])! * 10 ** 18)}
 								</div>
-								<p>{item.name}</p>
-							</div>
-							<div>${item.amount}</div>
-							<div>{item.date}</div>
-							<div className="">
-								{/* @ts-ignore */}
-								<Status title={item.status} intent={item.status} />
-							</div>
-						</Link>
-					))}
+								<div className="">
+									<Status
+										title={item?.[10] === 3 ? "pending" : "paid"}
+										intent={item?.[10] === 3 ? "pending" : "complete"}
+									/>
+								</div>
+							</Link>
+						))}
 				</>
 			</div>
 		</div>

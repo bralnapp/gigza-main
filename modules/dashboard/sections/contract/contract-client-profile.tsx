@@ -15,6 +15,7 @@ type ContractClientProfileProp = {
 	address: `0x${string}`;
 };
 
+
 const ContractClientProfile = ({ address }: ContractClientProfileProp) => {
 	const {
 		data: clientDetails,
