@@ -16,6 +16,7 @@ import { ItotalJobs } from "../find-work";
 import { useAccount } from "wagmi";
 import numeral from "numeral";
 import { UserProfileTransaction } from "@/modules/dashboard/sections/transactions";
+import Link from "next/link";
 
 type TransactionsProps = {
 	totalJobs: ItotalJobs;
@@ -87,7 +88,13 @@ const Transactions = ({ totalJobs }: TransactionsProps) => {
 					<div className="h-[300px] overflow-y-auto">
 						<>
 							{transactions?.get(activeSection)?.map((item, index) => (
-								<div
+								<Link
+									href={{
+										pathname: "/dashboard/wallet/[jobId]",
+										query: {
+											jobId: formatUnit(item?.[0])! * 10 ** 18
+										}
+									}}
 									key={`recent-transactions-${index}`}
 									className="grid grid-cols-4 items-center gap-x-5 border-b border-[#F0F0F0] py-2 text-[11px] capitalize leading-5 text-b1 min-[540px]:text-base md:gap-x-10 md:py-[10px]"
 								>
@@ -104,7 +111,7 @@ const Transactions = ({ totalJobs }: TransactionsProps) => {
 											intent={item?.[10] === 3 ? "pending" : "complete"}
 										/>
 									</div>
-								</div>
+								</Link>
 							))}
 						</>
 					</div>

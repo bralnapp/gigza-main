@@ -106,7 +106,14 @@ const RecentTransaction = ({ totalJobs }: RecentTransactionProps) => {
 						?.slice(0, 5)
 						?.map((item, index) => (
 							<Link
-								href={`/dashboard/wallet/${index}`}
+								href={
+									{
+										pathname: '/dashboard/wallet/[jobId]',
+										query: {
+											jobId : formatUnit(item?.[0])! * 10 ** 18
+										}
+									}
+								}
 								key={`recent-transactions-${index}`}
 								className="grid grid-cols-4 items-center gap-x-5 border-b border-[#F0F0F0] py-2 text-[11px] capitalize leading-5 text-b1 min-[540px]:text-base md:gap-x-10 md:py-[10px]"
 							>
