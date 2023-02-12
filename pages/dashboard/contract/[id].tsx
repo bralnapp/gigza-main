@@ -51,6 +51,8 @@ type ContractDetailsProps = {
 			}[]
 		];
 		10: number;
+		11: string;
+		12: string;
 	}[];
 	pageData: {
 		0: BigNumberData;
