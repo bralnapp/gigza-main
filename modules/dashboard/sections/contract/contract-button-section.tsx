@@ -5,7 +5,8 @@ import { BigNumberData } from "@custom-types/typing";
 import {
 	DeclineOfferModal,
 	OpenDisputeModal,
-	SubmitJobModal
+	SubmitJobModal,
+	WriteReviewModal
 } from "../../components/modal";
 import { toast } from "react-hot-toast";
 import { formatUnit } from "utils/helper";
@@ -53,6 +54,7 @@ const ContractButtonSection = ({
 	const [isDeclineModalOpen, setIsDeclineModalOpen] = useState(false);
 	const [isSubmitJobModalOpen, setIsSubmitJobModalOpen] = useState(false);
 	const [showDisputeModal, setShowDisputeModal] = useState(false);
+	const [showReviewModal, setShowReviewModal] = useState(false);
 	const [isAcceptingContract, setIsAcceptingContract] = useState(false);
 	const [isReleasingPayment, setIsReleasingPayment] = useState(false);
 
@@ -124,7 +126,7 @@ const ContractButtonSection = ({
 				{...{ isSubmitJobModalOpen, setIsSubmitJobModalOpen, jobId }}
 			/>
 			<OpenDisputeModal {...{ showDisputeModal, setShowDisputeModal, jobId }} />
-
+			<WriteReviewModal {...{ showReviewModal, setShowReviewModal, jobId }} />
 			{freelancerBid[0]?.[4] === 1 ? (
 				<div className="mt-8 mb-6 flex items-center gap-x-5">
 					<Button
@@ -175,7 +177,14 @@ const ContractButtonSection = ({
 							</div>
 						</section>
 					) : thisJob?.[10] === 4 ? (
-						<p className="">Payment has been made</p>
+						<div className="">
+							<p className="">Payment has been made</p>
+							<Button
+								title="write a review"
+								className="mt-5 px-5"
+								onClick={() => setShowReviewModal(true)}
+							/>
+						</div>
 					) : thisJob?.[10] === 6 ? (
 						<p className="text-red-500">This job is in dispute</p>
 					) : null}
@@ -183,7 +192,7 @@ const ContractButtonSection = ({
 			) : freelancerBid?.[0]?.[4] === 2 || freelancerBid?.[0]?.[4] === 3 ? (
 				<>
 					{thisJob?.[10] === 6 ? (
-						<p className="text-red-500 mt-8">This job is in dispute</p>
+						<p className="mt-8 text-red-500">This job is in dispute</p>
 					) : (
 						<div className="mt-8 flex flex-col items-center gap-y-6 md:flex-row md:gap-y-0 md:gap-x-4">
 							<Button

@@ -1,35 +1,51 @@
 import Image from "next/image";
+import { useState } from "react";
 
 // images
 import starOutline from "@/public/asset/stars/star-outline.svg";
 import starSolid from "@/public/asset/stars/star-solid.svg";
 
 type Props = {
-	reviews: number;
+	reviews?: number;
 	className?: string;
-	handleReview?: (index: number) => void;
+	handleReview?: boolean;
+	onChange?: (value:number) => void;
 };
 
-const Stars = ({ reviews, className, handleReview }: Props) => {
+const Stars = ({ reviews, className, handleReview, onChange }: Props) => {
+	const [rating, setRating] = useState(0);
+	const [hover, setHover] = useState(0);
+
+	const handleRating = (index: number) => {
+		handleReview && setRating(index);
+		onChange!(index)
+	};
 	return (
 		<div className={`flex items-center space-x-[5px] ${className}`}>
 			{Array(5)
 				.fill("")
-				.map((_, index) => (
-					<div
-						key={index}
-						className={`${handleReview ? "cursor-pointer" : null}`}
-						onClick={() => handleReview?.(index + 1)}
-					>
-						<Image
+				.map((_, index) => {
+					index += 1;
+					return (
+						<div
 							key={index}
-							src={index + 1 > reviews ? starOutline : starSolid}
-							alt=""
-							width={handleReview ? 32 : 12}
-							height={handleReview ? 32 : 12}
-						/>
-					</div>
-				))}
+							className={`${handleReview ? "cursor-pointer" : null}`}
+							onClick={() => handleRating(index)}
+							onMouseEnter={() => setHover(index)}
+							onMouseLeave={() => setHover(rating)}
+						>
+							<Image
+								key={index}
+								src={
+									index > (reviews || hover || rating) ? starOutline : starSolid
+								}
+								alt=""
+								width={handleReview ? 32 : 12}
+								height={handleReview ? 32 : 12}
+							/>
+						</div>
+					);
+				})}
 		</div>
 	);
 };

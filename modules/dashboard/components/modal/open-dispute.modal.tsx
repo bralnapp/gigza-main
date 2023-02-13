@@ -36,11 +36,10 @@ const OpenDisputeModal = ({
 	setShowDisputeModal,
 	jobId
 }: OpenDisputeModalProps) => {
-
 	const [isOpeningDispute, setIsOpeningDispute] = useState(false);
 	const router = useRouter();
 
-	const {initGigzaContract} = useStoreContext()
+	const { initGigzaContract } = useStoreContext();
 
 	const handleClose = () => setShowDisputeModal(false);
 	const {
@@ -62,26 +61,23 @@ const OpenDisputeModal = ({
 				toast.success("Dispute has been submitted", {
 					id: notification
 				});
-				setShowDisputeModal(false)
+				setShowDisputeModal(false);
 				router.reload();
 				// setIsSubmittingJob(false);
 			}
+			setShowDisputeModal(false);
+			router.reload();
 		} catch (error) {
 			setIsOpeningDispute(false);
 			// @ts-ignore
 			toast.error(error?.reason || "Opps, something went wrong", {
 				id: notification
 			});
-			console.log(error)
 		}
 	};
 	return (
 		<Transition appear show={showDisputeModal} as={Fragment}>
-			<Dialog
-				as="div"
-				className="fixed inset-0 z-[999]"
-				onClose={handleClose}
-			>
+			<Dialog as="div" className="fixed inset-0 z-[999]" onClose={handleClose}>
 				<div className="min-h-screen text-center">
 					<Dialog.Overlay className="fixed left-0 top-0 z-[99] h-full w-full bg-black bg-opacity-75" />
 					{/* This element is to trick the browser into centering the modal contents. */}

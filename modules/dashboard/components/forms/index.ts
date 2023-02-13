@@ -3,3 +3,4 @@ export { default as JobBidForm } from "./job-bid-form";
 export { default as PostJobForm } from "./post-job.form";
 export { default as CreateProfileForm } from "./create-profile.form";
 export { default as SubmitJobForm } from "./submit-job.form";
+export { default as WriteReviewForm } from "./write-review.form";

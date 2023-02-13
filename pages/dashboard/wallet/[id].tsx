@@ -13,11 +13,11 @@ import GoBack from "@/modules/dashboard/components/go-back";
 import DashboardLayout from "@/modules/dashboard/components/layout";
 import { OpenDisputeModal } from "@/modules/dashboard/components/modal";
 import Status from "@/modules/dashboard/components/status";
+import numeral from "numeral";
+import { useAccount } from "wagmi";
 
 // images
 import chatIcon from "@/public/asset/icons/chat.svg";
-import numeral from "numeral";
-import { useAccount } from "wagmi";
 
 type TransactionDetailsProps = {
 	jobId: number | undefined;
