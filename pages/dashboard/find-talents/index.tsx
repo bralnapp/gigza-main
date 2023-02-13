@@ -9,20 +9,30 @@ import { Button } from "@/modules/common/components/input/button";
 import { FilterTalentListModal } from "@/modules/dashboard/components/modal";
 import { useContractRead } from "wagmi";
 import { GigzaContractAbi, GigzaContractAddress } from "utils/helper";
-import {UserProfileType} from "@custom-types/typing"
+import { UserProfileType } from "@custom-types/typing";
 
 // images
 import filterIcon from "@/public/asset/icons/filter-icon.svg";
 
 const FindTalents = () => {
 	const [showFilterTalentModal, setShowFilterTalentModal] = useState(false);
-	const { data: usersProfile } : {
-		data: UserProfileType[] | undefined
+	const [searchTerm, setSearchTerm] = useState("");
+	const {
+		data: usersProfile
+	}: {
+		data: UserProfileType[] | undefined;
 	} = useContractRead({
 		address: GigzaContractAddress,
 		abi: GigzaContractAbi,
 		functionName: "getUserProfiles"
 	});
+	const filteredUsers = usersProfile?.filter(
+		(item) =>
+			item?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+			item?.userAddress?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+			item?.mainSkill?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+			item?.skills?.includes(searchTerm.toLowerCase())
+	);
 
 	return (
 		<DashboardLayout>
@@ -34,7 +44,7 @@ const FindTalents = () => {
 			<div className="min-h-screen">
 				<div className="bg-white pt-6 md:pt-[31px]">
 					<div className="dashboard-layout-container">
-						<SearchTalents />
+						<SearchTalents {...{ setSearchTerm }} />
 					</div>
 				</div>
 				<div className="dashboard-layout-container lg:hidden">
@@ -46,7 +56,7 @@ const FindTalents = () => {
 				</div>
 				<div className="dashboard-layout-container mt-6 mb-[51px] grid-cols-[2fr_1fr] md:mb-[76px] lg:mt-12 lg:grid lg:gap-x-[45px]">
 					{/* freelancers */}
-					<TalentList {...{ usersProfile }} />
+					<TalentList {...{ filteredUsers }} />
 					<ApplyFilter />
 				</div>
 			</div>

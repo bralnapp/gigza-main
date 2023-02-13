@@ -9,13 +9,13 @@ import profileAvatar from "@/public/asset/avatar/profile-avatar.svg";
 import StarRating from "./star-rating";
 
 type TalentListProps = {
-	usersProfile: UserProfileType[] | undefined;
+	filteredUsers: UserProfileType[] | undefined;
 };
 
-const TalentList = ({ usersProfile }: TalentListProps) => {
+const TalentList = ({ filteredUsers }: TalentListProps) => {
 	return (
 		<div className="space-y-4 min-[540px]:py-6 lg:px-5">
-			{usersProfile?.map((item, index) => (
+			{filteredUsers?.map((item, index) => (
 				<div
 					key={`users-profile-${index}`}
 					className="items-start justify-between bg-white py-5 px-4 md:flex"
@@ -35,7 +35,6 @@ const TalentList = ({ usersProfile }: TalentListProps) => {
 										{item?.name}
 									</h3>
 									<StarRating address={item?.userAddress!} />
-									
 								</div>
 								<p className="text-[13px] capitalize leading-4 text-b3 min-[540px]:text-sm">
 									{item?.mainSkill} • 15 contracts

@@ -1,21 +1,22 @@
 import { Button } from "@/modules/common/components/input/button";
-import React from "react";
+import React, { SetStateAction } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 
-const schema = yup
-	.object()
-	.shape({
-		search: yup.string().required()
-	})
-	.required();
+const schema = yup.object().shape({
+	search: yup.string()
+});
 
 type FormData = {
 	search: string;
 };
 
-const SearchTalents = () => {
+type SearchTalentsProps = {
+	setSearchTerm: React.Dispatch<SetStateAction<string>>;
+};
+
+const SearchTalents = ({ setSearchTerm }: SearchTalentsProps) => {
 	const {
 		register,
 		handleSubmit,
@@ -25,7 +26,7 @@ const SearchTalents = () => {
 	});
 
 	const onSubmit = async (data: FormData) => {
-		console.log(data);
+		setSearchTerm(data.search);
 	};
 
 	return (
@@ -42,12 +43,11 @@ const SearchTalents = () => {
 				onSubmit={handleSubmit(onSubmit)}
 			>
 				<input
-					name="search"
 					id="search"
 					placeholder="Search for skills"
 					type="text"
 					className="block h-[41px] flex-1 rounded-[5px] border border-[#E8E8EF] bg-[#FCFDFD] py-2 px-3 text-sm placeholder:text-[#979797] focus:outline-none"
-					{...{ register }}
+					{...register("search")}
 				/>
 				<Button title="Search" className="h-[41px] w-[110px]" />
 			</form>
