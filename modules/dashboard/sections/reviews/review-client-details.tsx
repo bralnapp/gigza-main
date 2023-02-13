@@ -1,21 +1,21 @@
+import { UserProfileType } from "@custom-types/typing";
 import Image from "next/image";
+import React from "react";
 import {
 	formatWalletAddress,
 	GigzaContractAbi,
 	GigzaContractAddress
 } from "utils/helper";
-import { UserProfileType } from "@custom-types/typing";
 import { useContractRead } from "wagmi";
 
 // images
 import avatar from "@/public/asset/avatar/profile-avatar.svg";
 
-type ContractClientProfileProp = {
+type ReviewClientDetailsProps = {
 	address: `0x${string}`;
 };
 
-
-const ContractClientProfile = ({ address }: ContractClientProfileProp) => {
+const ReviewClientDetails = ({ address }: ReviewClientDetailsProps) => {
 	const {
 		data: clientDetails,
 		isError
@@ -38,10 +38,11 @@ const ContractClientProfile = ({ address }: ContractClientProfileProp) => {
 				width={40}
 			/>
 			<p className="text-sm capitalize leading-4 text-b1">
-				{formatWalletAddress(address)}
+				{clientDetails?.name ||
+					formatWalletAddress(clientDetails?.userAddress!)}
 			</p>
 		</div>
 	);
 };
 
-export default ContractClientProfile;
+export default ReviewClientDetails;

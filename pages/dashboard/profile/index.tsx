@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import DashboardLayout from "@/modules/dashboard/components/layout";
 import Image from "next/image";
 import Stars from "@/modules/dashboard/components/stars";
@@ -9,11 +9,15 @@ import {
 import { Button } from "@/modules/common/components/input/button";
 import { toast } from "react-hot-toast";
 import { useAccount, useContractRead } from "wagmi";
-import { GigzaContractAbi, GigzaContractAddress } from "utils/helper";
+import {
+	formatUnit,
+	GigzaContractAbi,
+	GigzaContractAddress
+} from "utils/helper";
 
 // images
 import profileAvatar from "@/public/asset/avatar/profile-avatar.svg";
-import { UserProfileType } from "@custom-types/typing";
+import { IReviews, UserProfileType } from "@custom-types/typing";
 
 export type userDetailsType = {
 	name: string;
@@ -41,6 +45,22 @@ const Profile = () => {
 		args: [address]
 	});
 
+	const { data: reviews }: { data: IReviews | undefined } = useContractRead({
+		address: GigzaContractAddress,
+		abi: GigzaContractAbi,
+		functionName: "getReviews",
+		args: [address]
+	});
+
+	const calculateRating = useMemo(() => {
+		return (
+			reviews?.reduce(
+				(total, b) => total + formatUnit(b?.rating)! * 10 ** 18,
+				0
+			)! / reviews?.length!
+		);
+	}, [reviews]);
+
 	useEffect(() => {
 		if (isError) {
 			toast.error("Opps!!!... something went wrong");
@@ -55,7 +75,6 @@ const Profile = () => {
 				<div className="items-center md:flex md:space-x-5">
 					<div className="h-20 w-20 rounded-full md:h-[164px] md:w-[164px]">
 						<Image
-							// @ts-ignore
 							src={userDetails?.profileUrl || profileAvatar}
 							alt=""
 							className="h-20 w-20 rounded-full object-cover md:h-[164px] md:w-[164px]"
@@ -65,17 +84,15 @@ const Profile = () => {
 					</div>
 					<div className="mt-4 md:mt-8">
 						<h3 className="text-xl font-bold capitalize leading-6 text-b1 md:text-[32px]  md:leading-[38px]">
-							{/* @ts-ignore */}
 							{userDetails?.name}
 						</h3>
 						<p className="my-[6px] text-[13px] capitalize leading-4 text-b3 md:my-2">
-							{/* @ts-ignore */}
 							{userDetails?.mainSkill}
 						</p>
 						<div className="flex items-center space-x-2">
-							<Stars reviews={4} />
+							<Stars reviews={calculateRating} />
 							<p className="text-sm capitalize leading-[17px] text-b4">
-								4.3 (6 reviews)
+								{calculateRating || null} ({reviews?.length} reviews)
 							</p>
 						</div>
 					</div>
@@ -118,7 +135,7 @@ const Profile = () => {
 
 			<section className="dashboard-layout-container mt-6 pb-[47px] min-[540px]:mt-8 lg:pb-[149px]">
 				{activeIndex === 0 ? (
-					<ProfileReviews />
+					<ProfileReviews {...{ reviews }} />
 				) : (
 					// @ts-ignore
 					<ProfileAbout {...{ userDetails }} />

@@ -48,3 +48,11 @@ export interface BigNumberData {
 	type: "BigNumber";
 	hex: string;
 }
+
+export type IReviews = {
+	client: `0x${string}`;
+	freelancer: `0x${string}`;
+	jobId: BigNumberData;
+	rating: BigNumberData;
+	review: string;
+}[];

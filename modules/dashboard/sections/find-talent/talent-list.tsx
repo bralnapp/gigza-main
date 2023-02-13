@@ -6,6 +6,7 @@ import { UserProfileType } from "@custom-types/typing";
 
 // images
 import profileAvatar from "@/public/asset/avatar/profile-avatar.svg";
+import StarRating from "./star-rating";
 
 type TalentListProps = {
 	usersProfile: UserProfileType[] | undefined;
@@ -33,10 +34,8 @@ const TalentList = ({ usersProfile }: TalentListProps) => {
 									<h3 className="text-base font-bold capitalize leading-[19px] text-b1">
 										{item?.name}
 									</h3>
-									<div className="flex items-center">
-										<Stars reviews={4} />
-										<p className="pl-1 text-sm leading-4 text-b3">4.5</p>
-									</div>
+									<StarRating address={item?.userAddress!} />
+									
 								</div>
 								<p className="text-[13px] capitalize leading-4 text-b3 min-[540px]:text-sm">
 									{item?.mainSkill} • 15 contracts

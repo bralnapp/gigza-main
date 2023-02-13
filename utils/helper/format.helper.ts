@@ -1,6 +1,5 @@
-import numeral from 'numeral'
+import numeral from "numeral";
 import { utils } from "ethers";
-
 
 export const formatWalletAddress = (address: string) =>
 	`${address?.substring(0, 5)}...${address?.substring(
@@ -14,13 +13,13 @@ export const covertToReadableDate = (value: number) => {
 	return _date;
 };
 
-export const convertToNumber = (item: string):number => numeral(item).value() as number
+export const convertToNumber = (item: string): number =>
+	numeral(item).value() as number;
 
-export const currentEpochTime = Math.floor(new Date().getTime() / 1000.0)
-
+export const currentEpochTime = Math.floor(new Date().getTime() / 1000.0);
 
 // @ts-ignore
-export const formatUnit = (value) => {
+export const formatUnit = (value): number | undefined => {
 	if (!value) return;
 	return parseFloat(utils.formatEther(value));
 };

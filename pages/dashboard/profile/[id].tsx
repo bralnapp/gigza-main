@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
 	EditProfileButton,
 	SendMessageButton
@@ -11,8 +11,13 @@ import {
 } from "@/modules/dashboard/sections/profile";
 import Image from "next/image";
 import { useAccount, useContractRead } from "wagmi";
-import { GigzaContractAbi, GigzaContractAddress } from "utils/helper";
+import {
+	formatUnit,
+	GigzaContractAbi,
+	GigzaContractAddress
+} from "utils/helper";
 import { useRouter } from "next/router";
+import { IReviews } from "@custom-types/typing";
 
 // images
 import profileAvatar from "@/public/asset/avatar/profile-avatar.svg";
@@ -26,12 +31,35 @@ const UserProfile = () => {
 
 	const { address } = useAccount();
 
-	const { data: userDetails } = useContractRead({
+	const { data: userDetails, isError } = useContractRead({
 		address: GigzaContractAddress,
 		abi: GigzaContractAbi,
 		functionName: "getUser",
 		args: [freelancerAddress]
 	});
+
+	const { data: reviews }: { data: IReviews | undefined } = useContractRead({
+		address: GigzaContractAddress,
+		abi: GigzaContractAbi,
+		functionName: "getReviews",
+		args: [freelancerAddress]
+	});
+
+	const calculateRating = useMemo(() => {
+		return (
+			reviews?.reduce(
+				(total, b) => total + formatUnit(b?.rating)! * 10 ** 18,
+				0
+			)! / reviews?.length!
+		);
+	}, [reviews]);
+
+	useEffect(() => {
+		if (isError) {
+			router.push("/dashboard/find-talents");
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [isError]);
 	return (
 		<DashboardLayout>
 			{/* header image */}
@@ -58,9 +86,9 @@ const UserProfile = () => {
 							{userDetails?.mainSkill}
 						</p>
 						<div className="flex items-center space-x-2">
-							<Stars reviews={4} />
+							<Stars reviews={calculateRating} />
 							<p className="text-sm capitalize leading-[17px] text-b4">
-								4.3 (6 reviews)
+								{calculateRating || null} ({reviews?.length} reviews)
 							</p>
 						</div>
 					</div>
@@ -102,7 +130,7 @@ const UserProfile = () => {
 
 			<section className="dashboard-layout-container mt-6 pb-[47px] min-[540px]:mt-8 lg:pb-[149px]">
 				{activeIndex === 0 ? (
-					<ProfileReviews />
+					<ProfileReviews {...{ reviews }} />
 				) : (
 					// @ts-ignore
 					<ProfileAbout {...{ userDetails }} />

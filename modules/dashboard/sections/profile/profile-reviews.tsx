@@ -1,27 +1,36 @@
-import { reviews } from "utils/data";
+import { IReviews } from "@custom-types/typing";
+import { formatUnit } from "utils/helper";
 import Stars from "../../components/stars";
+import { ReviewClientDetails, ReviewJobTitle } from "../reviews";
 
-const ProfileReviews = () => {
+type ProfileReviewsProps = {
+	reviews: IReviews | undefined;
+};
+
+const ProfileReviews = ({ reviews }: ProfileReviewsProps) => {
 	return (
-		<div className="space-y-4 min-[540px]:space-y-[18px] min-[540px]:w-4/5 max-w-[978px]">
-			{reviews.map((item, index) => (
-				<div key={`reviews-${index}`} className="pb-4 border-b border-stroke">
+		<div className="max-w-[978px] space-y-4 min-[540px]:w-4/5 min-[540px]:space-y-[18px]">
+			{reviews?.map((item, index) => (
+				<div key={`reviews-${index}`} className="border-b border-stroke pb-4">
 					<div className="">
-						<Stars reviews={Math.floor(Math.random() * 5) + 1} />
-						<h4 className="text-b2 font-bold text-base  min-[540px]:text-xl leading-[19px] min-[540px]:leading-6 mt-[15px] min-[540px]:mt-[23px]  min-[540px]:w-4/5">
-							{item.gig}
-						</h4>
+						<div className="flex items-center gap-x-2">
+							<Stars reviews={formatUnit(item?.rating)! * 10 ** 18} />
+							<p className="text-sm leading-[17px] text-[#FFB800]">
+								{formatUnit(item?.rating)! * 10 ** 18}
+							</p>
+						</div>
+						<ReviewJobTitle jobId={formatUnit(item?.jobId)! * 10 ** 18} />
 					</div>
-					<div className="flex item-center justify-between text-b3 text-sm leading-4 capitalize my-3">
-						<p>{item.clientName}</p>
-						<p>{item.date}</p>
+					<div className="my-3 flex items-center justify-between">
+						<ReviewClientDetails address={item?.client} />
+						<p>Tue Oct 06 2020</p>
 					</div>
-					<p className="mb-2 text-b2 text-[13px] min-[540px]:text-sm leading-[21px] min-[540px]:leading-[21px]">
-						{item.review}
+					<p className="mb-2 whitespace-pre-wrap text-[13px] leading-[21px] text-b2 min-[540px]:text-sm min-[540px]:leading-[21px]">
+						{item?.review}
 					</p>
-					<p className="text-primary text-sm leading-[17px] min-[540px]:leading-[21px] capitalize">
+					{/* <p className="text-sm capitalize leading-[17px] text-primary min-[540px]:leading-[21px]">
 						read more
-					</p>
+					</p> */}
 				</div>
 			))}
 		</div>
