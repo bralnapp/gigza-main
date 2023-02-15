@@ -1,30 +1,47 @@
-import { useState } from "react";
+import { FormEvent, SetStateAction, useEffect, useState } from "react";
 import { CheckBox } from "@/modules/common/components/input";
 import { Button } from "@/modules/common/components/input/button";
-import { specialtiesOptions } from "utils/data";
+import { roles } from "utils/data";
 
-const ApplyFilter = () => {
-	const [checkedState, setCheckedState] = useState<boolean[]>(
-		new Array(specialtiesOptions.length).fill(false)
-	);
+type ApplyFilterProps = {
+	formData: {
+		rating: string;
+		specialties: string;
+	};
+	setFormData: React.Dispatch<
+		SetStateAction<{
+			rating: string;
+			specialties: string;
+		}>
+	>;
+};
+
+const ApplyFilter = ({ formData, setFormData }: ApplyFilterProps) => {
+	const [isValid, setIsValid] = useState(false);
+	const [data, setData] = useState({
+		rating: "",
+		specialties: ""
+	});
 
 	const ratings = Array.from(Array(6).keys());
 	// change for checkbox
-	const handleOnChange = (position: number) => {
-		console.log(position);
-		const updatedCheckedState = checkedState.map((item, index) =>
-			index === position ? !item : item
-		);
-		setCheckedState(updatedCheckedState);
-		const _support_types = updatedCheckedState
-			.map((item, index) => (item === true ? specialtiesOptions[index] : null))
-			.filter((item) => item !== null);
-		// @ts-ignore
-		// setFormData({ ...formData, support_types: _support_types })
+	const handleOnChange = (e: FormEvent<HTMLInputElement>) => {
+		setData({
+			...data,
+			[e.currentTarget?.name]: e.currentTarget?.value
+		});
 	};
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
+		setFormData(data);
 	};
+
+	useEffect(() => {
+		if (data?.rating || data?.specialties) {
+			setIsValid(true);
+		}
+	}, [data?.rating, data?.specialties]);
+
 	return (
 		<div className="hidden h-fit bg-white p-6 lg:block">
 			<h1 className="text-xl font-bold capitalize leading-[21px] text-[#101828]">
@@ -32,33 +49,37 @@ const ApplyFilter = () => {
 			</h1>
 			{/* rating */}
 			<div className="py-4">
-				<p className="text-base leading-[21px] text-[#101828]">Ratings</p>
+				{/* <p className="text-base leading-[21px] text-[#101828]">Ratings</p> */}
 
 				<form onSubmit={handleSubmit}>
-					<div className="mb-2">
+					{/* <div className="mb-2">
 						<div className="mt-[17px] mb-2 flex flex-col space-y-[17px] border-b border-[#F0F0F0] pb-5">
 							{ratings.map((item, index) => (
 								<CheckBox
 									key={index}
 									value={item}
-									onChange={() => handleOnChange(index)}
-									checked={checkedState[index]}
+									onChange={handleOnChange}
 									rating
+									name="rating"
 								/>
 							))}
 						</div>
-					</div>
+					</div> */}
 					<div className="mt-4 flex flex-col space-y-[17px]">
-						{specialtiesOptions.map((item, index) => (
+						{roles.map((item, index) => (
 							<CheckBox
 								key={index}
 								value={item}
-								onChange={() => handleOnChange(index)}
-								checked={checkedState[index]}
+								onChange={handleOnChange}
+								name="specialties"
 							/>
 						))}
 					</div>
-					<Button title="filter results" className="mt-7 w-[262px]" />
+					<Button
+						disabled={!isValid}
+						title="filter results"
+						className="mt-7 w-[262px]"
+					/>
 				</form>
 			</div>
 		</div>

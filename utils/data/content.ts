@@ -50,3 +50,17 @@ export const hireTalents = [
 			"Post your job details and receive proposals from talented people around the world. You can view  profiles  before accepting freelancer."
 	}
 ];
+
+export const roles = [
+	"animation",
+	"brand / graphic design",
+	"illustration",
+	"mobile design",
+	"UI/Visual design",
+	"web design",
+	"frontend development",
+	"backend development",
+	"artificial intelligence",
+	"blockchain development",
+	"devOps / cybersecurity"
+];

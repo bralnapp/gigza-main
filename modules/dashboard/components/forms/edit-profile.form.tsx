@@ -7,6 +7,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { Controller, useForm } from "react-hook-form";
 import { useStoreContext } from "context/StoreContext";
+import { Select } from "@/modules/common/components/input";
+import { roles } from "utils/data";
 
 const schema = yup
 	.object()
@@ -28,9 +30,11 @@ type FormData = {
 };
 
 const EditProfileForm = () => {
-const [isEditing, setIsEditing] = useState(false)
+	const [isEditing, setIsEditing] = useState(false);
 	const router = useRouter();
 	const { initGigzaContract } = useStoreContext();
+
+	const handleSelectOption = () => {};
 
 	const {
 		register,
@@ -54,7 +58,7 @@ const [isEditing, setIsEditing] = useState(false)
 				data.skills,
 				data.profileUrl
 			);
-			const receipt =  await txHash.wait();
+			const receipt = await txHash.wait();
 			if (receipt) {
 				setIsEditing(false);
 				toast.success("Profile has been updated", {
@@ -100,13 +104,20 @@ const [isEditing, setIsEditing] = useState(false)
 					className="h-[152px]"
 					{...{ register, errors }}
 				/>
-				<TextInput
-					id="role"
-					type="text"
+
+				<Controller
 					name="mainSkill"
-					label="what's your role"
-					placeholder="ex: Product designer"
-					{...{ register, errors }}
+					control={control}
+					render={({ field: { value, onChange } }) => (
+						<Select
+							label="what's your role"
+							{...{ value }}
+							data={roles}
+							title="Select your main skill"
+							handleSelectOption={onChange}
+							error={errors.mainSkill?.message!}
+						/>
+					)}
 				/>
 
 				<Controller
@@ -132,4 +143,3 @@ const [isEditing, setIsEditing] = useState(false)
 };
 
 export default EditProfileForm;
-

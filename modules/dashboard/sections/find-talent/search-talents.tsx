@@ -1,33 +1,21 @@
 import { Button } from "@/modules/common/components/input/button";
-import React, { SetStateAction } from "react";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-import { useForm } from "react-hook-form";
-
-const schema = yup.object().shape({
-	search: yup.string()
-});
-
-type FormData = {
-	search: string;
-};
+import React, { SetStateAction, useEffect, useRef, useState } from "react";
 
 type SearchTalentsProps = {
 	setSearchTerm: React.Dispatch<SetStateAction<string>>;
 };
 
 const SearchTalents = ({ setSearchTerm }: SearchTalentsProps) => {
-	const {
-		register,
-		handleSubmit,
-		formState: { errors }
-	} = useForm<FormData>({
-		resolver: yupResolver(schema)
-	});
-
-	const onSubmit = async (data: FormData) => {
-		setSearchTerm(data.search);
+	const [data, setData] = useState("");
+	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		setSearchTerm(data);
 	};
+
+	useEffect(() => {
+		if (!data) setSearchTerm("");
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [data]);
 
 	return (
 		<div className="mx-auto mt-6 mb-4 max-w-[502px] pb-6 md:mb-12 md:pb-8">
@@ -38,24 +26,22 @@ const SearchTalents = ({ setSearchTerm }: SearchTalentsProps) => {
 				Find the world’s best professionals on Gigza
 			</p>
 
-			<form
-				className="mt-8 flex items-center gap-x-4"
-				onSubmit={handleSubmit(onSubmit)}
-			>
+			<form className="mt-8 flex items-center gap-x-4" onSubmit={handleSubmit}>
 				<input
+					name="search"
 					id="search"
 					placeholder="Search for skills"
 					type="text"
+					onChange={(e) => setData(e.target.value)}
 					className="block h-[41px] flex-1 rounded-[5px] border border-[#E8E8EF] bg-[#FCFDFD] py-2 px-3 text-sm placeholder:text-[#979797] focus:outline-none"
-					{...register("search")}
 				/>
 				<Button title="Search" className="h-[41px] w-[110px]" />
 			</form>
-			{errors?.search ? (
+			{/* {errors?.search ? (
 				<p className="mt-[6px] text-sm leading-[17px] text-red-500">
 					This field is required
 				</p>
-			) : null}
+			) : null} */}
 		</div>
 	);
 };

@@ -17,6 +17,13 @@ import filterIcon from "@/public/asset/icons/filter-icon.svg";
 const FindTalents = () => {
 	const [showFilterTalentModal, setShowFilterTalentModal] = useState(false);
 	const [searchTerm, setSearchTerm] = useState("");
+	const initialFormData = {
+		rating: "",
+		specialties: ""
+	};
+
+	const [formData, setFormData] = useState(initialFormData);
+	console.log("formData talent", formData);
 	const {
 		data: usersProfile
 	}: {
@@ -26,13 +33,21 @@ const FindTalents = () => {
 		abi: GigzaContractAbi,
 		functionName: "getUserProfiles"
 	});
-	const filteredUsers = usersProfile?.filter(
+
+	const filterUsers = usersProfile?.filter((item) =>
+		item?.mainSkill
+			?.toLowerCase()
+			.includes(formData?.specialties?.toLowerCase())
+	);
+
+	const filteredUsers = filterUsers?.filter(
 		(item) =>
 			item?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
 			item?.userAddress?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-			item?.mainSkill?.toLowerCase().includes(searchTerm.toLowerCase()) ||
 			item?.skills?.includes(searchTerm.toLowerCase())
 	);
+
+	// console.log(usersProfile)
 
 	return (
 		<DashboardLayout>
@@ -57,7 +72,7 @@ const FindTalents = () => {
 				<div className="dashboard-layout-container mt-6 mb-[51px] grid-cols-[2fr_1fr] md:mb-[76px] lg:mt-12 lg:grid lg:gap-x-[45px]">
 					{/* freelancers */}
 					<TalentList {...{ filteredUsers }} />
-					<ApplyFilter />
+					<ApplyFilter {...{ formData, setFormData }} />
 				</div>
 			</div>
 		</DashboardLayout>

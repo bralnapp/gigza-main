@@ -8,10 +8,10 @@ import { useUploadFileIpfsMutation } from "utils/hooks";
 import plusIcon from "@/public/asset/icons/plus-icon.svg";
 
 type ProfileUploadProps = {
- onChange: (value:string) => void;
- value: string;
- error: string;
-}
+	onChange: (value: string) => void;
+	value: string;
+	error: string;
+};
 
 const ProfileUpload = ({ onChange, value, error }: ProfileUploadProps) => {
 	const {
@@ -28,7 +28,7 @@ const ProfileUpload = ({ onChange, value, error }: ProfileUploadProps) => {
 		noKeyboard: true,
 		maxFiles: 1,
 		accept: {
-			"image/png": [".png",".jpg"]
+			"image/png": [".png", ".jpg", ".jpeg"]
 		},
 		onDrop: (files) => {
 			uploadFile(files[0]);
@@ -61,35 +61,40 @@ const ProfileUpload = ({ onChange, value, error }: ProfileUploadProps) => {
 		<>
 			<div
 				onClick={open}
-				className="cursor-pointer mb-3 md:mb-8 border-2 border-stroke h-16 w-16 md:h-[142px] md:w-[142px] rounded-full flex items-center justify-center"
+				className="mb-3 flex h-16 w-16 cursor-pointer items-center justify-center rounded-full border-2 border-stroke md:mb-8 md:h-[142px] md:w-[142px]"
 				{...getRootProps}
 			>
 				<input {...getInputProps()} />
 				{value ? (
 					<div className="relative h-16 w-16 md:h-[142px] md:w-[142px]">
-						<Image src={value} alt="" fill className="object-cover rounded-full" />
+						<Image
+							src={value}
+							alt=""
+							fill
+							className="rounded-full object-cover"
+						/>
 					</div>
 				) : (
 					<div className="">
 						<Image
 							src={plusIcon}
 							alt=""
-							className="w-3 md:w-4 h-3 md:h-4 mx-auto"
+							className="mx-auto h-3 w-3 md:h-4 md:w-4"
 						/>
-						<p className="mt-[10px] hidden md:block text-b4 capitalize text-base leading-[19px]">
+						<p className="mt-[10px] hidden text-base capitalize leading-[19px] text-b4 md:block">
 							add photo
 						</p>
 					</div>
 				)}
 			</div>
 			<p
-				className={` text-b4 capitalize text-sm leading-[17px] md:hidden ${
+				className={` text-sm capitalize leading-[17px] text-b4 md:hidden ${
 					error ? "" : "mb-6"
 				}`}
 			>
 				add photo
 			</p>
-			<div className="text-sm leading-[17px] text-red-500 mt-[6px] mb-6">
+			<div className="mt-[6px] mb-6 text-sm leading-[17px] text-red-500">
 				{error ? <p>Please upload a profile picture</p> : null}
 			</div>
 		</>

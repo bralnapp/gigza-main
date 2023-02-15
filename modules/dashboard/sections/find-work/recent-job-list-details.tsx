@@ -28,8 +28,8 @@ const RecentJobListDetails = ({ jobDetails }: RecentJobListDetailsProps) => {
 			functionName: "getUser",
 			args: [jobDetails?.[4]]
 		});
-	return (
-		<div className="sticky top-[94px] hidden h-fit rounded-[10px] bg-white py-6 px-5 lg:block">
+	return jobDetails ? (
+		<div className="job-details sticky top-[94px] hidden h-[calc(100vh_-_157px)] overflow-auto rounded-[10px] bg-white py-6 px-5 lg:block">
 			<div className="border-b border-[#E8E8E8] pb-6">
 				<div className="flex items-start justify-between text-xl font-bold leading-[29px] text-b1">
 					<h3 className="w-4/5">{jobDetails?.[1]}</h3>
@@ -95,7 +95,7 @@ const RecentJobListDetails = ({ jobDetails }: RecentJobListDetailsProps) => {
 				</div>
 			</div>
 		</div>
-	);
+	) : null;
 };
 
 export default RecentJobListDetails;

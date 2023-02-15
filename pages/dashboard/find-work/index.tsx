@@ -2,7 +2,8 @@ import { useState } from "react";
 import DashboardLayout from "@/modules/dashboard/components/layout";
 import {
 	RecentJobList,
-	RecentJobListDetails
+	RecentJobListDetails,
+	SearchJob
 } from "@/modules/dashboard/sections/find-work";
 import { GigzaContractAbi, GigzaContractAddress } from "utils/helper";
 import { BigNumberData, JobDetailsProps } from "@custom-types/typing";
@@ -20,7 +21,7 @@ export type ItotalJobs = {
 	9: BigNumberData;
 	10: number;
 	11: string;
-	12:string;
+	12: string;
 }[];
 
 type FindWorkProps = {
@@ -29,22 +30,37 @@ type FindWorkProps = {
 
 const FindWork = ({ totalJobs }: FindWorkProps) => {
 	const [activeIndex, setActiveIndex] = useState(0);
-
+	const [searchTerm, setSearchTerm] = useState("");
 	const handleSelect = (index: number) => {
 		setActiveIndex(index);
 	};
 
+	// change all the elements in skills array to lowercase
+	const arr = totalJobs?.map((item) => [
+		// @ts-ignore
+		...item,
+		item?.[5].map((item) => item?.toLowerCase())
+	]);
+	const filterJobs = arr?.filter(
+		(item) =>
+			item?.[1]?.toLowerCase()?.includes(searchTerm.toLowerCase()) ||
+			item?.[2]?.toLowerCase()?.includes(searchTerm.toLowerCase()) || 
+			item?.[13]?.includes(searchTerm.toLowerCase())
+	).reverse();
+
 	return (
 		<DashboardLayout>
-			<div className="dashboard-layout-container">
-				<div className="grid-cols-2 gap-x-[46px] pt-6 pb-[45px] md:pt-8 lg:grid">
+			<div className="">
+				<SearchJob {...{ setSearchTerm }} />
+
+				<div className="dashboard-layout-container grid-cols-2 gap-x-[46px] pt-6 pb-[45px] md:pt-8 lg:grid">
 					{/* job list */}
-					<RecentJobList
-						jobList={totalJobs}
-						{...{ activeIndex, handleSelect }}
+					{/* @ts-ignore */}
+					<RecentJobList jobList={filterJobs} {...{ activeIndex, handleSelect }}
 					/>
 					{/* job details for desktop screen */}
-					<RecentJobListDetails jobDetails={totalJobs?.[activeIndex]} />
+					{/* @ts-ignore */}
+					<RecentJobListDetails jobDetails={filterJobs?.[activeIndex]} />
 				</div>
 			</div>
 		</DashboardLayout>

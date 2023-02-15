@@ -1,12 +1,11 @@
 import React from "react";
 import Image from "next/image";
 import { Button } from "@/modules/common/components/input/button";
-import Stars from "../../components/stars";
 import { UserProfileType } from "@custom-types/typing";
+import StarRating from "./star-rating";
 
 // images
 import profileAvatar from "@/public/asset/avatar/profile-avatar.svg";
-import StarRating from "./star-rating";
 
 type TalentListProps = {
 	filteredUsers: UserProfileType[] | undefined;
@@ -27,7 +26,7 @@ const TalentList = ({ filteredUsers }: TalentListProps) => {
 								alt=""
 								width={48}
 								height={48}
-								className="h-12 w-12 rounded-full"
+								className="h-12 w-12 rounded-full object-cover"
 							/>
 							<div className="">
 								<div className="mb-[11px] grid grid-cols-[2fr_1fr] items-center min-[540px]:flex min-[540px]:gap-x-3">
@@ -41,7 +40,7 @@ const TalentList = ({ filteredUsers }: TalentListProps) => {
 								</p>
 								{/* skills for desktop screens */}
 								<div className="mt-[10px] hidden flex-wrap items-center gap-[10px] min-[540px]:flex">
-									{item?.skills?.map((skill, index) => (
+									{item?.skills?.slice(0,5)?.map((skill, index) => (
 										<div
 											key={`users-profile-skills-${index}`}
 											className="rounded bg-[#F5F5F5] px-2 py-[5px] text-[10px] capitalize leading-3 text-[#333] min-[540px]:px-[9px] min-[540px]:py-2 min-[540px]:text-xs min-[540px]:leading-[18px]"
@@ -54,7 +53,7 @@ const TalentList = ({ filteredUsers }: TalentListProps) => {
 						</div>
 						{/* skills for mobile screens */}
 						<div className="mt-[10px] flex flex-wrap items-center gap-[10px] min-[540px]:hidden">
-							{item?.skills?.map((skill, index) => (
+							{item?.skills?.slice(0,5)?.map((skill, index) => (
 								<div
 									key={`users-profile-skills-${index}`}
 									className="rounded bg-[#F5F5F5] px-2 py-[5px] text-[10px] capitalize leading-3 text-[#333]"

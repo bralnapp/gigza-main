@@ -30,7 +30,7 @@ const UserProfile = ({ freelancerAddress }: UserProfileProp) => {
 				alt=""
 				width={40}
 				height={40}
-				className="h-10 w-10 rounded-full"
+				className="h-10 w-10 rounded-full object-cover"
 			/>
 			<div className="">
 				<p className="text-sm font-bold capitalize leading-4 text-b1">

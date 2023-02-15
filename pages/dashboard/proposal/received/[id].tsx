@@ -95,7 +95,7 @@ const ReceivedProposalDetails = ({
 									{job?.[1]}
 								</h1>
 								<p
-									className={`text-sm leading-[21px] text-b1 ${
+									className={`text-sm leading-[21px] text-b1 whitespace-pre-wrap  ${
 										width! < 1024 && !showMoreDetails ? "line-clamp-3" : ""
 									} `}
 								>

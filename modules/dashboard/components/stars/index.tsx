@@ -9,7 +9,7 @@ type Props = {
 	reviews?: number;
 	className?: string;
 	handleReview?: boolean;
-	onChange?: (value:number) => void;
+	onChange?: (value: number) => void;
 };
 
 const Stars = ({ reviews, className, handleReview, onChange }: Props) => {
@@ -17,9 +17,17 @@ const Stars = ({ reviews, className, handleReview, onChange }: Props) => {
 	const [hover, setHover] = useState(0);
 
 	const handleRating = (index: number) => {
-		handleReview && setRating(index);
-		onChange!(index)
+		if (handleReview) {
+			setRating(index);
+			onChange!(index);
+		}
 	};
+
+	const handleRoverRating = (index:number) => {
+		if (handleReview) {
+			setHover(index)
+		}
+	}
 	return (
 		<div className={`flex items-center space-x-[5px] ${className}`}>
 			{Array(5)
@@ -31,8 +39,8 @@ const Stars = ({ reviews, className, handleReview, onChange }: Props) => {
 							key={index}
 							className={`${handleReview ? "cursor-pointer" : null}`}
 							onClick={() => handleRating(index)}
-							onMouseEnter={() => setHover(index)}
-							onMouseLeave={() => setHover(rating)}
+							onMouseEnter={() => handleRoverRating(index)}
+							onMouseLeave={() => handleRoverRating(rating)}
 						>
 							<Image
 								key={index}

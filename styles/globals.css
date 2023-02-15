@@ -68,7 +68,7 @@ input:-webkit-autofill:active {
 
 /* When the checkbox is checked, add a green background */
 .checkbox-container input:checked ~ .checkmark {
-	background-color: #24947A;
+	background-color: #24947a;
 }
 
 /* Create the checkmark/indicator (hidden when not checked) */
@@ -108,4 +108,23 @@ input[type="radio"]:checked + label:after {
 	content: " ";
 	display: block;
 	background: #4f46e5;
+}
+
+.job-details {
+	scrollbar-width: thin;
+	scrollbar-color: #f42f54;
+}
+
+.job-details::-webkit-scrollbar {
+	width: 11px;
+}
+
+.job-details::-webkit-scrollbar-track {
+	background: #E4F5EE;
+}
+
+.job-details::-webkit-scrollbar-thumb {
+	background-color: #24947A;
+	border-radius: 6px;
+	border: 3px solid #E4F5EE;
 }

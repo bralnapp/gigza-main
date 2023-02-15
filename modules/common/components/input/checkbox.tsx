@@ -1,32 +1,20 @@
-import Stars from "@/modules/dashboard/components/stars"
+import Stars from "@/modules/dashboard/components/stars";
 
 type CheckboxProps = {
-    value: string | number,
-    onChange: VoidFunction,
-    checked?: boolean,
-    rating?: boolean
-}
+	value: string | number;
+	onChange: (e: React.FormEvent<HTMLInputElement>) => void;
+	rating?: boolean;
+	name: string;
+};
 
+const CheckBox = ({ value, onChange, rating, name }: CheckboxProps) => {
+	return (
+		<label className="checkbox-container text-base capitalize leading-[22px] text-[#475467]">
+			<input type="radio" {...{ value, onChange, name }} />
+			<span className="checkmark"></span>
+			{rating ? <Stars reviews={Number(value)} /> : <p>{value}</p>}
+		</label>
+	);
+};
 
-const CheckBox = ({ value, onChange, checked, rating }: CheckboxProps) => {
-    return (
-        <label className="checkbox-container text-base leading-[22px] capitalize text-[#475467]">
-            <input type="checkbox" value={value} onChange={onChange} checked={checked} />
-            <span className="checkmark"></span>
-            {
-                rating ?
-                    (
-                        <Stars reviews={Number(value)}/>
-                    ) :
-                    (
-                        <p>
-                            {value}
-                        </p>
-                    )
-            }
-
-        </label>
-    )
-}
-
-export default CheckBox
+export default CheckBox;
