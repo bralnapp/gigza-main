@@ -16,7 +16,7 @@ const CopyToClipboard = ({ text, icon }: Props) => {
 	};
 	return (
 		<Image
-			src={duplicateIcon || icon}
+			src={icon || duplicateIcon}
 			alt=""
 			onClick={copyToClipboard}
 			className="cursor-pointer"

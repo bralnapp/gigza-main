@@ -50,10 +50,10 @@ const Button = ({
 	) : (
 		<button
 			{...{ href }}
-			className={twMerge(`${buttonStyles({ intent, centered })}  ${className}`)}
+			className={twMerge(`${buttonStyles({ intent, centered })} gap-x-[11px] ${className}`)}
 			{...props}
 		>
-			{icon ? <Image src={icon} alt="" className="mr-[11px]" /> : null}
+			{icon ? <Image src={icon} alt="" className="" /> : null}
 			{title}
 		</button>
 	);
