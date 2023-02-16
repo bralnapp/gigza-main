@@ -66,6 +66,7 @@ const FindTalents = () => {
 					<Button
 						icon={filterIcon}
 						title="Filter"
+						onClick={() => setShowFilterTalentModal(true)}
 						className="ml-auto h-[28px] w-[75px] rounded-[3px] border border-[#E8E8EF] bg-[#FCFDFD] text-xs leading-[14px] text-b2"
 					/>
 				</div>

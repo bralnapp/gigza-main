@@ -31,7 +31,10 @@ const StarRating = ({ address }: StarRatingProps) => {
 	return (
 		<div className="flex items-center">
 			<Stars reviews={calculateRating} />
-			<p className="pl-1 text-sm leading-4 text-b3">
+			<p className="pl-1 text-sm leading-4 text-b3 md:hidden">
+				{calculateRating || null}
+			</p>
+			<p className="hidden pl-1 text-sm leading-4 text-b3 md:block">
 				{calculateRating || null} ({reviews?.length} reviews)
 			</p>
 		</div>

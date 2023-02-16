@@ -2,6 +2,7 @@ import DashboardLayout from "@/modules/dashboard/components/layout";
 import React from "react";
 import Image from "next/image";
 import { MetricsCard } from "@/modules/dashboard/components/misc";
+import { Button } from "@/modules/common/components/input/button";
 
 // images
 import money from "@/public/asset/referral/money.svg";
@@ -9,8 +10,6 @@ import coins from "@/public/asset/referral/coins.svg";
 import people from "@/public/asset/referral/people.svg";
 import hero from "@/public/asset/referral/hero.svg";
 import duplicateIcon from "@/public/asset/icons/duplicate.svg";
-import CopyToClipboard from "@/modules/common/components/copy-to-clipboard";
-import { Button } from "@/modules/common/components/input/button";
 
 const metricsData = [
 	{

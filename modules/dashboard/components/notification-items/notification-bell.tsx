@@ -1,20 +1,24 @@
-import { useRouter } from 'next/router';
-import NotificationItem from '.';
+import { useRouter } from "next/router";
+import NotificationItem from ".";
 
 // images
-import bellIcon from '@/public/asset/icons/bell-icon.svg'
+import bellIcon from "@/public/asset/icons/bell-icon.svg";
 
 type Props = {
-  isActive?: boolean;
-}
+	isActive?: boolean;
+};
 
 const NotificationBell = ({ isActive }: Props) => {
-  const router = useRouter()
-  const handleClick = () => router.push('/dashboard/message')
+	const router = useRouter();
+	const handleClick = () => router.push("/dashboard/message");
 
-  return (
-    <NotificationItem type='notification' icon={bellIcon} {...{ isActive, handleClick }} />
-  )
-}
+	return (
+		<NotificationItem
+			type="notification"
+			icon={bellIcon}
+			{...{ isActive, handleClick }}
+		/>
+	);
+};
 
-export default NotificationBell
+export default NotificationBell;

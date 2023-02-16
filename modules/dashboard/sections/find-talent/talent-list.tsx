@@ -17,7 +17,7 @@ const TalentList = ({ filteredUsers }: TalentListProps) => {
 			{filteredUsers?.map((item, index) => (
 				<div
 					key={`users-profile-${index}`}
-					className="items-start justify-between bg-white py-5 px-4 md:flex"
+					className="items-start justify-between bg-white py-5 px-4 md:grid grid-flow-col"
 				>
 					<div className="mb-4 md:mb-0">
 						<div className="flex items-center gap-x-3 min-[540px]:items-start">
@@ -26,10 +26,10 @@ const TalentList = ({ filteredUsers }: TalentListProps) => {
 								alt=""
 								width={48}
 								height={48}
-								className="h-12 w-12 rounded-full object-cover"
+								className="h-12 w-12 rounded-full object-cover block"
 							/>
 							<div className="">
-								<div className="mb-[11px] grid grid-cols-[2fr_1fr] items-center min-[540px]:flex min-[540px]:gap-x-3">
+								<div className="mb-[11px] flex items-center gap-x-3">
 									<h3 className="text-base font-bold capitalize leading-[19px] text-b1">
 										{item?.name}
 									</h3>
@@ -39,8 +39,8 @@ const TalentList = ({ filteredUsers }: TalentListProps) => {
 									{item?.mainSkill} • 15 contracts
 								</p>
 								{/* skills for desktop screens */}
-								<div className="mt-[10px] hidden flex-wrap items-center gap-[10px] min-[540px]:flex">
-									{item?.skills?.slice(0,5)?.map((skill, index) => (
+								<div className="mt-[10px] hidden flex-wrap items-center gap-[10px] min-[540px]:flex md:w-[400px] lg:w-[300px] xl:w-[420px]">
+									{item?.skills?.map((skill, index) => (
 										<div
 											key={`users-profile-skills-${index}`}
 											className="rounded bg-[#F5F5F5] px-2 py-[5px] text-[10px] capitalize leading-3 text-[#333] min-[540px]:px-[9px] min-[540px]:py-2 min-[540px]:text-xs min-[540px]:leading-[18px]"
@@ -53,7 +53,7 @@ const TalentList = ({ filteredUsers }: TalentListProps) => {
 						</div>
 						{/* skills for mobile screens */}
 						<div className="mt-[10px] flex flex-wrap items-center gap-[10px] min-[540px]:hidden">
-							{item?.skills?.slice(0,5)?.map((skill, index) => (
+							{item?.skills?.slice(0, 5)?.map((skill, index) => (
 								<div
 									key={`users-profile-skills-${index}`}
 									className="rounded bg-[#F5F5F5] px-2 py-[5px] text-[10px] capitalize leading-3 text-[#333]"

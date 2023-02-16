@@ -2,7 +2,7 @@ import React, { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import Image from "next/image";
 import { CheckBox } from "@/modules/common/components/input";
-import { specialtiesOptions } from "utils/data";
+import { roles, specialtiesOptions } from "utils/data";
 
 // images
 import closeIcon from "@/public/asset/icons/close.svg";
@@ -73,28 +73,27 @@ const FilterTalentListModal = ({
 									<h3 className="font-satoshiMedium text-base capitalize leading-[21px] text-[#101828]">
 										ratings
 									</h3>
-									<div className="mt-[17px] flex flex-col space-y-[17px] border-b border-[#F0F0F0] pb-5">
+									{/* <div className="mt-[17px] flex flex-col space-y-[17px] border-b border-[#F0F0F0] pb-5">
 										{ratings.map((item, index) => (
 											<CheckBox
 												key={index}
 												value={item}
 												onChange={() => handleOnChange(index)}
-												checked={checkedState[index]}
 												rating
 											/>
 										))}
-									</div>
+									</div> */}
 								</div>
-								<div className="mt-4 flex flex-col space-y-[17px]">
-									{specialtiesOptions.map((item, index) => (
+								{/* <div className="mt-4 flex flex-col space-y-[17px]">
+									{roles.map((item, index) => (
 										<CheckBox
 											key={index}
 											value={item}
-											onChange={() => handleOnChange(index)}
-											checked={checkedState[index]}
+											onChange={handleOnChange}
+											name="specialties"
 										/>
 									))}
-								</div>
+								</div> */}
 
 								<Button title="filter results" className="mt-7 h-8 w-[120px]" />
 							</form>
