@@ -23,7 +23,6 @@ const FindTalents = () => {
 	};
 
 	const [formData, setFormData] = useState(initialFormData);
-	console.log("formData talent", formData);
 	const {
 		data: usersProfile
 	}: {
@@ -47,7 +46,6 @@ const FindTalents = () => {
 			item?.skills?.includes(searchTerm.toLowerCase())
 	);
 
-	// console.log(usersProfile)
 
 	return (
 		<DashboardLayout>
@@ -56,7 +54,7 @@ const FindTalents = () => {
 					{...{ showFilterTalentModal, setShowFilterTalentModal, setFormData }}
 				/>
 			</div>
-			<div className="min-h-screen">
+			<div className="min-h-screen bg-[#FBFAFA] border border-transparent">
 				<div className="bg-white pt-6 md:pt-[31px]">
 					<div className="dashboard-layout-container">
 						<SearchTalents {...{ setSearchTerm }} />
@@ -70,7 +68,7 @@ const FindTalents = () => {
 						className="ml-auto h-[28px] w-[75px] rounded-[3px] border border-[#E8E8EF] bg-[#FCFDFD] text-xs leading-[14px] text-b2"
 					/>
 				</div>
-				<div className="dashboard-layout-container mt-6 mb-[51px] grid-cols-[2fr_1fr] md:mb-[76px] lg:mt-12 lg:grid lg:gap-x-[45px]">
+				<div className="dashboard-layout-container bg-[#FBFAFA] mt-6 mb-[51px] grid-cols-[2fr_1fr] md:mb-[76px] lg:mt-12 lg:grid lg:gap-x-[45px]">
 					{/* freelancers */}
 					<TalentList {...{ filteredUsers }} />
 					<ApplyFilter {...{ formData, setFormData }} />

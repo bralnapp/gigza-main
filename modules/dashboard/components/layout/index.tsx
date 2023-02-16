@@ -20,10 +20,13 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
 	return ready ? (
 		<div>
 			<Head>
-				<title>Giza | Home</title>
+				<title>Giza - Permisionless Decentralized Freelancing Marketplace</title>
 				<meta charSet="utf-8" />
 				<meta name="viewport" content="initial-scale=1.0, width=device-width" />
-				<meta name="description" content="gigza" />
+				<meta
+					name="Gigza is a permisionless decentralized freelancing marketplace that allows anyone to post a job and get help from freelancers with the requisite skills."
+					content="gigza"
+				/>
 			</Head>
 			<DashboardNav />
 			<main className="mt-[79px] min-h-screen bg-[#FBFAFA]">

@@ -60,7 +60,7 @@ const ApplyFilter = ({ formData, setFormData }: ApplyFilterProps) => {
 				{/* <p className="text-base leading-[21px] text-[#101828]">Ratings</p> */}
 
 				<form>
-					{/* <div className="mb-2">
+					<div className="mb-2">
 						<div className="mt-[17px] mb-2 flex flex-col space-y-[17px] border-b border-[#F0F0F0] pb-5">
 							{ratings.map((item, index) => (
 								<CheckBox
@@ -72,7 +72,7 @@ const ApplyFilter = ({ formData, setFormData }: ApplyFilterProps) => {
 								/>
 							))}
 						</div>
-					</div> */}
+					</div>
 					<div className="mt-4 flex flex-col space-y-[17px]">
 						{roles.map((item, index) => (
 							<CheckBox
