@@ -18,29 +18,37 @@ type ApplyFilterProps = {
 
 const ApplyFilter = ({ formData, setFormData }: ApplyFilterProps) => {
 	const [isValid, setIsValid] = useState(false);
-	const [data, setData] = useState({
-		rating: "",
-		specialties: ""
-	});
+	// const [data, setData] = useState({
+	// 	rating: "",
+	// 	specialties: ""
+	// });
 
 	const ratings = Array.from(Array(6).keys());
 	// change for checkbox
 	const handleOnChange = (e: FormEvent<HTMLInputElement>) => {
-		setData({
-			...data,
+		setFormData({
+			...formData,
 			[e.currentTarget?.name]: e.currentTarget?.value
 		});
 	};
-	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
-		setFormData(data);
-	};
 
-	useEffect(() => {
-		if (data?.rating || data?.specialties) {
-			setIsValid(true);
-		}
-	}, [data?.rating, data?.specialties]);
+	const handleClear = (e: FormEvent<HTMLButtonElement>) => {
+		e.preventDefault();
+		setFormData({
+			rating: "",
+			specialties: ""
+		});
+	};
+	// const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+	// 	e.preventDefault();
+	// 	setFormData(data);
+	// };
+
+	// useEffect(() => {
+	// 	if (data?.rating || data?.specialties) {
+	// 		setIsValid(true);
+	// 	}
+	// }, [data?.rating, data?.specialties]);
 
 	return (
 		<div className="hidden h-fit bg-white p-6 lg:block">
@@ -51,7 +59,7 @@ const ApplyFilter = ({ formData, setFormData }: ApplyFilterProps) => {
 			<div className="py-4">
 				{/* <p className="text-base leading-[21px] text-[#101828]">Ratings</p> */}
 
-				<form onSubmit={handleSubmit}>
+				<form>
 					{/* <div className="mb-2">
 						<div className="mt-[17px] mb-2 flex flex-col space-y-[17px] border-b border-[#F0F0F0] pb-5">
 							{ratings.map((item, index) => (
@@ -72,14 +80,18 @@ const ApplyFilter = ({ formData, setFormData }: ApplyFilterProps) => {
 								value={item}
 								onChange={handleOnChange}
 								name="specialties"
+								formData={formData.specialties}
 							/>
 						))}
 					</div>
-					<Button
+					<button onClick={handleClear} className="mt-5 capitalize">
+						clear filter
+					</button>
+					{/* <Button
 						disabled={!isValid}
 						title="filter results"
 						className="mt-7 w-[262px]"
-					/>
+					/> */}
 				</form>
 			</div>
 		</div>

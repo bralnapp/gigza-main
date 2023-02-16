@@ -53,7 +53,7 @@ const FindTalents = () => {
 		<DashboardLayout>
 			<div className="lg:hidden">
 				<FilterTalentListModal
-					{...{ showFilterTalentModal, setShowFilterTalentModal }}
+					{...{ showFilterTalentModal, setShowFilterTalentModal, setFormData }}
 				/>
 			</div>
 			<div className="min-h-screen">

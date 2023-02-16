@@ -31,6 +31,13 @@ const RecentJobListDetails = ({ jobDetails }: RecentJobListDetailsProps) => {
 	return jobDetails ? (
 		<div className="job-details sticky top-[94px] hidden h-[calc(100vh_-_157px)] overflow-auto rounded-[10px] bg-white py-6 px-5 lg:block">
 			<div className="border-b border-[#E8E8E8] pb-6">
+				<Button
+					title="Apply Job"
+					className="w-[163px] ml-auto mb-6"
+					href={`/dashboard/find-work/bid/${
+						formatUnit(jobDetails?.[0])! * 10 ** 18
+					}`}
+				/>
 				<div className="flex items-start justify-between text-xl font-bold leading-[29px] text-b1">
 					<h3 className="w-4/5">{jobDetails?.[1]}</h3>
 					<h4>${numeral(formatUnit(jobDetails?.[3])).format(",")}</h4>
@@ -85,13 +92,6 @@ const RecentJobListDetails = ({ jobDetails }: RecentJobListDetailsProps) => {
 							{jobDetails?.[4]}
 						</p>
 					</div>
-					<Button
-						title="Send Proposal"
-						className="w-[163px]"
-						href={`/dashboard/find-work/bid/${
-							formatUnit(jobDetails?.[0])! * 10 ** 18
-						}`}
-					/>
 				</div>
 			</div>
 		</div>

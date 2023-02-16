@@ -1,39 +1,49 @@
-import React, { Fragment, useState } from "react";
+import React, {
+	FormEvent,
+	Fragment,
+	SetStateAction,
+	useEffect,
+	useState
+} from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import Image from "next/image";
 import { CheckBox } from "@/modules/common/components/input";
-import { roles, specialtiesOptions } from "utils/data";
+import { roles } from "utils/data";
+import { Button } from "@/modules/common/components/input/button";
 
 // images
 import closeIcon from "@/public/asset/icons/close.svg";
-import { Button } from "@/modules/common/components/input/button";
 
 type FilterTalentListModalProps = {
 	showFilterTalentModal: boolean;
 	setShowFilterTalentModal: React.Dispatch<React.SetStateAction<boolean>>;
+	setFormData: React.Dispatch<
+		SetStateAction<{
+			rating: string;
+			specialties: string;
+		}>
+	>;
 };
 
 const FilterTalentListModal = ({
 	showFilterTalentModal,
-	setShowFilterTalentModal
+	setShowFilterTalentModal,
+	setFormData
 }: FilterTalentListModalProps) => {
-	const [checkedState, setCheckedState] = useState<boolean[]>(
-		new Array(specialtiesOptions.length).fill(false)
-	);
+	const [data, setData] = useState({
+		rating: "",
+		specialties: ""
+	});
+
+	const [isValid, setIsValid] = useState(false);
 
 	const ratings = Array.from(Array(6).keys());
-	// change for checkbox
-	const handleOnChange = (position: number) => {
-		console.log(position);
-		const updatedCheckedState = checkedState.map((item, index) =>
-			index === position ? !item : item
-		);
-		setCheckedState(updatedCheckedState);
-		const _support_types = updatedCheckedState
-			.map((item, index) => (item === true ? specialtiesOptions[index] : null))
-			.filter((item) => item !== null);
-		// @ts-ignore
-		// setFormData({ ...formData, support_types: _support_types })
+
+	const handleOnChange = (e: FormEvent<HTMLInputElement>) => {
+		setData({
+			...data,
+			[e.currentTarget?.name]: e.currentTarget?.value
+		});
 	};
 
 	const handleClose = () => {
@@ -42,7 +52,15 @@ const FilterTalentListModal = ({
 
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
+		setFormData(data);
+		handleClose();
 	};
+
+	useEffect(() => {
+		if (data?.rating || data?.specialties) {
+			setIsValid(true);
+		}
+	}, [data?.rating, data?.specialties]);
 
 	return (
 		<Transition appear show={showFilterTalentModal} as={Fragment}>
@@ -84,18 +102,23 @@ const FilterTalentListModal = ({
 										))}
 									</div> */}
 								</div>
-								{/* <div className="mt-4 flex flex-col space-y-[17px]">
+								<div className="mt-4 flex flex-col space-y-[17px]">
 									{roles.map((item, index) => (
 										<CheckBox
 											key={index}
 											value={item}
 											onChange={handleOnChange}
 											name="specialties"
+											formData={data?.specialties}
 										/>
 									))}
-								</div> */}
+								</div>
 
-								<Button title="filter results" className="mt-7 h-8 w-[120px]" />
+								<Button
+									title="filter results"
+									disabled={!isValid}
+									className="mt-7 h-8 w-[120px]"
+								/>
 							</form>
 							{/* <FilterTalentListForm /> */}
 						</section>
