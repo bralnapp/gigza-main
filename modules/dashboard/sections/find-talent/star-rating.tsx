@@ -42,3 +42,5 @@ const StarRating = ({ address }: StarRatingProps) => {
 };
 
 export default StarRating;
+
+

@@ -13,7 +13,7 @@ type TalentListProps = {
 
 const TalentList = ({ filteredUsers }: TalentListProps) => {
 	return (
-		<div className="space-y-4 min-[540px]:py-6 lg:px-5">
+		<div className="space-y-4 min-[540px]:pb-6 lg:px-5">
 			{filteredUsers?.map((item, index) => (
 				<div
 					key={`users-profile-${index}`}
