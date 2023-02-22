@@ -1,7 +1,7 @@
 import Stars from "@/modules/dashboard/components/stars";
 
 type CheckboxProps = {
-	value: string;
+	value: string | number;
 	onChange: (e: React.FormEvent<HTMLInputElement>) => void;
 	rating?: boolean;
 	name: string;
@@ -20,7 +20,7 @@ const CheckBox = ({
 			<input
 				type="radio"
 				{...{ value, onChange, name }}
-				checked={formData?.toLowerCase() === value?.toLowerCase()}
+				checked={formData?.toLowerCase() === value.toString()?.toLowerCase()}
 			/>
 			<span className="checkmark"></span>
 			{rating ? <Stars reviews={Number(value)} /> : <p>{value}</p>}
