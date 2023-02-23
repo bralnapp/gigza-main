@@ -9,6 +9,7 @@ import {
 	DaiContractAbi,
 	DiaContractAddress,
 	formatUnit,
+	formatWalletAddress,
 	GigzaContractAbi,
 	GigzaContractAddress
 } from "utils/helper";
@@ -44,9 +45,26 @@ const NotificationBell = () => {
 		abi: GigzaContractAbi,
 		eventName: "ProfileCreated",
 		listener(user, name, skill) {
-			if (user === address){
+			if (user === address) {
 				setNotifications([...notifications, "Your profile was created"]);
-				console.log(`${user} - ${name} - ${skill}`)
+				console.log(`${user} - ${name} - ${skill}`);
+			}
+		}
+	});
+
+	useContractEvent({
+		address: GigzaContractAddress,
+		abi: GigzaContractAbi,
+		eventName: "JobPosted",
+		listener(jobId, title, amount, description, timeline, client) {
+			if (client === address) {
+				setNotifications([...notifications, `You posted a job`]);
+				console.log(
+					`jobId: ${jobId} - title: ${title} - amount: ${amount} description: ${description} timeline: ${timeline} client: ${client}`
+				);
+			}else {
+				setNotifications([...notifications, `${formatWalletAddress(client)} posted a job`]);
+
 			}
 		}
 	});
