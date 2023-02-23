@@ -78,9 +78,11 @@ const FindTalents = () => {
 	};
 
 	useEffect(() => {
-		generateUsersWithReviews().then((data) => setTalentList(data));
+		if (usersProfile) {
+			generateUsersWithReviews().then((data) => setTalentList(data));
+		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [usersProfile]);
 
 	const filterUsers = talentList?.filter(
 		(item) =>

@@ -5,7 +5,13 @@ import NotificationPopOver from "./notification-popOver";
 // images
 import bellIcon from "@/public/asset/icons/bell-icon.svg";
 import { useAccount, useContractEvent } from "wagmi";
-import { DaiContractAbi, DiaContractAddress, formatUnit } from "utils/helper";
+import {
+	DaiContractAbi,
+	DiaContractAddress,
+	formatUnit,
+	GigzaContractAbi,
+	GigzaContractAddress
+} from "utils/helper";
 import numeral from "numeral";
 
 // type Props = {
@@ -13,7 +19,7 @@ import numeral from "numeral";
 // };
 
 const NotificationBell = () => {
-	const [showNotification, setShowNotification] = useState(true);
+	const [showNotification, setShowNotification] = useState(false);
 	const [notifications, setNotifications] = useState<string[]>([]);
 	const { address } = useAccount();
 	const handleClick = () => setShowNotification(!showNotification);
@@ -30,7 +36,18 @@ const NotificationBell = () => {
 						","
 					)} DAI was funded in your account`
 				]);
-			console.log(`${formatUnit(value)} was funded in your account`);
+		}
+	});
+
+	useContractEvent({
+		address: GigzaContractAddress,
+		abi: GigzaContractAbi,
+		eventName: "ProfileCreated",
+		listener(user, name, skill) {
+			if (user === address){
+				setNotifications([...notifications, "Your profile was created"]);
+				console.log(`${user} - ${name} - ${skill}`)
+			}
 		}
 	});
 
