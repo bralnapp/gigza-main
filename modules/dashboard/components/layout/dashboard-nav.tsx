@@ -52,9 +52,9 @@ const DashboardNav = () => {
 					))}
 				</nav>
 				<div className="flex">
-					<div className="mr-10 flex items-center gap-x-10 md:gap-x-8 lg:mr-[21px]">
+					<div className="mr-10 relative flex items-center gap-x-10 md:gap-x-8 lg:mr-[21px]">
 						<MessagingNotification isActive />
-						<NotificationBell isActive />
+						<NotificationBell />
 					</div>
 					<Image
 						src={menuIcon}
