@@ -8,10 +8,12 @@ import notificationBell from "@/public/asset/icons/notification-bell.svg";
 type NotificationPopOverProps = {
 	notifications: string[];
 	setShowNotification: Dispatch<SetStateAction<boolean>>;
+	showNotification: boolean;
 };
 
 const NotificationPopOver = ({
 	notifications,
+	showNotification,
 	setShowNotification
 }: NotificationPopOverProps) => {
 	const selectContainerRef = useRef(null);
@@ -30,7 +32,7 @@ const NotificationPopOver = ({
 				</p>
 			</div>
 			<div className="space-y-5">
-				{notifications.map((item, index) => (
+				{notifications?.map((item, index) => (
 					<p
 						key={`notification-message-${index}`}
 						className="text-sm font-normal leading-[21px] text-b3"
