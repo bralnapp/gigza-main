@@ -29,7 +29,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
 				/>
 			</Head>
 			<DashboardNav />
-			<main className="mt-[79px] min-h-screen bg-[#FBFAFA]">
+			<main className="mt-[79px]  bg-[#FBFAFA]">
 				{isConnected ? (
 					<>{children}</>
 				) : (

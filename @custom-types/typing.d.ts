@@ -56,3 +56,11 @@ export type IReviews = {
 	rating: BigNumberData;
 	review: string;
 }[];
+
+export type MessageProps = {
+	chat?: {
+		id: string;
+		users: `0x${string}`[];
+	};
+	messages?: string[];
+};

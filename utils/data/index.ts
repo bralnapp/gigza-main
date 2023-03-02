@@ -6,3 +6,4 @@ export * from "./dashboard-nav-links.data";
 export * from "./dummy.data";
 export * from "./recent-transactions.data";
 export * from "./specialties-options";
+export * from "./chats.data";

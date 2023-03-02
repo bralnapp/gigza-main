@@ -3,12 +3,17 @@ import Button from "./button";
 // images
 import chatIcon from "@/public/asset/icons/chat.svg";
 
-const SendMessageButton = () => {
+type SendMessageButtonProps = {
+	handleClick?: () => void;
+};
+
+const SendMessageButton = ({ handleClick }: SendMessageButtonProps) => {
 	return (
 		<Button
 			title="Message"
-			className="bg-primary text-white h-[42px] w-[125px]  lg:w-[192px]  items-center text-base leading-[18px]"
+			className="h-[42px] w-[125px] items-center bg-primary  text-base  leading-[18px] text-white lg:w-[192px]"
 			icon={chatIcon}
+			onClick={handleClick}
 		/>
 	);
 };

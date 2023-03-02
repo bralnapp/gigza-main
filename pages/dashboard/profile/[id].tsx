@@ -18,6 +18,9 @@ import {
 } from "utils/helper";
 import { useRouter } from "next/router";
 import { IReviews } from "@custom-types/typing";
+import { addDoc, collection, query, where } from "firebase/firestore";
+import { db } from "../../../firebase";
+import { useCollection } from "react-firebase-hooks/firestore";
 
 // images
 import profileAvatar from "@/public/asset/avatar/profile-avatar.svg";
@@ -60,6 +63,48 @@ const UserProfile = () => {
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isError]);
+
+	const userChatRef = collection(db, "chats");
+	const queryChat = query(
+		userChatRef,
+		where("users", "array-contains", `${address}`)
+	);
+	const [chatsSnapshot] = useCollection(queryChat);
+
+	const createChat = async () => {
+		if (!freelancerAddress) return;
+		if (
+			freelancerAddress !== address &&
+			!chatAlreadyExists(freelancerAddress as `0x${string}`)
+		) {
+			// add the chat into the DB "chats" collection if it doesn't exist and user can't chat with themself
+			const docRef = await addDoc(collection(db, "chats"), {
+				users: [address, freelancerAddress]
+			});
+			return docRef;
+		}
+	};
+
+	const chatAlreadyExists = (recipientAddress: `0x${string}`) =>
+		!!chatsSnapshot?.docs.find(
+			(chat) =>
+				chat
+					.data()
+					.users.find((user: `0x${string}`) => user === recipientAddress)
+					?.length > 0
+		);
+
+	const handleChat = () => {
+		createChat().then((res) => {
+			if (res?.id) {
+				router.push(`/dashboard/message/${res?.id}`);
+			} else {
+				router.push("/dashboard/message");
+			}
+		});
+		// router.push("/dashboard/message");
+	};
+
 	return (
 		<DashboardLayout>
 			{/* header image */}
@@ -74,6 +119,7 @@ const UserProfile = () => {
 							className="h-20 w-20 rounded-full object-cover md:h-[164px] md:w-[164px]"
 							width={80}
 							height={80}
+							priority
 						/>
 					</div>
 					<div className="mt-4 md:mt-8">
@@ -97,17 +143,17 @@ const UserProfile = () => {
 					{freelancerAddress === address ? (
 						<EditProfileButton />
 					) : (
-						<SendMessageButton />
+						<SendMessageButton handleClick={handleChat} />
 					)}
 				</div>
 			</div>
 			<div className="mt-[17px] border-stroke md:mt-3 md:border-b">
 				<div className="dashboard-layout-container border-b border-stroke md:border-none">
-					<div className="hidden justify-end md:flex xl:pr-[100px]">
+					<div className="hidden justify-end md:flex xl:pr-[100px] ">
 						{freelancerAddress === address ? (
 							<EditProfileButton />
 						) : (
-							<SendMessageButton />
+							<SendMessageButton handleClick={handleChat} />
 						)}
 					</div>
 					<div className="flex items-center">

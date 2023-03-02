@@ -56,13 +56,6 @@ const Contract = () => {
 	const closeJobsByClient = jobByClient?.filter(
 		(item) => item?.state === 3 || item?.state === 4 || item?.state === 6
 	);
-	console.log("closeJobsByClient", jobByClient);
-	// const jobByClientWithFreelancer = jobByClient?.map((item) => [
-	// 	item
-	// 	// item?.userBids.filter((item) => item?.bidState > 0)
-	// ]);
-	// console.log("jobByClient", jobByClient);
-	// console.log("jobByClientWithFreelancer", jobByClientWithFreelancer);
 
 	// all bids to a job by a freelancer
 	const allBids: AllBids[] | undefined = totalJobs?.map((item) => [
@@ -97,10 +90,6 @@ const Contract = () => {
 		["pending", _pendingJobs]
 	]);
 
-	console.log("usersContracts", usersContracts);
-	// console.log("pending", pending);
-	// console.log("pending jobs contracts -", contracts.get("pending"));
-	// console.log("pending newwwww", pendingJobs);
 	return (
 		<DashboardLayout>
 			<div className="dashboard-layout-container pt-8 pb-[95px] min-[540px]:pt-[42px]">

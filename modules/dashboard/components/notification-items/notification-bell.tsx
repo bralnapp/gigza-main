@@ -1,5 +1,5 @@
 import NotificationItem from ".";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import NotificationPopOver from "./notification-popOver";
 
 // images
@@ -31,6 +31,8 @@ const NotificationBell = () => {
 	const { address } = useAccount();
 	const handleClick = () => setShowNotification(!showNotification);
 
+	// ------------------------------ Transfer event (mint DAI tokens) ----------------------------
+
 	useContractEvent({
 		address: DiaContractAddress,
 		abi: DaiContractAbi,
@@ -46,6 +48,8 @@ const NotificationBell = () => {
 		}
 	});
 
+	// ------------------------------ ProfileCreated event ----------------------------
+
 	useContractEvent({
 		address: GigzaContractAddress,
 		abi: GigzaContractAbi,
@@ -58,6 +62,8 @@ const NotificationBell = () => {
 		}
 	});
 
+	// ------------------------------ JobPosted event ----------------------------
+
 	useContractEvent({
 		address: GigzaContractAddress,
 		abi: GigzaContractAbi,
@@ -68,10 +74,126 @@ const NotificationBell = () => {
 				console.log(
 					`jobId: ${jobId} - title: ${title} - amount: ${amount} description: ${description} timeline: ${timeline} client: ${client}`
 				);
-			}else {
-				setNotifications([...notifications, `${formatWalletAddress(client)} posted a job`]);
-
+			} else {
+				// @ts-ignore
+				setNotifications([
+					...notifications,
+					// @ts-ignore
+					`${formatWalletAddress(client)} posted a job`
+				]);
 			}
+		}
+	});
+
+	// ------------------------------ ProposalSubmitted  event ----------------------------
+
+	useContractEvent({
+		address: GigzaContractAddress,
+		abi: GigzaContractAbi,
+		eventName: "ProposalSubmitted",
+		listener(jobId, description, client) {
+			if (address === client) {
+				setNotifications([...notifications, "You submitted a job proposal"]);
+			}
+			// console.log(
+			// 	`jobId: ${jobId} - description: ${description}  client: ${client}`
+			// );
+		}
+	});
+
+	// ------------------------------ ContractSent  event ----------------------------
+
+	useContractEvent({
+		address: GigzaContractAddress,
+		abi: GigzaContractAbi,
+		eventName: "ContractSent",
+		listener(jobId, freelancer) {
+			if (address === freelancer) {
+				setNotifications([...notifications, "A contract has been sent to you"]);
+			}
+			// console.log(`jobId: ${jobId} - freelancer: ${freelancer}`);
+		}
+	});
+
+	// ------------------------------ ContractAccepted  event ----------------------------
+
+	useContractEvent({
+		address: GigzaContractAddress,
+		abi: GigzaContractAbi,
+		eventName: "ContractAccepted",
+		listener(jobId, freelancer) {
+			if (address === freelancer) {
+				setNotifications([...notifications, "You have accepted a contract"]);
+			}
+			// console.log(`jobId: ${jobId} - freelancer: ${freelancer}`);
+		}
+	});
+
+	// ------------------------------ OfferDeclined  event ----------------------------
+
+	useContractEvent({
+		address: GigzaContractAddress,
+		abi: GigzaContractAbi,
+		eventName: "OfferDeclined",
+		listener(jobId, amount, title) {
+			// if (address === freelancer) {
+			// 	setNotifications([...notifications, "You have accepted a contract"]);
+			// }
+			console.log(`jobId: ${jobId} - amount: ${amount} - title: ${title}`);
+		}
+	});
+
+	// ------------------------------ JobCompleted  event ----------------------------
+
+	useContractEvent({
+		address: GigzaContractAddress,
+		abi: GigzaContractAbi,
+		eventName: "JobCompleted",
+		listener(jobId, message, freelancer) {
+			if (address === freelancer) {
+				setNotifications([...notifications, "You have submitted a job"]);
+			}
+			// console.log(
+			// 	`jobId: ${jobId} - message: ${message} - freelancer: ${freelancer}`
+			// );
+		}
+	});
+
+	// ------------------------------ PayementReleased  event ----------------------------
+
+	useContractEvent({
+		address: GigzaContractAddress,
+		abi: GigzaContractAbi,
+		eventName: "PayementReleased",
+		listener(jobId, amount, freelancer) {
+			if (address === freelancer) {
+				setNotifications([
+					...notifications,
+					`You received ${numeral(formatUnit(amount)).format(",")} DAI for a job`
+				]);
+			}
+			console.log(
+				`jobId: ${jobId} - amount: ${amount} - freelancer: ${freelancer}`
+			);
+		}
+	});
+
+	// ------------------------------ ReviewCreated  event ----------------------------
+
+	useContractEvent({
+		address: GigzaContractAddress,
+		abi: GigzaContractAbi,
+		eventName: "ReviewCreated",
+		listener(client, message, rating) {
+			if (address === client) {
+				setNotifications([
+					...notifications,
+					`You recieved a ${rating} for a job`
+				]);
+			}
+			console.log(
+				`client: ${client} - message: ${message} - rating: ${rating}`
+			);
 		}
 	});
 
