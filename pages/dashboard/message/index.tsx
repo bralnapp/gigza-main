@@ -54,9 +54,9 @@ const Message = () => {
 					<div className="mx-auto h-full w-11/12 pt-[34px] lg:mx-0 lg:w-fit lg:pt-0">
 						<ChatSideBar />
 					</div>
-					<div className="w-full">
-						<div className="rounded-r-lg border-[#F0F0F0] py-4 px-6 lg:border lg:border-l-0"></div>
-						<Chat />
+					<div className="hidden lg:block w-full">
+						<div className="rounded-r-lg border-[#F0F0F0] py-4 px-6 lg:border lg:border-l-0 h-full"></div>
+						{/* <Chat /> */}
 					</div>
 				</div>
 			</div>

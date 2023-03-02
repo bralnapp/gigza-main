@@ -21,12 +21,12 @@ const Message = ({ chat, messages }: MessageProps) => {
 		<DashboardLayout>
 			<div className="h-[calc(100vh_-_80px)] overflow-hidden bg-white ">
 				<div className="flex h-full max-w-7xl lg:mx-auto lg:w-11/12 lg:pt-[41px]">
-					<div className="mx-auto h-full w-11/12 pt-[34px] lg:mx-0 lg:w-fit lg:pt-0">
+					<div className="hidden lg:block mx-auto h-full w-11/12 pt-[34px] lg:mx-0 lg:w-fit lg:pt-0">
 						<ChatSideBar />
 					</div>
-					<div className="h-full grid grid-rows-[auto_2fr] w-full border-[4px] border-yellow-600">
+					<div className="h-full grid grid-rows-[auto_1fr] w-full">
 						<ChatHeader users={chat?.users} />
-						<div className="">
+						<div className="overflow-hidden">
 							<Chat {...{ chat, messages }} />
 						</div>
 					</div>

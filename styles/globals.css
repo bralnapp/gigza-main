@@ -16,6 +16,10 @@
 	}
 }
 
+html {
+	scroll-behavior: smooth;
+}
+
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
@@ -134,5 +138,5 @@ input[type="radio"]:checked + label:after {
 }
 
 .chatList {
-scrollbar-width:none
+	scrollbar-width: none;
 }

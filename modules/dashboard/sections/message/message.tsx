@@ -2,11 +2,13 @@ import { useAccount } from "wagmi";
 import avatar from "@/public/asset/avatar/profile-avatar.svg";
 import Image from "next/image";
 import MessageAvatar from "./message-avatar";
+import moment from "moment";
 
 type MessageProps = {
 	user: `0x${string}`;
 	message: {
 		message: string;
+		timestamp: any;
 	};
 };
 
@@ -26,6 +28,15 @@ const Message = ({ user, message }: MessageProps) => {
 				}`}
 			>
 				{message.message}
+				{message.timestamp ? (
+					<p className="mt-1 text-xs flex justify-end">
+						{typeof message.timestamp !== "number"
+							? "loading..."
+							: moment(message?.timestamp).format("MMMM Do YYYY, h:mm:ss a")}
+					</p>
+				) : (
+					<p className="mt-1 text-xs flex justify-end">...</p>
+				)}
 			</div>
 		</div>
 	);

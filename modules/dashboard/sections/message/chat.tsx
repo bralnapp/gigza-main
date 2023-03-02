@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { MessageProps, UserProfileType } from "@custom-types/typing";
 import { useAccount, useContractRead } from "wagmi";
@@ -23,6 +23,7 @@ import avatar from "@/public/asset/avatar/profile-avatar.svg";
 
 const Chat = ({ chat, messages }: MessageProps) => {
 	const { address } = useAccount();
+	const endOfMessageRef = useRef<HTMLDivElement>(null);
 	const { data: userDetails }: { data: UserProfileType | undefined } =
 		useContractRead({
 			address: GigzaContractAddress,
@@ -50,6 +51,15 @@ const Chat = ({ chat, messages }: MessageProps) => {
 		}));
 	};
 
+	const scrollToBottom = () => {
+		// 	const messageBoxElement = endOfMessageRef.current;
+		// messageBoxElement!.scrollTop = messageBoxElement!.scrollHeight;
+		endOfMessageRef.current?.scrollIntoView({
+			behavior: "smooth",
+			block: "start"
+		});
+	};
+
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		setFormData(initialFormData);
@@ -71,19 +81,29 @@ const Chat = ({ chat, messages }: MessageProps) => {
 		});
 
 		setFormData(initialFormData);
+		// scrollToBottom();
 	};
+
+	useEffect(() => {
+		const messageBoxElement = endOfMessageRef.current;
+		messageBoxElement!.scrollTop = messageBoxElement!.scrollHeight;
+	}, [messages, messagesSnapshot]);
 	return (
-		<div className="flex h-full flex-col border-[5px] border-black">
+		<div className="grid h-full grid-rows-[1fr_auto] px-6 border rounded-r-lg">
 			{/* chat */}
-			<div className="mt-4 h-full border-[5px] border-blue-500">
-				<div className="max-h-[90%] overflow-y-auto border border-green-500 px-4">
-					<div className="error space-y-8">
+			<div className="overflow-hidden pt-6">
+				<div
+					ref={endOfMessageRef}
+					className="job-details h-[90%] overflow-y-auto "
+				>
+					<div className="space-y-8  ">
 						{messagesSnapshot ? (
 							<>
 								{messagesSnapshot?.docs?.map((message) => (
 									<Message
 										key={message.id}
 										user={message?.data()?.user}
+										// @ts-ignore
 										message={{
 											...message?.data(),
 											// @ts-ignore
@@ -106,25 +126,29 @@ const Chat = ({ chat, messages }: MessageProps) => {
 							</>
 						)}
 					</div>
+					{/* <div ref={endOfMessageRef} className="error mb-1" /> */}
 				</div>
 			</div>
+
 			{/* send message */}
-			<form
-				onSubmit={handleSubmit}
-				className="mt-5 flex h-auto items-center space-x-3 rounded-md border border-[#F0F0F0] py-2 px-3"
-			>
-				<input
-					type="text"
-					placeholder="Write a message"
-					onChange={handleTextChange}
-					className="flex-1 focus:outline-none"
-					name="message"
-					value={formData.message}
-				/>
-				<button className="">
-					<Image src={sendIcon} alt="" className="h-8 w-[31px]" />
-				</button>
-			</form>
+			<div className="">
+				<form
+					onSubmit={handleSubmit}
+					className="mt-5 flex h-auto items-center space-x-3 rounded-md border border-[#F0F0F0] py-2 px-3"
+				>
+					<input
+						type="text"
+						placeholder="Write a message"
+						onChange={handleTextChange}
+						className="flex-1 focus:outline-none"
+						name="message"
+						value={formData.message}
+					/>
+					<button className="">
+						<Image src={sendIcon} alt="" className="h-8 w-[31px]" />
+					</button>
+				</form>
+			</div>
 		</div>
 	);
 };
