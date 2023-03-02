@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
 	EditProfileButton,
 	SendMessageButton
@@ -82,6 +82,16 @@ const UserProfile = () => {
 				users: [address, freelancerAddress]
 			});
 			return docRef;
+		} else if (freelancerAddress !== address) {
+			const _chatData = chatsSnapshot?.docs.find(
+				(chat) =>
+					chat
+						.data()
+						.users.find((user: `0x${string}`) => user === freelancerAddress)
+						?.length > 0
+			);
+			// console.log("_chatData", _chatData);
+			return _chatData;
 		}
 	};
 
@@ -98,9 +108,12 @@ const UserProfile = () => {
 		createChat().then((res) => {
 			if (res?.id) {
 				router.push(`/dashboard/message/${res?.id}`);
-			} else {
-				router.push("/dashboard/message");
 			}
+			//  else {
+			// console.log("res id", res?.id);
+
+			// router.push("/dashboard/message");
+			// }
 		});
 		// router.push("/dashboard/message");
 	};

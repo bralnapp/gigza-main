@@ -18,6 +18,9 @@ import { BigNumberData, JobDetailsProps } from "@custom-types/typing";
 import numeral from "numeral";
 import { NextPageContext } from "next";
 import { readContract } from "@wagmi/core";
+import { useCollection } from "react-firebase-hooks/firestore";
+import { addDoc, collection, query, where } from "firebase/firestore";
+import { db } from "../../../firebase";
 
 // images
 import chevronLeft from "@/public/asset/icons/chevron-left.svg";
@@ -88,6 +91,59 @@ const ContractDetails = ({ pageData, totalJobs }: ContractDetailsProps) => {
 		// @ts-ignore
 		(item) => item?.[3].toLowerCase() === address?.toLowerCase()
 	) as unknown;
+
+	const userChatRef = collection(db, "chats");
+	const queryChat = query(
+		userChatRef,
+		where("users", "array-contains", `${address}`)
+	);
+	const [chatsSnapshot] = useCollection(queryChat);
+
+	const freelancerAddress =
+		thisJob?.[0]?.[4]?.toLowerCase() === address?.toLowerCase()
+			? pageData?.[8]?.[0]?.[3]!
+			: thisJob?.[0]?.[4];
+
+	const createChat = async () => {
+		if (!freelancerAddress) return;
+		if (
+			freelancerAddress !== address &&
+			!chatAlreadyExists(freelancerAddress as `0x${string}`)
+		) {
+			// add the chat into the DB "chats" collection if it doesn't exist and user can't chat with themself
+			const docRef = await addDoc(collection(db, "chats"), {
+				users: [address, freelancerAddress]
+			});
+			return docRef;
+		} else if (freelancerAddress !== address) {
+			const _chatData = chatsSnapshot?.docs.find(
+				(chat) =>
+					chat
+						.data()
+						.users.find((user: `0x${string}`) => user === freelancerAddress)
+						?.length > 0
+			);
+			// console.log("_chatData", _chatData);
+			return _chatData;
+		}
+	};
+
+	const chatAlreadyExists = (recipientAddress: `0x${string}`) =>
+		!!chatsSnapshot?.docs.find(
+			(chat) =>
+				chat
+					.data()
+					.users.find((user: `0x${string}`) => user === recipientAddress)
+					?.length > 0
+		);
+
+	const handleChat = () => {
+		createChat().then((res) => {
+			if (res?.id) {
+				router.push(`/dashboard/message/${res?.id}`);
+			}
+		});
+	};
 
 	return (
 		<DashboardLayout>
@@ -169,6 +225,7 @@ const ContractDetails = ({ pageData, totalJobs }: ContractDetailsProps) => {
 								<Button
 									title="Send A Message"
 									icon={chatIcon}
+									onClick={handleChat}
 									className="w-full border border-[#D9D9D9] bg-white text-b2"
 								/>
 							) : null}

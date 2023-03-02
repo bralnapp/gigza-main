@@ -76,6 +76,7 @@ const ChatSideBar = () => {
 		item?.name?.toLowerCase()?.includes(searchQuery.toLowerCase())
 	);
 
+
 	return (
 		<div className="h-full  border-[#F0F0F0] lg:w-[341px] lg:rounded-tl-lg lg:border lg:px-5 lg:pt-6">
 			<div className="flex items-center gap-x-2">
