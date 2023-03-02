@@ -8,17 +8,21 @@ type MessageProps = {
 	user: `0x${string}`;
 	message: {
 		message: string;
-		timestamp: any;
+		timestamp: number;
+		profileUrl: string;
 	};
 };
 
 const Message = ({ user, message }: MessageProps) => {
 	const { address } = useAccount();
+	console.log("address", address);
+	console.log("user", user);
+	console.log("message", message);
 
 	return (
 		<div className="flex items-center gap-x-2">
 			<div className={`${address !== user ? "order-1" : null}`}>
-				<MessageAvatar avatar={address === user ? address : user} />
+				<MessageAvatar avatar={message?.profileUrl} />
 			</div>
 			<div
 				className={`flex-1 p-3 text-sm leading-[18px] ${
@@ -29,13 +33,13 @@ const Message = ({ user, message }: MessageProps) => {
 			>
 				{message.message}
 				{message.timestamp ? (
-					<p className="mt-1 text-xs flex justify-end">
+					<p className="mt-1 flex justify-end text-xs">
 						{typeof message.timestamp !== "number"
 							? "loading..."
 							: moment(message?.timestamp).format("MMMM Do YYYY, h:mm:ss a")}
 					</p>
 				) : (
-					<p className="mt-1 text-xs flex justify-end">...</p>
+					<p className="mt-1 flex justify-end text-xs">...</p>
 				)}
 			</div>
 		</div>

@@ -8,16 +8,9 @@ type MessageAvatarProps = {
 };
 
 const MessageAvatar = ({ avatar }: MessageAvatarProps) => {
-	const { data: userDetails }: { data: UserProfileType | undefined } =
-		useContractRead({
-			address: GigzaContractAddress,
-			abi: GigzaContractAbi,
-			functionName: "getUser",
-			args: [avatar]
-		});
 	return (
 		<Image
-			src={userDetails?.profileUrl!}
+			src={avatar}
 			alt=""
 			className="h-10 w-10 rounded-full object-cover"
 			width={40}
