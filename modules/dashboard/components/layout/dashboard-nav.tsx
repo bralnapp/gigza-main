@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { dashboardNavLinks } from "utils/data";
 import Link from "next/link";
@@ -12,17 +12,20 @@ import { GigzaContractAbi, GigzaContractAddress } from "utils/helper";
 import { Web3Modal } from "@web3modal/react";
 import { ethereumClient } from "utils/config";
 import { useAccount, useContractRead } from "wagmi";
+import { collection, doc, onSnapshot, query, where } from "firebase/firestore";
+import { db } from "../../../../firebase";
 
 // images
 import logo from "@/public/asset/logo/logo.svg";
 import menuIcon from "@/public/asset/icons/menu.svg";
+import { userDetailsType } from "@/pages/dashboard/profile";
 
 const DashboardNav = () => {
 	const [isOpen, setIsOpen] = useState(false);
 
 	const { address } = useAccount();
 
-	const { data: userDetails } = useContractRead({
+	const { data: userDetails } : {data : userDetailsType | undefined} = useContractRead({
 		address: GigzaContractAddress,
 		abi: GigzaContractAbi,
 		functionName: "getUser",
@@ -33,6 +36,25 @@ const DashboardNav = () => {
 		setIsOpen(!isOpen);
 	};
 
+	// const q = query(collection(db, "chats", "messages"));
+	// console.log("q", q);
+	// console.log("navbar");
+	// useEffect(() => {
+	// 	const unsub = onSnapshot(q, (snapshot) => {
+	// 		snapshot.docChanges().forEach((change) => {
+	// 			if (change.type === "added") {
+	// 				// @ts-ignore
+	// 				// setNewMessages((prev) => [...prev, change.doc.data()]);
+	// 				console.log("data", change.doc.data());
+	// 			}
+	// 		});
+	// 	});
+
+	// 	return () => {
+	// 		unsub();
+	// 	};
+	// }, []);
+
 	return (
 		<header className="fixed left-0 top-0 z-[999] w-full border-b border-[#E3E8EB] bg-white">
 			<Web3Modal
@@ -40,7 +62,10 @@ const DashboardNav = () => {
 				ethereumClient={ethereumClient}
 			/>
 			{/* @ts-ignore */}
-			<DashboardSidebar {...{ isOpen, toggleMenu, setIsOpen }} userDetails={userDetails!} />
+			<DashboardSidebar
+				{...{ isOpen, toggleMenu, setIsOpen }}
+				userDetails={userDetails!}
+			/>
 			<div className="dashboard-layout-container flex h-[78px] items-center justify-between">
 				<Link href="/">
 					<Image src={logo} alt="" />

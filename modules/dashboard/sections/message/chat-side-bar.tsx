@@ -46,6 +46,8 @@ const ChatSideBar = () => {
 		chat.id
 	]);
 
+	// chatsSnapshot?.docs?.forEach((item) => console.log("chat list user", item.id));
+
 	const getChatList = async () => {
 		const chatListData = [];
 		for (const user of _chatData!) {
@@ -75,7 +77,6 @@ const ChatSideBar = () => {
 	const filteredChatList = chatList?.filter((item) =>
 		item?.name?.toLowerCase()?.includes(searchQuery.toLowerCase())
 	);
-
 
 	return (
 		<div className="h-full  border-[#F0F0F0] lg:w-[341px] lg:rounded-tl-lg lg:border lg:px-5 lg:pt-6">

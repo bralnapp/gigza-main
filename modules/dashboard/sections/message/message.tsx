@@ -1,6 +1,10 @@
 import { useAccount } from "wagmi";
 import MessageAvatar from "./message-avatar";
 import moment from "moment";
+import { doc, updateDoc } from "firebase/firestore";
+import { db } from "../../../../firebase";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 type MessageProps = {
 	user: `0x${string}`;
@@ -9,11 +13,31 @@ type MessageProps = {
 		timestamp: number;
 		profileUrl: string;
 	};
+	id: string;
 };
 
-const Message = ({ user, message }: MessageProps) => {
+const Message = ({ user, message, id }: MessageProps) => {
 	const { address } = useAccount();
+	const router = useRouter();
 
+	const messageRef = doc(
+		db,
+		"chats",
+		`${router.query.id}`,
+		"messages",
+		`${id}`
+	);
+
+	const markRead = async () => {
+		await updateDoc(messageRef, {
+			read: true
+		});
+	};
+
+	useEffect(() => {
+		markRead();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	return (
 		<div className="flex items-center gap-x-2">

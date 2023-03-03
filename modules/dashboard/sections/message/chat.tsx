@@ -77,7 +77,8 @@ const Chat = ({ chat, messages }: MessageProps) => {
 			timestamp: serverTimestamp(),
 			message: formData.message,
 			user: address,
-			profileUrl: userDetails?.profileUrl
+			profileUrl: userDetails?.profileUrl,
+			read: false
 		});
 
 		setFormData(initialFormData);
@@ -89,7 +90,7 @@ const Chat = ({ chat, messages }: MessageProps) => {
 		messageBoxElement!.scrollTop = messageBoxElement!.scrollHeight;
 	}, [messages, messagesSnapshot]);
 	return (
-		<div className="grid h-full grid-rows-[1fr_auto] px-6 border rounded-r-lg">
+		<div className="grid h-full grid-rows-[1fr_auto] rounded-r-lg border px-6">
 			{/* chat */}
 			<div className="overflow-hidden pt-6">
 				<div
@@ -109,6 +110,7 @@ const Chat = ({ chat, messages }: MessageProps) => {
 											// @ts-ignore
 											timestamp: message?.data()?.timestamp?.toDate()?.getTime()
 										}}
+										id={message.id}
 									/>
 								))}
 							</>
@@ -120,6 +122,7 @@ const Chat = ({ chat, messages }: MessageProps) => {
 												key={message.id}
 												user={message?.user}
 												message={message}
+												id={message.id}
 											/>
 									  ))
 									: null}
