@@ -1,3 +1,4 @@
+import { PulseLoader } from "react-spinners";
 import ChatListItem from "./chat-list-item";
 
 type ChatListProps = {
@@ -14,11 +15,19 @@ type ChatListProps = {
 const ChatList = ({ filteredChatList }: ChatListProps) => {
 	return (
 		<div className="h-full">
-			<div className="mt-4  space-y-[13px]">
-				{filteredChatList?.map((item, index) => (
-					<ChatListItem key={`chat-list-item-${index}`} {...{ item }} />
-				))}
-			</div>
+			{filteredChatList?.length ? (
+				<div className="mt-4  space-y-[13px]">
+					{filteredChatList?.map((item, index) => (
+						<ChatListItem key={`chat-list-item-${index}`} {...{ item }} />
+					))}
+				</div>
+			) : (
+				<div className="grid h-full place-items-center">
+					<div>
+						<PulseLoader color="#36d7b7" loading={true} />
+					</div>
+				</div>
+			)}
 		</div>
 	);
 };
