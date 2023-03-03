@@ -13,7 +13,6 @@ import { Web3Modal } from "@web3modal/react";
 import { ethereumClient } from "utils/config";
 import { useAccount, useContractRead } from "wagmi";
 
-
 // images
 import logo from "@/public/asset/logo/logo.svg";
 import menuIcon from "@/public/asset/icons/menu.svg";
@@ -52,8 +51,8 @@ const DashboardNav = () => {
 					))}
 				</nav>
 				<div className="flex">
-					<div className="mr-10 relative flex items-center gap-x-10 md:gap-x-8 lg:mr-[21px]">
-						<MessagingNotification isActive />
+					<div className="relative mr-10 flex items-center gap-x-10 md:gap-x-8 lg:mr-[21px]">
+						<MessagingNotification />
 						<NotificationBell />
 					</div>
 					<Image

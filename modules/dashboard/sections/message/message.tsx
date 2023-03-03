@@ -1,6 +1,4 @@
 import { useAccount } from "wagmi";
-import avatar from "@/public/asset/avatar/profile-avatar.svg";
-import Image from "next/image";
 import MessageAvatar from "./message-avatar";
 import moment from "moment";
 
@@ -15,9 +13,7 @@ type MessageProps = {
 
 const Message = ({ user, message }: MessageProps) => {
 	const { address } = useAccount();
-	console.log("address", address);
-	console.log("user", user);
-	console.log("message", message);
+
 
 	return (
 		<div className="flex items-center gap-x-2">

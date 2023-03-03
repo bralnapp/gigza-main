@@ -1,6 +1,8 @@
 import { UserProfileType } from "@custom-types/typing";
+import { collection, doc, onSnapshot } from "firebase/firestore";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { db } from "../../../../firebase";
 
 type ChatListProps = {
 	filteredChatList:
@@ -16,6 +18,15 @@ const ChatList = ({ filteredChatList }: ChatListProps) => {
 	const router = useRouter();
 	const handleEnterChat = (id: string) =>
 		router.push(`/dashboard/message/${id}`);
+
+	// const unsub = onSnapshot(doc(db, "chats","messages"), (doc) => {
+	// 	const messages = []
+	// 	// doc.forEach((doc)=> {
+	// 	// 	messages.push(doc.data().message)
+	// 	// })
+	// 	// console.log("Current data: ", messages);
+	// 	console.log("Current data: ", doc.data());
+	// });
 	return (
 		<div className="h-full">
 			<div className="mt-4  space-y-[13px]">

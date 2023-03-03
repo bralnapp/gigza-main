@@ -1,10 +1,7 @@
-import { UserProfileType } from "@custom-types/typing";
 import Image from "next/image";
-import { GigzaContractAbi, GigzaContractAddress } from "utils/helper";
-import { useContractRead } from "wagmi";
 
 type MessageAvatarProps = {
-	avatar: `0x${string}`;
+	avatar: string;
 };
 
 const MessageAvatar = ({ avatar }: MessageAvatarProps) => {
