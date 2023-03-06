@@ -1,22 +1,54 @@
 import Image from "next/image";
 import { useOnClickOutside } from "utils/hooks";
 import { Dispatch, SetStateAction, useRef } from "react";
+import { useAccount } from "wagmi";
 
 // images
 import notificationBell from "@/public/asset/icons/notification-bell.svg";
+import closeIcon from "@/public/asset/icons/close.svg";
+
+type Notification = {
+	userAddress: `0x${string}` | undefined;
+	notification: string[];
+}[];
 
 type NotificationPopOverProps = {
-	notifications: string[];
+	notifications: Notification;
 	setShowNotification: Dispatch<SetStateAction<boolean>>;
+	setNotifications: Dispatch<SetStateAction<Notification>>;
 	showNotification: boolean;
 };
 
 const NotificationPopOver = ({
 	notifications,
 	showNotification,
-	setShowNotification
+	setShowNotification,
+	setNotifications
 }: NotificationPopOverProps) => {
 	const selectContainerRef = useRef(null);
+	const { address } = useAccount();
+	const userNotification = notifications.filter(
+		(item) => item.userAddress === address
+	);
+
+	const handleRemoveNotification = (index: number) => {
+		console.log("remove notification");
+		const filterUserNotification = userNotification?.[0]?.notification?.filter(
+			(_, notificationIndex) => notificationIndex !== index
+		);
+		console.log("filterUserNotification", filterUserNotification);
+
+		const updatedNotification = notifications.map((item) => {
+			if (item.userAddress === address) {
+				return {
+					...item,
+					notification: filterUserNotification
+				};
+			}
+			return item;
+		});
+		setNotifications(updatedNotification);
+	};
 
 	const clickOutsideHandler = () => setShowNotification(false);
 	useOnClickOutside(selectContainerRef, clickOutsideHandler);
@@ -32,13 +64,19 @@ const NotificationPopOver = ({
 				</p>
 			</div>
 			<div className="space-y-5">
-				{notifications?.map((item, index) => (
-					<p
+				{userNotification?.[0]?.notification?.map((item, index) => (
+					<div
 						key={`notification-message-${index}`}
-						className="text-sm font-normal leading-[21px] text-b3"
+						className="flex items-center justify-between"
 					>
-						{item}
-					</p>
+						<p className="text-sm font-normal leading-[21px] text-b3">{item}</p>
+						<Image
+							src={closeIcon}
+							alt=""
+							className="h-2 w-2 cursor-pointer"
+							onClick={() => handleRemoveNotification(index)}
+						/>
+					</div>
 				))}
 			</div>
 		</div>

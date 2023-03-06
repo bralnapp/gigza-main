@@ -31,10 +31,44 @@ const NotificationBell = () => {
 	);
 	useSetPersistNotificationStore(notifications, address!);
 
+	const handleNewUser = () => {
+		if (notifications.find((item) => item.userAddress === address)) return;
+		const newUser: Notification[number] = {
+			userAddress: address!,
+			notification: []
+		};
+		if (notifications.length) {
+			setNotifications([...notifications, newUser]);
+		} else if (!notifications.length && address) {
+			setNotifications([newUser]);
+		} else {
+			setNotifications([]);
+		}
+	};
+
+	useEffect(() => {
+		handleNewUser();
+		console.log("notifications", notifications);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [address]);
+
 	const handleClick = () => setShowNotification(!showNotification);
 
-	console.log("notifications", notifications);
-
+	const handleNotification = (
+		address: `0x${string}`,
+		userNotification: string
+	) => {
+		const updateUserNotification = notifications.map((item) => {
+			if (item.userAddress === address) {
+				return {
+					...item,
+					notification: [...item.notification, userNotification]
+				};
+			}
+			return item;
+		});
+		setNotifications(updateUserNotification);
+	};
 	// ------------------------------ Transfer event (mint DAI tokens) ----------------------------
 
 	useContractEvent({
@@ -43,24 +77,8 @@ const NotificationBell = () => {
 		eventName: "Transfer",
 		listener(from, to, value) {
 			if (to === address) {
-				const objIndex = notifications.findIndex(
-					(obj) => obj.userAddress === address
-				);
-				if (objIndex !== -1) {
-					const updatedNotifications = [...notifications];
-					updatedNotifications[objIndex].notification.push(
-						`${numeral(formatUnit(value)).format(
-							","
-						)} DAI was funded in your account`
-					);
-					setNotifications(updatedNotifications);
-					console.log(
-						"updatedNotifications in use contract event",
-						updatedNotifications
-					);
-					console.log('objIndex !== -1 is working')
-				}
-				console.log(
+				handleNotification(
+					address!,
 					`${numeral(formatUnit(value)).format(
 						","
 					)} DAI was funded in your account`
@@ -77,7 +95,7 @@ const NotificationBell = () => {
 		eventName: "ProfileCreated",
 		listener(user, name, skill) {
 			if (user === address) {
-				setNotifications([...notifications, "Your profile was created"]);
+				// setNotifications([...notifications, "Your profile was created"]);
 				console.log(`${user} - ${name} - ${skill}`);
 			}
 		}
@@ -91,17 +109,17 @@ const NotificationBell = () => {
 		eventName: "JobPosted",
 		listener(jobId, title, amount, description, timeline, client) {
 			if (client === address) {
-				setNotifications([...notifications, `You posted a job`]);
+				// setNotifications([...notifications, `You posted a job`]);
 				console.log(
 					`jobId: ${jobId} - title: ${title} - amount: ${amount} description: ${description} timeline: ${timeline} client: ${client}`
 				);
 			} else {
 				// @ts-ignore
-				setNotifications([
-					...notifications,
-					// @ts-ignore
-					`${formatWalletAddress(client)} posted a job`
-				]);
+				// setNotifications([
+				// 	...notifications,
+				// 	// @ts-ignore
+				// 	`${formatWalletAddress(client)} posted a job`
+				// ]);
 			}
 		}
 	});
@@ -114,7 +132,7 @@ const NotificationBell = () => {
 		eventName: "ProposalSubmitted",
 		listener(jobId, description, client) {
 			if (address === client) {
-				setNotifications([...notifications, "You submitted a job proposal"]);
+				// setNotifications([...notifications, "You submitted a job proposal"]);
 			}
 			// console.log(
 			// 	`jobId: ${jobId} - description: ${description}  client: ${client}`
@@ -130,7 +148,7 @@ const NotificationBell = () => {
 		eventName: "ContractSent",
 		listener(jobId, freelancer) {
 			if (address === freelancer) {
-				setNotifications([...notifications, "A contract has been sent to you"]);
+				// setNotifications([...notifications, "A contract has been sent to you"]);
 			}
 			// console.log(`jobId: ${jobId} - freelancer: ${freelancer}`);
 		}
@@ -144,7 +162,7 @@ const NotificationBell = () => {
 		eventName: "ContractAccepted",
 		listener(jobId, freelancer) {
 			if (address === freelancer) {
-				setNotifications([...notifications, "You have accepted a contract"]);
+				// setNotifications([...notifications, "You have accepted a contract"]);
 			}
 			// console.log(`jobId: ${jobId} - freelancer: ${freelancer}`);
 		}
@@ -172,7 +190,7 @@ const NotificationBell = () => {
 		eventName: "JobCompleted",
 		listener(jobId, message, freelancer) {
 			if (address === freelancer) {
-				setNotifications([...notifications, "You have submitted a job"]);
+				// setNotifications([...notifications, "You have submitted a job"]);
 			}
 			// console.log(
 			// 	`jobId: ${jobId} - message: ${message} - freelancer: ${freelancer}`
@@ -188,12 +206,12 @@ const NotificationBell = () => {
 		eventName: "PayementReleased",
 		listener(jobId, amount, freelancer) {
 			if (address === freelancer) {
-				setNotifications([
-					...notifications,
-					`You received ${numeral(formatUnit(amount)).format(
-						","
-					)} DAI for a job`
-				]);
+				// setNotifications([
+				// 	...notifications,
+				// 	`You received ${numeral(formatUnit(amount)).format(
+				// 		","
+				// 	)} DAI for a job`
+				// ]);
 			}
 			console.log(
 				`jobId: ${jobId} - amount: ${amount} - freelancer: ${freelancer}`
@@ -209,10 +227,10 @@ const NotificationBell = () => {
 		eventName: "ReviewCreated",
 		listener(client, message, rating) {
 			if (address === client) {
-				setNotifications([
-					...notifications,
-					`You recieved a ${rating} for a job`
-				]);
+				// setNotifications([
+				// 	...notifications,
+				// 	`You recieved a ${rating} for a job`
+				// ]);
 			}
 			console.log(
 				`client: ${client} - message: ${message} - rating: ${rating}`
@@ -234,12 +252,20 @@ const NotificationBell = () => {
 			<NotificationItem
 				type="notification"
 				icon={bellIcon}
-				isActive={!!notifications?.length}
+				isActive={
+					!!notifications?.find((item) => item.userAddress === address)
+						?.notification?.length
+				}
 				{...{ handleClick }}
 			/>
 			{showNotification ? (
 				<NotificationPopOver
-					{...{ notifications, setShowNotification, showNotification }}
+					{...{
+						notifications,
+						setShowNotification,
+						showNotification,
+						setNotifications
+					}}
 				/>
 			) : null}
 		</>

@@ -1,6 +1,6 @@
 import GigzaContractAbi from "../constants/Gigza.json";
 import DaiContractAbi from "../constants/Dia.json";
-import { useEffect } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
 import { getAccount } from "@wagmi/core";
 
 // new proxy
@@ -64,62 +64,82 @@ type Notification = {
 	notification: string[];
 }[];
 
+// const useSetPersistNotificationStore = (
+// 	store: Notification,
+// 	address: `0x${string}`
+// ) => {
+// 	useEffect(() => {
+// 		console.log("store", store);
+// 		console.log("address", address);
+// 		let userNotificationData = [];
+// 		// retrieve existing notification data from local storage
+// 		let existingNotification: Notification =
+// 			JSON.parse(localStorage.getItem("persist-gigza-notification")!) || store;
+
+// const objIndexOfUserNotification = existingNotification.findIndex(
+// 	(obj) => obj.userAddress === address
+// );
+// const userNoticationIndexInStore = store.findIndex(
+// 	(obj) => obj.userAddress === address
+// );
+
+// if (
+// 	objIndexOfUserNotification !== -1 &&
+// 	userNoticationIndexInStore !== -1
+// ) {
+// 	existingNotification[objIndexOfUserNotification].notification.push(
+// 		...store[userNoticationIndexInStore].notification
+// 	);
+// }
+
+// // check if the user address is in existingNotification
+// let userNotification = existingNotification.filter(
+// 	(item) => item.userAddress === address
+// );
+// console.log("userNotification", userNotification);
+
+// if (userNotification.length) {
+// 	const objIndex = store.findIndex(
+// 		(obj) => obj.userAddress === address
+// 	);
+// 	if (objIndex !== -1) {
+// 		const updatedUserNotification = store[objIndex]
+// 		userNotification[0].notification.push(...updatedUserNotification.notification)
+
+// 	}
+// 	return;
+// }
+// add new user to existing data
+// 		const objIndexNewAddress = existingNotification.findIndex(
+// 			(obj) => obj.userAddress === address
+// 		);
+// 		let newUserNotification = address! &&
+// 			objIndexNewAddress === -1 && {
+// 				userAddress: address,
+// 				notification: []
+// 			};
+
+// 		console.log("newUserNotification", newUserNotification);
+// 		let updatedNotification =
+// 			// @ts-ignore
+// 			existingNotification.length || newUserNotification?.userAddress
+// 				? [...existingNotification, newUserNotification]
+// 				: [];
+
+// 		localStorage.setItem(
+// 			"persist-gigza-notification",
+// 			JSON.stringify(updatedNotification.filter(Boolean))
+// 		);
+// 		// eslint-disable-next-line react-hooks/exhaustive-deps
+// 	}, [store, address]);
+// };
+
 const useSetPersistNotificationStore = (
 	store: Notification,
+	// setStore: Dispatch<SetStateAction<Notification>>,
 	address: `0x${string}`
 ) => {
-	useEffect(() => {
-		console.log("store", store);
-		console.log('address',address)
-		let userNotificationData = []
-		// retrieve existing notification data from local storage
-		let existingNotification: Notification =
-			JSON.parse(localStorage.getItem("persist-gigza-notification")!) || store;
-
-			const objIndexOfUserNotification = existingNotification.findIndex((obj) => obj.userAddress === address)
-			const userNoticationIndexInStore = store.findIndex((obj) => obj.userAddress === address)
-
-			if (objIndexOfUserNotification !== -1 && userNoticationIndexInStore !== -1) {
-				existingNotification[objIndexOfUserNotification].notification.push(...store[userNoticationIndexInStore].notification)
-			}
-			
-
-		// // check if the user address is in existingNotification
-		// let userNotification = existingNotification.filter(
-		// 	(item) => item.userAddress === address
-		// );
-		// console.log("userNotification", userNotification);
-
-		// if (userNotification.length) {
-		// 	const objIndex = store.findIndex(
-		// 		(obj) => obj.userAddress === address
-		// 	);
-		// 	if (objIndex !== -1) {
-		// 		const updatedUserNotification = store[objIndex]
-		// 		userNotification[0].notification.push(...updatedUserNotification.notification)
-				
-		// 	}
-		// 	return;
-		// }
-		// add new user to existing data
-		let newUserNotification = address!
-			? {
-					userAddress: address,
-					notification: []
-			  }
-			: [];
-		let updatedNotification =
-			// @ts-ignore
-			existingNotification.length || newUserNotification.userAddress
-				? [...existingNotification, newUserNotification,]
-				: [];
-
-		localStorage.setItem(
-			"persist-gigza-notification",
-			JSON.stringify(updatedNotification)
-		);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [store, address]);
+	localStorage.setItem("persist-millers-protocol", JSON.stringify(store));
 };
 
 const useGetPersistedNotificationStore = () =>
