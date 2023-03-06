@@ -55,7 +55,7 @@ const NotificationPopOver = ({
 	return (
 		<div
 			ref={selectContainerRef}
-			className="absolute top-14 -left-10 h-[308px] w-[339px] rounded-lg border border-[#F0F0F0] bg-white px-6 py-4"
+			className="absolute top-14 -left-10 h-[308px] w-[339px] rounded-lg border border-[#F0F0F0] bg-white px-3 py-4"
 		>
 			<div className="mb-5 flex items-center gap-x-2">
 				<Image src={notificationBell} alt="" />
@@ -63,13 +63,15 @@ const NotificationPopOver = ({
 					notification
 				</p>
 			</div>
-			<div className="space-y-5">
+			<div className="overflow-y-auto h-4/5 space-y-5 pr-3">
 				{userNotification?.[0]?.notification?.map((item, index) => (
 					<div
 						key={`notification-message-${index}`}
 						className="flex items-center justify-between"
 					>
-						<p className="text-sm font-normal leading-[21px] text-b3">{item}</p>
+						<p className="w-11/12 break-words text-sm font-normal leading-[21px] text-b3">
+							{item}
+						</p>
 						<Image
 							src={closeIcon}
 							alt=""

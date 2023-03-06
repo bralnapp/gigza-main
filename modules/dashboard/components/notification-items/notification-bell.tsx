@@ -29,17 +29,17 @@ const NotificationBell = () => {
 	const [notifications, setNotifications] = useState<Notification>(
 		useGetPersistedNotificationStore()
 	);
-	useSetPersistNotificationStore(notifications, address!);
+	useSetPersistNotificationStore(notifications);
 
 	const handleNewUser = () => {
-		if (notifications.find((item) => item.userAddress === address)) return;
+		if (notifications?.find((item) => item?.userAddress === address)) return;
 		const newUser: Notification[number] = {
 			userAddress: address!,
 			notification: []
 		};
-		if (notifications.length) {
+		if (notifications?.length) {
 			setNotifications([...notifications, newUser]);
-		} else if (!notifications.length && address) {
+		} else if (!notifications?.length && address) {
 			setNotifications([newUser]);
 		} else {
 			setNotifications([]);
@@ -48,16 +48,13 @@ const NotificationBell = () => {
 
 	useEffect(() => {
 		handleNewUser();
-		console.log("notifications", notifications);
+		// console.log("notifications", notifications);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [address]);
 
 	const handleClick = () => setShowNotification(!showNotification);
 
-	const handleNotification = (
-		address: `0x${string}`,
-		userNotification: string
-	) => {
+	const handleNotification = (userNotification: string) => {
 		const updateUserNotification = notifications.map((item) => {
 			if (item.userAddress === address) {
 				return {
@@ -78,10 +75,25 @@ const NotificationBell = () => {
 		listener(from, to, value) {
 			if (to === address) {
 				handleNotification(
-					address!,
 					`${numeral(formatUnit(value)).format(
 						","
 					)} DAI was funded in your account`
+				);
+			}
+		}
+	});
+
+	// ------------------------------ Approval  event to spend DAI----------------------------
+	useContractEvent({
+		address: DiaContractAddress,
+		abi: DaiContractAbi,
+		eventName: "Approval",
+		listener(owner, spender, value) {
+			if (owner === address) {
+				handleNotification(
+					`${numeral(formatUnit(value)).format(
+						","
+					)} DAI was approved to be spent by ${spender}`
 				);
 			}
 		}
@@ -95,7 +107,7 @@ const NotificationBell = () => {
 		eventName: "ProfileCreated",
 		listener(user, name, skill) {
 			if (user === address) {
-				// setNotifications([...notifications, "Your profile was created"]);
+				handleNotification("Your profile was created");
 				console.log(`${user} - ${name} - ${skill}`);
 			}
 		}
@@ -109,17 +121,14 @@ const NotificationBell = () => {
 		eventName: "JobPosted",
 		listener(jobId, title, amount, description, timeline, client) {
 			if (client === address) {
+				handleNotification("You posted a job");
 				// setNotifications([...notifications, `You posted a job`]);
 				console.log(
 					`jobId: ${jobId} - title: ${title} - amount: ${amount} description: ${description} timeline: ${timeline} client: ${client}`
 				);
 			} else {
 				// @ts-ignore
-				// setNotifications([
-				// 	...notifications,
-				// 	// @ts-ignore
-				// 	`${formatWalletAddress(client)} posted a job`
-				// ]);
+				handleNotification(`${formatWalletAddress(client)} posted a job`);
 			}
 		}
 	});
@@ -132,6 +141,7 @@ const NotificationBell = () => {
 		eventName: "ProposalSubmitted",
 		listener(jobId, description, client) {
 			if (address === client) {
+				handleNotification("You submitted a job proposal");
 				// setNotifications([...notifications, "You submitted a job proposal"]);
 			}
 			// console.log(
@@ -148,6 +158,7 @@ const NotificationBell = () => {
 		eventName: "ContractSent",
 		listener(jobId, freelancer) {
 			if (address === freelancer) {
+				handleNotification("A contract has been sent to you");
 				// setNotifications([...notifications, "A contract has been sent to you"]);
 			}
 			// console.log(`jobId: ${jobId} - freelancer: ${freelancer}`);
@@ -162,7 +173,7 @@ const NotificationBell = () => {
 		eventName: "ContractAccepted",
 		listener(jobId, freelancer) {
 			if (address === freelancer) {
-				// setNotifications([...notifications, "You have accepted a contract"]);
+				handleNotification("You have accepted a contract");
 			}
 			// console.log(`jobId: ${jobId} - freelancer: ${freelancer}`);
 		}
