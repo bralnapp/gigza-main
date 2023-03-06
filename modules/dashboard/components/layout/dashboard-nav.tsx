@@ -12,29 +12,49 @@ import { GigzaContractAbi, GigzaContractAddress } from "utils/helper";
 import { Web3Modal } from "@web3modal/react";
 import { ethereumClient } from "utils/config";
 import { useAccount, useContractRead } from "wagmi";
-import { collection, doc, onSnapshot, query, where } from "firebase/firestore";
+import { doc, serverTimestamp, setDoc } from "firebase/firestore";
 import { db } from "../../../../firebase";
+import { UserProfileType } from "@custom-types/typing";
 
 // images
 import logo from "@/public/asset/logo/logo.svg";
 import menuIcon from "@/public/asset/icons/menu.svg";
-import { userDetailsType } from "@/pages/dashboard/profile";
 
 const DashboardNav = () => {
 	const [isOpen, setIsOpen] = useState(false);
 
 	const { address } = useAccount();
 
-	const { data: userDetails } : {data : userDetailsType | undefined} = useContractRead({
-		address: GigzaContractAddress,
-		abi: GigzaContractAbi,
-		functionName: "getUser",
-		args: [address]
-	});
+	const { data: userDetails }: { data: UserProfileType | undefined } =
+		useContractRead({
+			address: GigzaContractAddress,
+			abi: GigzaContractAbi,
+			functionName: "getUser",
+			args: [address]
+		});
 
 	const toggleMenu = () => {
 		setIsOpen(!isOpen);
 	};
+
+	// add a user address to firebase
+	useEffect(() => {
+		const addUserAddress = async () => {
+			if (userDetails) {
+				await setDoc(
+					doc(db, "users", `${userDetails?.userAddress}`),
+					{
+						address: userDetails?.userAddress,
+						name: userDetails?.name,
+						lastSeen: serverTimestamp(),
+						profileUrl: userDetails?.profileUrl
+					},
+					{ merge: true }
+				);
+			}
+		};
+		addUserAddress();
+	}, [userDetails]);
 
 	// const q = query(collection(db, "chats", "messages"));
 	// console.log("q", q);

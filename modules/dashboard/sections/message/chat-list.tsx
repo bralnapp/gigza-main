@@ -10,24 +10,25 @@ type ChatListProps = {
 				read: boolean;
 		  }[]
 		| undefined;
+	chatList: any
 };
 
-const ChatList = ({ filteredChatList }: ChatListProps) => {
+const ChatList = ({ filteredChatList, chatList }: ChatListProps) => {
 	return (
 		<div className="h-full">
-			{filteredChatList?.length ? (
+			{filteredChatList?.length && chatList.length ? (
 				<div className="mt-4  space-y-[13px]">
 					{filteredChatList?.map((item, index) => (
 						<ChatListItem key={`chat-list-item-${index}`} {...{ item }} />
 					))}
 				</div>
-			) : (
+			) : filteredChatList?.length || chatList?.length ? (
 				<div className="grid h-full place-items-center">
 					<div>
 						<PulseLoader color="#36d7b7" loading={true} />
 					</div>
 				</div>
-			)}
+			) : null}
 		</div>
 	);
 };

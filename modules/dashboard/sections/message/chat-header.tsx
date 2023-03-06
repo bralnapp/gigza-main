@@ -61,32 +61,36 @@ const ChatHeader = ({ users }: ChatHeaderProps) => {
 
 	return (
 		<div className="rounded-r-lg border-[#F0F0F0] py-4 px-6 lg:border lg:border-l-0">
-			<div className="flex items-center gap-x-2">
-				<Image
-					src={recipientDetails?.profileUrl!}
-					width={40}
-					height={40}
-					alt=""
-					className="h-10 w-10 rounded-full object-cover"
-				/>
-				<div>
-					<h4 className="text-base font-medium capitalize leading-[22px] text-[#1F1F1F]">
-						{recipientDetails?.name}
-					</h4>
-					{reciepientSnapshot ? (
-						<p className="text-sm text-b2">
-							Last seen:{" "}
-							{recipient?.lastSeen?.toDate() ? (
-								<TimeAgo datetime={recipient?.lastSeen?.toDate()} />
-							) : (
-								"unavailable"
-							)}
-						</p>
-					) : (
-						<p className="text-sm text-b2">Loading last active...</p>
-					)}
+			{recipientDetails ? (
+				<div className="flex items-center gap-x-2">
+					<Image
+						src={recipientDetails?.profileUrl!}
+						width={40}
+						height={40}
+						alt=""
+						className="h-10 w-10 rounded-full object-cover"
+					/>
+					<div>
+						<h4 className="text-base font-medium capitalize leading-[22px] text-[#1F1F1F]">
+							{recipientDetails?.name}
+						</h4>
+						{reciepientSnapshot ? (
+							<p className="text-sm text-b2">
+								Last seen:{" "}
+								{recipient?.lastSeen?.toDate() ? (
+									<TimeAgo datetime={recipient?.lastSeen?.toDate()} />
+								) : (
+									"unavailable"
+								)}
+							</p>
+						) : (
+							<p className="text-sm text-b2">Loading last active...</p>
+						)}
+					</div>
 				</div>
-			</div>
+			) : (
+				<p className="text-sm text-b2">Loading</p>
+			)}
 		</div>
 	);
 };

@@ -15,21 +15,33 @@ import {
 	query
 } from "firebase/firestore";
 import { MessageProps } from "@custom-types/typing";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
 
 const Message = ({ chat, messages }: MessageProps) => {
+	const router = useRouter();
+	useEffect(() => {
+		if (!chat?.users) {
+			router.push("/dashboard/message");
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [chat, messages]);
+
 	return (
 		<DashboardLayout>
 			<div className="h-[calc(100vh_-_80px)] overflow-hidden bg-white ">
 				<div className="flex h-full max-w-7xl lg:mx-auto lg:w-11/12 lg:pt-[41px]">
-					<div className="hidden lg:block mx-auto h-full w-11/12 pt-[34px] lg:mx-0 lg:w-fit lg:pt-0">
+					<div className="mx-auto hidden h-full w-11/12 pt-[34px] lg:mx-0 lg:block lg:w-fit lg:pt-0">
 						<ChatSideBar />
 					</div>
-					<div className="h-full grid grid-rows-[auto_1fr] w-full">
-						<ChatHeader users={chat?.users} />
-						<div className="overflow-hidden">
-							<Chat {...{ chat, messages }} />
+					{chat?.users ? (
+						<div className="grid h-full w-full grid-rows-[auto_1fr]">
+							<ChatHeader users={chat?.users} />
+							<div className="overflow-hidden">
+								<Chat {...{ chat, messages }} />
+							</div>
 						</div>
-					</div>
+					) : null}
 				</div>
 			</div>
 		</DashboardLayout>

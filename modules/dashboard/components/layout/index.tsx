@@ -20,7 +20,9 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
 	return ready ? (
 		<div>
 			<Head>
-				<title>Giza - Permisionless Decentralized Freelancing Marketplace</title>
+				<title>
+					Giza - Permisionless Decentralized Freelancing Marketplace
+				</title>
 				<meta charSet="utf-8" />
 				<meta name="viewport" content="initial-scale=1.0, width=device-width" />
 				<meta

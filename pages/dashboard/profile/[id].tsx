@@ -109,13 +109,7 @@ const UserProfile = () => {
 			if (res?.id) {
 				router.push(`/dashboard/message/${res?.id}`);
 			}
-			//  else {
-			// console.log("res id", res?.id);
-
-			// router.push("/dashboard/message");
-			// }
 		});
-		// router.push("/dashboard/message");
 	};
 
 	return (

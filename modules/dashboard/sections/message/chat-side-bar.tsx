@@ -45,7 +45,6 @@ const ChatSideBar = () => {
 		...chat.data()?.users,
 		chat.id
 	]);
-
 	// chatsSnapshot?.docs?.forEach((item) => console.log("chat list user", item.id));
 
 	const getChatList = async () => {
@@ -97,7 +96,7 @@ const ChatSideBar = () => {
 					{...{ handleTextChange, searchQuery }}
 				/>
 				<div className="chatList h-full overflow-y-auto">
-					<ChatList {...{ filteredChatList }} />
+					<ChatList {...{ filteredChatList, chatList }} />
 				</div>
 			</div>
 		</div>
