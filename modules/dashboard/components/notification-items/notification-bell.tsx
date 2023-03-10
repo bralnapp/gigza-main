@@ -4,7 +4,7 @@ import NotificationPopOver from "./notification-popOver";
 
 // images
 import bellIcon from "@/public/asset/icons/bell-icon.svg";
-import { useAccount, useContractEvent } from "wagmi";
+import { useAccount, useContract, useContractEvent, useProvider } from "wagmi";
 import {
 	DaiContractAbi,
 	DiaContractAddress,
@@ -16,6 +16,7 @@ import {
 	useSetPersistNotificationStore
 } from "utils/helper";
 import numeral from "numeral";
+import { ethers } from "ethers";
 
 type Notification = {
 	userAddress: `0x${string}` | undefined;
@@ -30,6 +31,55 @@ const NotificationBell = () => {
 		useGetPersistedNotificationStore()
 	);
 	useSetPersistNotificationStore(notifications);
+
+	const provider = useProvider()
+
+	const contract = new ethers.Contract(GigzaContractAddress, GigzaContractAbi, provider)
+	
+	// useContract({
+	// 	address: GigzaContractAddress,
+	// 	abi: GigzaContractAbi
+	// });
+	console.log("contract", contract);
+	// const provider = useProvider()
+
+	const filter = {
+		address: GigzaContractAddress,
+		topics: [ethers.utils.id("ProposalSubmitted(uint256,string,address)")]
+	};
+
+	// useEffect(() => {
+	// 	if (contract) {
+			contract?
+				.queryFilter(filter)
+				?.then((logs) => {
+					let _log = []
+					logs?.forEach((log) => {
+						_log.push(log.args)
+					});
+
+					const allJobIds = _log.map(item => parseInt(item.jobId))
+					const uniqueJobIds = [...new Set(allJobIds)]
+					
+					console.log("allJobIds", uniqueJobIds)
+
+					// const filterLogs = _log?.filter(item => item.client === address)
+					// const modifiedFilterLogs = filterLogs?.map((item) => {
+					// 	return {
+					// 		client: item.client,
+					// 		jobId: parseInt(item.jobId)
+					// 	}
+					// })
+					// console.log(modifiedFilterLogs)
+				})
+				.catch((error) => {
+					console.error(error);
+				});
+	// 	}
+	// 	// eslint-disable-next-line react-hooks/exhaustive-deps
+	// }, [address]);
+
+	// check if contract has been sent
 
 	const handleNewUser = () => {
 		if (notifications?.find((item) => item?.userAddress === address)) return;
