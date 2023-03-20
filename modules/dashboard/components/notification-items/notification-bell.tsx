@@ -40,45 +40,129 @@ const NotificationBell = () => {
 		provider
 	);
 
+	const getEventLogs = async () => {
+		const filter = contract.filters.ProposalSubmitted();
+		const logs = await (
+			await contract.queryFilter(filter)
+		).map((item) => item.args);
+		console.log(logs);
+		const logsMessages = logs
+			.map((item) => {
+				if (item.client === address) {
+					return `${formatWalletAddress(item.freelancer)} sent you a proposal`;
+				}
+				return;
+			})
+			.filter((item) => typeof item !== "undefined");
+
+		const userNotification = [
+			{
+				userAddress: address,
+				notification: logsMessages
+			}
+		];
+
+		const updatedNotificationMap = new Map(
+			userNotification.map((item) => [item.userAddress, item.notification])
+		);
+		const updatedNotificationSet = new Set(
+			userNotification.map((item) => item.userAddress)
+		);
+
+		const updatedNotificationList = notifications.map((item) => {
+			if (updatedNotificationSet.has(item.userAddress)) {
+				return {
+					userAddress: item.userAddress,
+					notification: updatedNotificationMap.get(item.userAddress)
+				};
+			}
+			return item;
+		});
+		setNotifications(updatedNotificationList);
+		// console.log("notifications", notifications);
+		// logsMessages.forEach((element) => {
+		// 	const updatedNotification = notifications.find(
+		// 		(item) => item.userAddress === address
+		// 	);
+		// 	if (updatedNotification) {
+		// 		updatedNotification.notification = [
+		// 			...updatedNotification.notification,
+		// 			element
+		// 		];
+		// 	}
+		// 	setNotifications(logsMessages);
+		// });
+
+		// logsMessages.map(item => handleNotification(item))
+		// logs.map((element) => {
+		// 	const updateUserNotification = notifications.map((item) => {
+		// 		if (item.userAddress === address) {
+		// 			return {
+		// 				...item,
+		// 				notification: [
+		// 					...item.notification,
+		// 					`${element.freelancer} sent you a proposal`
+		// 				]
+		// 			};
+		// 		}
+		// 		return item;
+		// 	});
+		// 	setNotifications(updateUserNotification);
+		// });
+		// logs.forEach((element) => {
+		// 	if (address === element.client) {
+		// 		setNotifications([
+		// 			...notifications
+		// 		])
+		// 		// handleNotification(
+		// 		// 	`${formatWalletAddress(element.freelancer)} sent you a proposal`
+		// 		// );
+		// 	}
+		// });
+		// console.log("ProposalSubmitted",logs);
+	};
+
+	getEventLogs();
+
 	// useContract({
 	// 	address: GigzaContractAddress,
 	// 	abi: GigzaContractAbi
 	// });
 	// console.log("contract", contract);
 	// const provider = useProvider()
-
-	const filter = {
-		address: GigzaContractAddress,
-		topics: [
-			ethers.utils.id("ProposalSubmitted(uint256,string,address,address)")
-		]
-	};
+	// //
+	// 	const filter = {
+	// 		address: GigzaContractAddress,
+	// 		topics: [
+	// 			ethers.utils.id("ProposalSubmitted(uint256,string,address,address)")
+	// 		]
+	// 	};
 
 	// useEffect(() => {
-	// 	contract
-	// 		?.queryFilter(filter)
-	// 		?.then((logs) => {
-	// 			let _log = [];
-	// 			logs?.forEach((log) => {
-	// 				_log.push(log.args);
-	// 				// _log.push(log.args)
-	// 			});
-	// 			const proposalsReceived = _log?.filter(
-	// 				(item) => item.client === address
-	// 			);
-	// 			if (proposalsReceived.length) {
-	// 				proposalsReceived.forEach((element) => {
-	// 					// console.log("element", element.freelancer);
-	// 					handleNotification(
-	// 						`${formatWalletAddress(element.freelancer)} sent you a proposal`
-	// 					);
-	// 				});
-	// 			}
-	// 			console.log("logs", proposalsReceived);
-	// 		})
-	// 		.catch((error) => {
-	// 			console.error(error);
+	// contract
+	// 	?.queryFilter(filter)
+	// 	?.then((logs) => {
+	// 		let _log = [];
+	// 		logs?.forEach((log) => {
+	// 			_log.push(log.args);
+	// 			// _log.push(log.args)
 	// 		});
+	// 		const proposalsReceived = _log?.filter(
+	// 			(item) => item.client === address
+	// 		);
+	// 		// if (proposalsReceived.length) {
+	// 		// 	proposalsReceived.forEach((element) => {
+	// 		// 		// console.log("element", element.freelancer);
+	// 		// 		handleNotification(
+	// 		// 			`${formatWalletAddress(element.freelancer)} sent you a proposal`
+	// 		// 		);
+	// 		// 	});
+	// 		// }
+	// 		console.log("logs", proposalsReceived);
+	// 	})
+	// 	.catch((error) => {
+	// 		console.error(error);
+	// 	});
 	// }, [address, contract, filter]);
 
 	// useEffect(() => {
