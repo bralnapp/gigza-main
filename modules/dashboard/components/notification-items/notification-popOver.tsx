@@ -69,9 +69,9 @@ const NotificationPopOver = ({
 						key={`notification-message-${index}`}
 						className="flex items-center justify-between"
 					>
-						<p className="w-11/12 break-words text-sm font-normal leading-[21px] text-b3">
-							{item}
-						</p>
+						<p className="w-11/12 break-words text-sm font-normal leading-[21px] text-b3" dangerouslySetInnerHTML={{ __html: item }} />
+							{/* {item}
+						</p> */}
 						<Image
 							src={closeIcon}
 							alt=""

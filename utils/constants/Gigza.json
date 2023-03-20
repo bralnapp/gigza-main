@@ -30,9 +30,16 @@
 			{
 				"indexed": true,
 				"internalType": "address",
+				"name": "client",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
 				"name": "freelancer",
 				"type": "address"
 			}
+
 		],
 		"name": "ContractSent",
 		"type": "event"

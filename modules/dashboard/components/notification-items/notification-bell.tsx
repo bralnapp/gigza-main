@@ -4,7 +4,7 @@ import NotificationPopOver from "./notification-popOver";
 
 // images
 import bellIcon from "@/public/asset/icons/bell-icon.svg";
-import { useAccount, useContract, useContractEvent, useProvider } from "wagmi";
+import { useAccount, useContractEvent, useProvider } from "wagmi";
 import {
 	DaiContractAbi,
 	DiaContractAddress,
@@ -45,11 +45,13 @@ const NotificationBell = () => {
 		const logs = await (
 			await contract.queryFilter(filter)
 		).map((item) => item.args);
-		console.log(logs);
 		const logsMessages = logs
 			.map((item) => {
-				if (item.client === address) {
-					return `${formatWalletAddress(item.freelancer)} sent you a proposal`;
+				if (item?.client === address) {
+					const jobId = formatUnit(item?.jobId)! * 10 ** 18;
+					return `${formatWalletAddress(
+						item?.freelancer
+					)} sent you a <a href=/dashboard/proposal/received/${jobId}><u>proposal</u>	</a>  `;
 				}
 				return;
 			})
@@ -78,126 +80,69 @@ const NotificationBell = () => {
 			}
 			return item;
 		});
+		// @ts-ignore
 		setNotifications(updatedNotificationList);
-		// console.log("notifications", notifications);
-		// logsMessages.forEach((element) => {
-		// 	const updatedNotification = notifications.find(
-		// 		(item) => item.userAddress === address
-		// 	);
-		// 	if (updatedNotification) {
-		// 		updatedNotification.notification = [
-		// 			...updatedNotification.notification,
-		// 			element
-		// 		];
-		// 	}
-		// 	setNotifications(logsMessages);
-		// });
-
-		// logsMessages.map(item => handleNotification(item))
-		// logs.map((element) => {
-		// 	const updateUserNotification = notifications.map((item) => {
-		// 		if (item.userAddress === address) {
-		// 			return {
-		// 				...item,
-		// 				notification: [
-		// 					...item.notification,
-		// 					`${element.freelancer} sent you a proposal`
-		// 				]
-		// 			};
-		// 		}
-		// 		return item;
-		// 	});
-		// 	setNotifications(updateUserNotification);
-		// });
-		// logs.forEach((element) => {
-		// 	if (address === element.client) {
-		// 		setNotifications([
-		// 			...notifications
-		// 		])
-		// 		// handleNotification(
-		// 		// 	`${formatWalletAddress(element.freelancer)} sent you a proposal`
-		// 		// );
-		// 	}
-		// });
-		// console.log("ProposalSubmitted",logs);
 	};
 
-	getEventLogs();
+	const getContractSentLogs = async () => {
+		const filter = contract.filters.ContractSent();
+		const logs = await (
+			await contract.queryFilter(filter)
+		).map((item) => item.args);
+		console.log('logs',logs)
 
-	// useContract({
-	// 	address: GigzaContractAddress,
-	// 	abi: GigzaContractAbi
-	// });
-	// console.log("contract", contract);
-	// const provider = useProvider()
-	// //
-	// 	const filter = {
-	// 		address: GigzaContractAddress,
-	// 		topics: [
-	// 			ethers.utils.id("ProposalSubmitted(uint256,string,address,address)")
-	// 		]
-	// 	};
+		const logsMessages = logs
+			.map((item) => {
+				if (item?.freelancer === address) {
+					const jobId = formatUnit(item?.jobId)! * 10 ** 18;
+					return `${formatWalletAddress(item?.client)} sent you a contract`;
+				} else if (item?.client === address) {
+					const jobId = formatUnit(item?.jobId)! * 10 ** 18;
+					return `You sent ${formatWalletAddress(item?.client)} a contract`;
+				}
+				return;
+			})
+			.filter((item) => typeof item !== "undefined");
 
-	// useEffect(() => {
-	// contract
-	// 	?.queryFilter(filter)
-	// 	?.then((logs) => {
-	// 		let _log = [];
-	// 		logs?.forEach((log) => {
-	// 			_log.push(log.args);
-	// 			// _log.push(log.args)
-	// 		});
-	// 		const proposalsReceived = _log?.filter(
-	// 			(item) => item.client === address
-	// 		);
-	// 		// if (proposalsReceived.length) {
-	// 		// 	proposalsReceived.forEach((element) => {
-	// 		// 		// console.log("element", element.freelancer);
-	// 		// 		handleNotification(
-	// 		// 			`${formatWalletAddress(element.freelancer)} sent you a proposal`
-	// 		// 		);
-	// 		// 	});
-	// 		// }
-	// 		console.log("logs", proposalsReceived);
-	// 	})
-	// 	.catch((error) => {
-	// 		console.error(error);
-	// 	});
-	// }, [address, contract, filter]);
+		const userNotification = [
+			{
+				userAddress: address,
+				notification: logsMessages
+			}
+		];
 
-	// useEffect(() => {
-	// 	if (contract) {
-	// contract?
-	// 	.queryFilter(filter)
-	// 	?.then((logs) => {
-	// 		let _log = []
-	// 		logs?.forEach((log) => {
-	// 			_log.push(log)
-	// 			// _log.push(log.args)
-	// 		});
-	// 		console.log("logs",_log)
-	// const allJobIds = _log.map(item => parseInt(item.jobId))
-	// const uniqueJobIds = [...new Set(allJobIds)]
+		const updatedNotificationMap = new Map(
+			userNotification.map((item) => [item.userAddress, item.notification])
+		);
+		const updatedNotificationSet = new Set(
+			userNotification.map((item) => item.userAddress)
+		);
 
-	// console.log("allJobIds", uniqueJobIds)
+		const updatedNotificationList = notifications.map((item) => {
+			if (updatedNotificationSet.has(item.userAddress)) {
+				return {
+					userAddress: item.userAddress,
+					notification: updatedNotificationMap.get(item.userAddress)
+				};
+			}
+			return item;
+		});
+		// @ts-ignore
+		setNotifications(updatedNotificationList);
+	};
+	useEffect(() => {
+		// get event logs for contract sent events
 
-	// const filterLogs = _log?.filter(item => item.client === address)
-	// const modifiedFilterLogs = filterLogs?.map((item) => {
-	// 	return {
-	// 		client: item.client,
-	// 		jobId: parseInt(item.jobId)
-	// 	}
-	// })
-	// console.log(modifiedFilterLogs)
-	// })
-	// .catch((error) => {
-	// 	console.error(error);
-	// });
-	// 	}
-	// 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	// }, [address]);
+		getContractSentLogs();
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
-	// check if contract has been sent
+	useEffect(() => {
+		// get event logs for ProposalSubmitted events
+		getEventLogs();
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	const handleNewUser = () => {
 		if (notifications?.find((item) => item?.userAddress === address)) return;
@@ -216,7 +161,6 @@ const NotificationBell = () => {
 
 	useEffect(() => {
 		handleNewUser();
-		// console.log("notifications", notifications);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [address]);
 
@@ -307,9 +251,9 @@ const NotificationBell = () => {
 		address: GigzaContractAddress,
 		abi: GigzaContractAbi,
 		eventName: "ProposalSubmitted",
-		listener(jobId, description, client) {
-			if (address === client) {
-				handleNotification("You submitted a job proposal");
+		listener(jobId, description, client, freelancer) {
+			if (address === freelancer) {
+				handleNotification(`You submitted a job proposal`);
 				// setNotifications([...notifications, "You submitted a job proposal"]);
 			}
 			// console.log(
@@ -324,12 +268,18 @@ const NotificationBell = () => {
 		address: GigzaContractAddress,
 		abi: GigzaContractAbi,
 		eventName: "ContractSent",
-		listener(jobId, freelancer) {
+		listener(jobId, client, freelancer) {
 			if (address === freelancer) {
-				handleNotification("A contract has been sent to you");
+				handleNotification(
+					`You seent a contract to ${formatWalletAddress(
+						freelancer as `0x${string}`
+					)}`
+				);
 				// setNotifications([...notifications, "A contract has been sent to you"]);
 			}
-			// console.log(`jobId: ${jobId} - freelancer: ${freelancer}`);
+			console.log(
+				`jobId: ${jobId} - freelancer: ${freelancer} - client : ${client}`
+			);
 		}
 	});
 

@@ -28,9 +28,9 @@ const schema = yup
 	.object()
 	.shape({
 		email: yup.string().email().required(),
-		address: yup.string().required(),
+		address: yup.string().required()
 		// referral_id: yup.string().required(),
-		referrer_id: yup.string().required()
+		// referrer_id: yup.string().required()
 	})
 	.required();
 
@@ -46,11 +46,8 @@ const Earn = () => {
 	const { referralCode } = router.query;
 	const { address } = useAccount();
 	const [isSubmittingForm, setIsSubmittingForm] = useState(false);
-	const [referralId] = useState<string>(
-		typeof router.query.referralCode === "string"
-			? router.query.referralCode
-			: ""
-	);
+
+	// console.log("referralCode", referralCode);
 	// const address = "0x98683b170334aC8FC5CF6a576A4Dd14B28714f4";
 	const {
 		register,
@@ -62,7 +59,7 @@ const Earn = () => {
 		defaultValues: {
 			email: "",
 			address,
-			referrer_id: referralId,
+			referrer_id: referralCode,
 			referral_id: randomTextGenerator()
 		}
 	});
@@ -83,18 +80,20 @@ const Earn = () => {
 	);
 
 	const onSubmit = async (data: FormData) => {
+		if (!referralCode) {
+			toast.error("No referral code");
+			return;
+		}
 		const notification = toast.loading("Please wait...");
 		setIsSubmittingForm(true);
 		try {
 			const res = await axios.post(
-				`https://referral--backend--n9kdq2x27s72.code.run/register/users/referrer/${getValues(
-					"referrer_id"
-				)}`,
+				`https://referral--backend--n9kdq2x27s72.code.run/register/users/referrer/${referralCode}`,
 				{
 					email: data.email,
 					address: address?.toLowerCase() as string,
 					referral_id: randomTextGenerator(),
-					referrer_id: data.referrer_id
+					referrer_id: referralCode
 				}
 			);
 
@@ -131,12 +130,12 @@ const Earn = () => {
 		);
 		toast.success("Referral link copied successfully");
 	};
-
+	// console.log("isLoading", isLoading);
 	return (
 		<DashboardLayout>
 			<div className="layout-container pt-8 pb-[120px] md:pt-12">
 				{/* metrics section */}
-				{!data?.detail ? (
+				{isLoading ? null : !data?.detail ? (
 					<section className="mb-8  flex flex-col gap-y-6 rounded-lg bg-white py-5 px-4 min-[540px]:gap-y-8 md:grid md:flex-none md:grid-cols-2 md:flex-row md:justify-between lg:py-8 lg:px-10">
 						<div className="flex items-center gap-x-3">
 							<Image
@@ -180,7 +179,7 @@ const Earn = () => {
 							100 points and 200 points for and gig they land on Gigza. Start
 							referring now.
 						</p>
-						{!data?.detail ? (
+						{isLoading ? null : !data?.detail ? (
 							<>
 								<div className="mt-[19px] grid-cols-[2fr_1fr] rounded-md border border-[#E5E5E5] bg-[#F5F5F5] py-2 px-[10px] lg:grid lg:w-[479px]">
 									<p className="text-sm leading-[17px] text-b1">
@@ -210,7 +209,7 @@ const Earn = () => {
 						className="min-[540px]:h-[252px] min-[540px]:w-[252px] md:ml-auto"
 					/>
 				</section>
-				{data?.detail ? (
+				{isLoading ? null : data?.detail ? (
 					<form
 						onSubmit={handleSubmit(onSubmit)}
 						className="max-w-md pb-[55px] pt-10"
@@ -233,7 +232,7 @@ const Earn = () => {
 								disabled
 								{...{ register, errors }}
 							/>
-							<TextInput
+							{/* <TextInput
 								id="referrer_id"
 								type="text"
 								name="referrer_id"
@@ -241,7 +240,7 @@ const Earn = () => {
 								placeholder="Enter referral code"
 								// defaultValue={referralCode}
 								{...{ register, errors }}
-							/>
+							/> */}
 						</div>
 
 						<Button
