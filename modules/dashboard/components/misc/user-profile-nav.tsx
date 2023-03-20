@@ -34,6 +34,10 @@ const UserProfileNav = ({ userDetails }: UserProfileNavProps) => {
 		{
 			name: "view profile",
 			to: "/dashboard/profile"
+		},
+		{
+			name: "Earn",
+			to: "/dashboard/earn"
 		}
 	];
 
@@ -48,7 +52,7 @@ const UserProfileNav = ({ userDetails }: UserProfileNavProps) => {
 				alt=""
 				width={30}
 				height={30}
-				className="cursor-pointer rounded-full w-[30px] h-[30px] object-cover"
+				className="h-[30px] w-[30px] cursor-pointer rounded-full object-cover"
 			/>
 			{showProfile ? (
 				<div className="absolute -left-[150px] top-[45px] w-[370px] rounded-lg bg-white p-6 shadow-[0px_6px_60px_rgba(0,0,0,0.1)]">
@@ -60,7 +64,7 @@ const UserProfileNav = ({ userDetails }: UserProfileNavProps) => {
 									alt=""
 									width={30}
 									height={30}
-									className="cursor-pointer rounded-full  w-[30px] h-[30px] object-cover"
+									className="h-[30px] w-[30px]  cursor-pointer rounded-full object-cover"
 								/>
 								<p className="text-base capitalize text-primary2">
 									{formatWalletAddress(address!)}

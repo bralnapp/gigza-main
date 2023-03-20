@@ -32,49 +32,83 @@ const NotificationBell = () => {
 	);
 	useSetPersistNotificationStore(notifications);
 
-	const provider = useProvider()
+	const provider = useProvider();
 
-	const contract = new ethers.Contract(GigzaContractAddress, GigzaContractAbi, provider)
-	
+	const contract = new ethers.Contract(
+		GigzaContractAddress,
+		GigzaContractAbi,
+		provider
+	);
+
 	// useContract({
 	// 	address: GigzaContractAddress,
 	// 	abi: GigzaContractAbi
 	// });
-	console.log("contract", contract);
+	// console.log("contract", contract);
 	// const provider = useProvider()
 
 	const filter = {
 		address: GigzaContractAddress,
-		topics: [ethers.utils.id("ProposalSubmitted(uint256,string,address)")]
+		topics: [
+			ethers.utils.id("ProposalSubmitted(uint256,string,address,address)")
+		]
 	};
 
 	// useEffect(() => {
+	// 	contract
+	// 		?.queryFilter(filter)
+	// 		?.then((logs) => {
+	// 			let _log = [];
+	// 			logs?.forEach((log) => {
+	// 				_log.push(log.args);
+	// 				// _log.push(log.args)
+	// 			});
+	// 			const proposalsReceived = _log?.filter(
+	// 				(item) => item.client === address
+	// 			);
+	// 			if (proposalsReceived.length) {
+	// 				proposalsReceived.forEach((element) => {
+	// 					// console.log("element", element.freelancer);
+	// 					handleNotification(
+	// 						`${formatWalletAddress(element.freelancer)} sent you a proposal`
+	// 					);
+	// 				});
+	// 			}
+	// 			console.log("logs", proposalsReceived);
+	// 		})
+	// 		.catch((error) => {
+	// 			console.error(error);
+	// 		});
+	// }, [address, contract, filter]);
+
+	// useEffect(() => {
 	// 	if (contract) {
-			contract?
-				.queryFilter(filter)
-				?.then((logs) => {
-					let _log = []
-					logs?.forEach((log) => {
-						_log.push(log.args)
-					});
+	// contract?
+	// 	.queryFilter(filter)
+	// 	?.then((logs) => {
+	// 		let _log = []
+	// 		logs?.forEach((log) => {
+	// 			_log.push(log)
+	// 			// _log.push(log.args)
+	// 		});
+	// 		console.log("logs",_log)
+	// const allJobIds = _log.map(item => parseInt(item.jobId))
+	// const uniqueJobIds = [...new Set(allJobIds)]
 
-					const allJobIds = _log.map(item => parseInt(item.jobId))
-					const uniqueJobIds = [...new Set(allJobIds)]
-					
-					console.log("allJobIds", uniqueJobIds)
+	// console.log("allJobIds", uniqueJobIds)
 
-					// const filterLogs = _log?.filter(item => item.client === address)
-					// const modifiedFilterLogs = filterLogs?.map((item) => {
-					// 	return {
-					// 		client: item.client,
-					// 		jobId: parseInt(item.jobId)
-					// 	}
-					// })
-					// console.log(modifiedFilterLogs)
-				})
-				.catch((error) => {
-					console.error(error);
-				});
+	// const filterLogs = _log?.filter(item => item.client === address)
+	// const modifiedFilterLogs = filterLogs?.map((item) => {
+	// 	return {
+	// 		client: item.client,
+	// 		jobId: parseInt(item.jobId)
+	// 	}
+	// })
+	// console.log(modifiedFilterLogs)
+	// })
+	// .catch((error) => {
+	// 	console.error(error);
+	// });
 	// 	}
 	// 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	// }, [address]);

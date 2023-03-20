@@ -38,6 +38,10 @@ const links = [
 	{
 		name: "view profile",
 		to: "/dashboard/profile"
+	},
+	{
+		name: "earn",
+		to: "/dashboard/earn"
 	}
 ];
 
@@ -107,7 +111,7 @@ const DashboardSidebar = ({
 									alt=""
 									width={30}
 									height={30}
-									className="cursor-pointer rounded-full w-[30px] h-[30px] object-cover"
+									className="h-[30px] w-[30px] cursor-pointer rounded-full object-cover"
 								/>
 								<p className="text-base capitalize text-primary2">
 									{formatWalletAddress(address!)}
@@ -135,6 +139,11 @@ const DashboardSidebar = ({
 							</li>
 						))}
 					</ul>
+					<Button
+						href="/dashboard/post-job"
+						title="post job"
+						className="mt-6 h-9 w-[100px]"
+					/>
 				</div>
 			</aside>
 		</div>
