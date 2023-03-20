@@ -127,7 +127,7 @@ const Earn = () => {
 
 	const copyToClipboard = () => {
 		void navigator.clipboard.writeText(
-			`https://gigza-main.vercel.app/?referralCode=${data?.referral_id}`
+			`gigza-main.vercel.app/dashboard/earn?referralCode=${data?.referral_id}`
 		);
 		toast.success("Referral link copied successfully");
 	};
