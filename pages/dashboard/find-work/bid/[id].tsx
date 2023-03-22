@@ -49,7 +49,7 @@ const JobBid = ({ jobBidDetails }: JobBidProps) => {
 				</div>
 				<JobBidForm
 					client={jobBidDetails?.[4]}
-					jobId={formatUnit(jobBidDetails?.[0])! * 10 ** 18}
+					jobId={Math.trunc(formatUnit(jobBidDetails?.[0])! * 10 ** 18)}
 				/>
 			</div>
 		</DashboardLayout>

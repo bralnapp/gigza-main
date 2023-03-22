@@ -125,53 +125,57 @@ const Contract = () => {
 						</div>
 					))}
 				</div>
-				<div className="mt-4 space-y-5">
-					{contracts.get(activeSection)?.map((item, index) => (
-						<Link
-							href={{
-								// @ts-ignore
-								pathname: `/dashboard/contract/${item?.jobId}`,
-								query: {
-									// @ts-ignore
-									job: JSON.stringify(item!)
-								}
-							}}
-							key={`contracts-${index}`}
-							className="block rounded-lg py-4 px-3 md:rounded-[6px] md:py-6 md:px-5"
-						>
-							<div className="grid-flow-col gap-x-[55px] md:mb-[13px] md:grid">
-								<div className="">
-									<h3 className="text-base font-bold leading-[19px] text-b1 min-[540px]:text-lg min-[540px]:leading-[22px]">
-										{/* @ts-ignore */}
-										{item?.title}
-									</h3>
-									<p className="py-[15px] text-sm leading-[21px] text-b4 line-clamp-3  min-[540px]:text-base min-[540px]:leading-6 md:py-0 md:pt-2">
-										{/* @ts-ignore */}
-										{item?.description}
-									</p>
-								</div>
-								<div className="ml-auto text-sm capitalize leading-[19px] text-b4">
-									{activeSection === "active" ? (
+				{contracts ? (
+					<div className="mt-4 space-y-5">
+						{[...contracts.get(activeSection)!]
+							?.reverse()
+							?.map((item, index) => (
+								<Link
+									href={{
 										// @ts-ignore
-										`End Date: ${covertToReadableDate(item?.timeline)}`
-									) : (
-										// @ts-ignore
-										<ContractStatus job={item} bids={item?.userBids} />
-									)}
-								</div>
-							</div>
-							<div className="mt-[15px] flex items-center space-x-2 text-sm capitalize leading-[17px] text-b1">
-								{/* @ts-ignore */}
-								<p>{formatWalletAddress(item?.client)}</p>
-								<Image src={squareDot} alt="" />
-								<p>
-									{/* @ts-ignore */}
-									initiated {covertToReadableDate(parseInt(item?.timeline))}
-								</p>
-							</div>
-						</Link>
-					))}
-				</div>
+										pathname: `/dashboard/contract/${item?.jobId}`,
+										query: {
+											// @ts-ignore
+											job: JSON.stringify(item!)
+										}
+									}}
+									key={`contracts-${index}`}
+									className="block rounded-lg py-4 px-3 md:rounded-[6px] md:py-6 md:px-5"
+								>
+									<div className="grid-flow-col gap-x-[55px] md:mb-[13px] md:grid">
+										<div className="">
+											<h3 className="text-base font-bold leading-[19px] text-b1 min-[540px]:text-lg min-[540px]:leading-[22px]">
+												{/* @ts-ignore */}
+												{item?.title}
+											</h3>
+											<p className="py-[15px] text-sm leading-[21px] text-b4 line-clamp-3  min-[540px]:text-base min-[540px]:leading-6 md:py-0 md:pt-2">
+												{/* @ts-ignore */}
+												{item?.description}
+											</p>
+										</div>
+										<div className="ml-auto text-sm capitalize leading-[19px] text-b4">
+											{activeSection === "active" ? (
+												// @ts-ignore
+												`End Date: ${covertToReadableDate(item?.timeline)}`
+											) : (
+												// @ts-ignore
+												<ContractStatus job={item} bids={item?.userBids} />
+											)}
+										</div>
+									</div>
+									<div className="mt-[15px] flex items-center space-x-2 text-sm capitalize leading-[17px] text-b1">
+										{/* @ts-ignore */}
+										<p>{formatWalletAddress(item?.client)}</p>
+										<Image src={squareDot} alt="" />
+										<p>
+											{/* @ts-ignore */}
+											initiated {covertToReadableDate(parseInt(item?.timeline))}
+										</p>
+									</div>
+								</Link>
+							))}
+					</div>
+				) : null}
 			</div>
 		</DashboardLayout>
 	);

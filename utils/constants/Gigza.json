@@ -11,6 +11,12 @@
 			{
 				"indexed": true,
 				"internalType": "address",
+				"name": "client",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
 				"name": "freelancer",
 				"type": "address"
 			}
@@ -39,7 +45,6 @@
 				"name": "freelancer",
 				"type": "address"
 			}
-
 		],
 		"name": "ContractSent",
 		"type": "event"
@@ -64,6 +69,18 @@
 				"internalType": "string",
 				"name": "title",
 				"type": "string"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "client",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "freelancer",
+				"type": "address"
 			}
 		],
 		"name": "DisputeOpened",
@@ -195,6 +212,18 @@
 				"internalType": "string",
 				"name": "title",
 				"type": "string"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "client",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "freelancer",
+				"type": "address"
 			}
 		],
 		"name": "OfferDeclined",
@@ -252,6 +281,12 @@
 				"internalType": "uint256",
 				"name": "amount",
 				"type": "uint256"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "client",
+				"type": "address"
 			},
 			{
 				"indexed": true,

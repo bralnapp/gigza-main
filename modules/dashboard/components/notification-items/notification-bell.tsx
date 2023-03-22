@@ -4,10 +4,9 @@ import NotificationPopOver from "./notification-popOver";
 
 // images
 import bellIcon from "@/public/asset/icons/bell-icon.svg";
-import { useAccount, useContractEvent, useProvider } from "wagmi";
+import { useAccount, useProvider } from "wagmi";
+
 import {
-	DaiContractAbi,
-	DiaContractAddress,
 	formatUnit,
 	formatWalletAddress,
 	GigzaContractAbi,
@@ -24,7 +23,7 @@ type Notification = {
 }[];
 
 const NotificationBell = () => {
-	const { address } = useAccount();
+	const { address, isConnected } = useAccount();
 
 	const [showNotification, setShowNotification] = useState(false);
 	const [notifications, setNotifications] = useState<Notification>(
@@ -40,18 +39,19 @@ const NotificationBell = () => {
 		provider
 	);
 
-	const getEventLogs = async () => {
+	const getProposalSubmittedEventLogs = async () => {
+		if (!isConnected) return;
 		const filter = contract.filters.ProposalSubmitted();
 		const logs = await (
 			await contract.queryFilter(filter)
 		).map((item) => item.args);
 		const logsMessages = logs
 			.map((item) => {
-				if (item?.client === address) {
-					const jobId = formatUnit(item?.jobId)! * 10 ** 18;
+				if (item?.client?.toLowerCase() === address!.toLowerCase()) {
+					const jobId = Math.trunc(formatUnit(item?.jobId)! * 10 ** 18);
 					return `${formatWalletAddress(
 						item?.freelancer
-					)} sent you a <a href=/dashboard/proposal/received/${jobId}><u>proposal</u>	</a>  `;
+					)} sent you a <a href=/dashboard/proposal/received/${jobId}><u>proposal</u>	</a>`;
 				}
 				return;
 			})
@@ -75,7 +75,10 @@ const NotificationBell = () => {
 			if (updatedNotificationSet.has(item.userAddress)) {
 				return {
 					userAddress: item.userAddress,
-					notification: updatedNotificationMap.get(item.userAddress)
+					notification: [
+						...item.notification,
+						...updatedNotificationMap.get(item.userAddress)!
+					]
 				};
 			}
 			return item;
@@ -85,20 +88,21 @@ const NotificationBell = () => {
 	};
 
 	const getContractSentLogs = async () => {
+		if (!isConnected) return;
 		const filter = contract.filters.ContractSent();
 		const logs = await (
 			await contract.queryFilter(filter)
 		).map((item) => item.args);
-		console.log('logs',logs)
+		// console.log("logs", logs);
 
 		const logsMessages = logs
 			.map((item) => {
-				if (item?.freelancer === address) {
-					const jobId = formatUnit(item?.jobId)! * 10 ** 18;
+				if (item?.freelancer.toLowerCase() === address!.toLowerCase()) {
+					const jobId = Math.trunc(formatUnit(item?.jobId)! * 10 ** 18);
 					return `${formatWalletAddress(item?.client)} sent you a contract`;
-				} else if (item?.client === address) {
-					const jobId = formatUnit(item?.jobId)! * 10 ** 18;
-					return `You sent ${formatWalletAddress(item?.client)} a contract`;
+				} else if (item?.client.toLowerCase() === address!.toLowerCase()) {
+					const jobId = Math.trunc(formatUnit(item?.jobId)! * 10 ** 18);
+					return `You sent ${formatWalletAddress(item?.freelancer)} a contract`;
 				}
 				return;
 			})
@@ -122,7 +126,10 @@ const NotificationBell = () => {
 			if (updatedNotificationSet.has(item.userAddress)) {
 				return {
 					userAddress: item.userAddress,
-					notification: updatedNotificationMap.get(item.userAddress)
+					notification: [
+						...item.notification,
+						...updatedNotificationMap.get(item.userAddress)!
+					]
 				};
 			}
 			return item;
@@ -130,17 +137,286 @@ const NotificationBell = () => {
 		// @ts-ignore
 		setNotifications(updatedNotificationList);
 	};
-	useEffect(() => {
-		// get event logs for contract sent events
 
+	const getOfferDeclinedEventLogs = async () => {
+		if (!isConnected) return;
+		const filter = contract.filters.OfferDeclined();
+		const logs = await (
+			await contract.queryFilter(filter)
+		).map((item) => item.args);
+		// console.log("offer declined logs", logs);
+
+		const logsMessages = logs
+			.map((item) => {
+				if (item?.freelancer.toLowerCase() === address!.toLowerCase()) {
+					const jobId = Math.trunc(formatUnit(item?.jobId)! * 10 ** 18);
+					return `${formatWalletAddress(item?.client)} sent you a contract`;
+				} else if (item?.client.toLowerCase() === address!.toLowerCase()) {
+					const jobId = Math.trunc(formatUnit(item?.jobId)! * 10 ** 18);
+					return `${formatWalletAddress(
+						item?.freelancer
+					)} rejected your  <a href=/dashboard/proposal/received/${jobId}><u>job contract</u>	</a>`;
+				}
+				return;
+			})
+			.filter((item) => typeof item !== "undefined");
+		const userNotification = [
+			{
+				userAddress: address,
+				notification: logsMessages
+			}
+		];
+
+		const updatedNotificationMap = new Map(
+			userNotification.map((item) => [item.userAddress, item.notification])
+		);
+		const updatedNotificationSet = new Set(
+			userNotification.map((item) => item.userAddress)
+		);
+
+		const updatedNotificationList = notifications.map((item) => {
+			if (updatedNotificationSet.has(item.userAddress)) {
+				return {
+					userAddress: item.userAddress,
+					notification: [
+						...item.notification,
+						...updatedNotificationMap.get(item.userAddress)!
+					]
+				};
+			}
+			return item;
+		});
+		// @ts-ignore
+		setNotifications(updatedNotificationList);
+	};
+
+	const getContractAcceptedEventLogs = async () => {
+		if (!isConnected) return;
+		const filter = contract.filters.ContractAccepted();
+		const logs = await (
+			await contract.queryFilter(filter)
+		).map((item) => item.args);
+
+		const logsMessages = logs
+			.map((item) => {
+				if (item?.freelancer.toLowerCase() === address!.toLowerCase()) {
+					const jobId = Math.trunc(formatUnit(item?.jobId)! * 10 ** 18);
+					return `${formatWalletAddress(item?.client)} sent you a contract`;
+				} else if (item?.client.toLowerCase() === address!.toLowerCase()) {
+					const jobId = Math.trunc(formatUnit(item?.jobId)! * 10 ** 18);
+					return `${formatWalletAddress(
+						item?.freelancer
+					)} accepted your job contract`;
+				}
+				return;
+			})
+			.filter((item) => typeof item !== "undefined");
+		const userNotification = [
+			{
+				userAddress: address,
+				notification: logsMessages
+			}
+		];
+
+		const updatedNotificationMap = new Map(
+			userNotification.map((item) => [item.userAddress, item.notification])
+		);
+		const updatedNotificationSet = new Set(
+			userNotification.map((item) => item.userAddress)
+		);
+
+		const updatedNotificationList = notifications.map((item) => {
+			if (updatedNotificationSet.has(item.userAddress)) {
+				return {
+					userAddress: item.userAddress,
+					notification: [
+						...item.notification,
+						...updatedNotificationMap.get(item.userAddress)!
+					]
+				};
+			}
+			return item;
+		});
+		// @ts-ignore
+		setNotifications(updatedNotificationList);
+	};
+
+	const getJobCompletedEventLogs = async () => {
+		if (!isConnected) return;
+		const filter = contract.filters.ContractAccepted();
+		const logs = await (
+			await contract.queryFilter(filter)
+		).map((item) => item.args);
+		const logsMessages = logs
+			.map((item) => {
+				if (item?.freelancer.toLowerCase() === address!.toLowerCase()) {
+					const jobId = Math.trunc(formatUnit(item?.jobId)! * 10 ** 18);
+					return `You submitted a job to ${formatWalletAddress(item?.client)}`;
+				} else if (item?.client.toLowerCase() === address!.toLowerCase()) {
+					const jobId = Math.trunc(formatUnit(item?.jobId)! * 10 ** 18);
+					return `${formatWalletAddress(
+						item?.freelancer
+					)} just submitted a job`;
+				}
+				return;
+			})
+			.filter((item) => typeof item !== "undefined");
+		const userNotification = [
+			{
+				userAddress: address,
+				notification: logsMessages
+			}
+		];
+
+		const updatedNotificationMap = new Map(
+			userNotification.map((item) => [item.userAddress, item.notification])
+		);
+		const updatedNotificationSet = new Set(
+			userNotification.map((item) => item.userAddress)
+		);
+
+		const updatedNotificationList = notifications.map((item) => {
+			if (updatedNotificationSet.has(item.userAddress)) {
+				return {
+					userAddress: item.userAddress,
+					notification: [
+						...item.notification,
+						...updatedNotificationMap.get(item.userAddress)!
+					]
+				};
+			}
+			return item;
+		});
+		// @ts-ignore
+		setNotifications(updatedNotificationList);
+	};
+
+	const getPayementReleasedEventLogs = async () => {
+		if (!isConnected) return;
+		const filter = contract.filters.PayementReleased();
+		const logs = await (
+			await contract.queryFilter(filter)
+		).map((item) => item.args);
+
+		const logsMessages = logs
+			.map((item) => {
+				if (item?.freelancer?.toLowerCase() === address!.toLowerCase()) {
+					const jobId = Math.trunc(formatUnit(item?.jobId)! * 10 ** 18);
+					return `${formatWalletAddress(item?.client)} paid you Dai ${numeral(
+						formatUnit(item?.amount)
+					).format(",")}`;
+				} else if (item?.client.toLowerCase() === address!.toLowerCase()) {
+					const jobId = Math.trunc(formatUnit(item?.jobId)! * 10 ** 18);
+					return `You just paid ${formatWalletAddress(
+						item?.freelancer
+					)} Dia ${numeral(formatUnit(item?.amount)).format(",")}`;
+				}
+				return;
+			})
+			.filter((item) => typeof item !== "undefined");
+		const userNotification = [
+			{
+				userAddress: address,
+				notification: logsMessages
+			}
+		];
+
+		const updatedNotificationMap = new Map(
+			userNotification.map((item) => [item.userAddress, item.notification])
+		);
+		const updatedNotificationSet = new Set(
+			userNotification.map((item) => item.userAddress)
+		);
+
+		const updatedNotificationList = notifications.map((item) => {
+			if (updatedNotificationSet.has(item.userAddress)) {
+				return {
+					userAddress: item.userAddress,
+					notification: [
+						...item.notification,
+						...updatedNotificationMap.get(item.userAddress)!
+					]
+				};
+			}
+			return item;
+		});
+		// @ts-ignore
+		setNotifications(updatedNotificationList);
+	};
+
+	// const getReviewCreatedEventLogs = async () => {
+	// 	if (!isConnected) return;
+	// 	const filter = contract.filters.ReviewCreated();
+	// 	const logs = await (
+	// 		await contract.queryFilter(filter)
+	// 	).map((item) => item.args);
+
+	// 	// console.log("review logs", logs);
+	// };
+
+	// getReviewCreatedEventLogs();
+
+	const getDisputeOpenedEventLogs = async () => {
+		if (!isConnected) return;
+		const filter = contract.filters.DisputeOpened();
+		const logs = await (
+			await contract.queryFilter(filter)
+		).map((item) => item.args);
+
+		const logsMessages = logs
+			.map((item) => {
+				if (item?.freelancer?.toLowerCase() === address!.toLowerCase()) {
+					const jobId = Math.trunc(formatUnit(item?.jobId)! * 10 ** 18);
+					return `You have a dispute with ${formatWalletAddress(
+						item?.client
+					)} `;
+				} else if (item?.client.toLowerCase() === address!.toLowerCase()) {
+					const jobId = Math.trunc(formatUnit(item?.jobId)! * 10 ** 18);
+					return `You have a dispute with ${formatWalletAddress(
+						item?.freelancer
+					)}`;
+				}
+				return;
+			})
+			.filter((item) => typeof item !== "undefined");
+		const userNotification = [
+			{
+				userAddress: address,
+				notification: logsMessages
+			}
+		];
+
+		const updatedNotificationMap = new Map(
+			userNotification.map((item) => [item.userAddress, item.notification])
+		);
+		const updatedNotificationSet = new Set(
+			userNotification.map((item) => item.userAddress)
+		);
+
+		const updatedNotificationList = notifications.map((item) => {
+			if (updatedNotificationSet.has(item.userAddress)) {
+				return {
+					userAddress: item.userAddress,
+					notification: [
+						...item.notification,
+						...updatedNotificationMap.get(item.userAddress)!
+					]
+				};
+			}
+			return item;
+		});
+		// @ts-ignore
+		setNotifications(updatedNotificationList);
+	};
+
+	useEffect(() => {
+		getProposalSubmittedEventLogs();
 		getContractSentLogs();
-	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
-
-	useEffect(() => {
-		// get event logs for ProposalSubmitted events
-		getEventLogs();
-
+		getOfferDeclinedEventLogs();
+		getContractAcceptedEventLogs();
+		getJobCompletedEventLogs();
+		getPayementReleasedEventLogs();
+		getDisputeOpenedEventLogs();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -180,192 +456,192 @@ const NotificationBell = () => {
 	};
 	// ------------------------------ Transfer event (mint DAI tokens) ----------------------------
 
-	useContractEvent({
-		address: DiaContractAddress,
-		abi: DaiContractAbi,
-		eventName: "Transfer",
-		listener(from, to, value) {
-			if (to === address) {
-				handleNotification(
-					`${numeral(formatUnit(value)).format(
-						","
-					)} DAI was funded in your account`
-				);
-			}
-		}
-	});
+	// useContractEvent({
+	// 	address: DiaContractAddress,
+	// 	abi: DaiContractAbi,
+	// 	eventName: "Transfer",
+	// 	listener(from, to, value) {
+	// 		if (to === address) {
+	// 			handleNotification(
+	// 				`${numeral(formatUnit(value)).format(
+	// 					","
+	// 				)} DAI was funded in your account`
+	// 			);
+	// 		}
+	// 	}
+	// });
 
 	// ------------------------------ Approval  event to spend DAI----------------------------
-	useContractEvent({
-		address: DiaContractAddress,
-		abi: DaiContractAbi,
-		eventName: "Approval",
-		listener(owner, spender, value) {
-			if (owner === address) {
-				handleNotification(
-					`${numeral(formatUnit(value)).format(
-						","
-					)} DAI was approved to be spent by ${spender}`
-				);
-			}
-		}
-	});
+	// useContractEvent({
+	// 	address: DiaContractAddress,
+	// 	abi: DaiContractAbi,
+	// 	eventName: "Approval",
+	// 	listener(owner, spender, value) {
+	// 		if (owner === address) {
+	// 			handleNotification(
+	// 				`${numeral(formatUnit(value)).format(
+	// 					","
+	// 				)} DAI was approved to be spent by ${spender}`
+	// 			);
+	// 		}
+	// 	}
+	// });
 
 	// ------------------------------ ProfileCreated event ----------------------------
 
-	useContractEvent({
-		address: GigzaContractAddress,
-		abi: GigzaContractAbi,
-		eventName: "ProfileCreated",
-		listener(user, name, skill) {
-			if (user === address) {
-				handleNotification("Your profile was created");
-				console.log(`${user} - ${name} - ${skill}`);
-			}
-		}
-	});
+	// useContractEvent({
+	// 	address: GigzaContractAddress,
+	// 	abi: GigzaContractAbi,
+	// 	eventName: "ProfileCreated",
+	// 	listener(user, name, skill) {
+	// 		if (user === address) {
+	// 			handleNotification("Your profile was created");
+	// 			console.log(`${user} - ${name} - ${skill}`);
+	// 		}
+	// 	}
+	// });
 
 	// ------------------------------ JobPosted event ----------------------------
 
-	useContractEvent({
-		address: GigzaContractAddress,
-		abi: GigzaContractAbi,
-		eventName: "JobPosted",
-		listener(jobId, title, amount, description, timeline, client) {
-			if (client === address) {
-				handleNotification("You posted a job");
-				// setNotifications([...notifications, `You posted a job`]);
-				console.log(
-					`jobId: ${jobId} - title: ${title} - amount: ${amount} description: ${description} timeline: ${timeline} client: ${client}`
-				);
-			} else {
-				// @ts-ignore
-				handleNotification(`${formatWalletAddress(client)} posted a job`);
-			}
-		}
-	});
+	// useContractEvent({
+	// 	address: GigzaContractAddress,
+	// 	abi: GigzaContractAbi,
+	// 	eventName: "JobPosted",
+	// 	listener(jobId, title, amount, description, timeline, client) {
+	// 		if (client === address) {
+	// 			handleNotification("You posted a job");
+	// 			// setNotifications([...notifications, `You posted a job`]);
+	// 			console.log(
+	// 				`jobId: ${jobId} - title: ${title} - amount: ${amount} description: ${description} timeline: ${timeline} client: ${client}`
+	// 			);
+	// 		} else {
+	// 			// @ts-ignore
+	// 			handleNotification(`${formatWalletAddress(client)} posted a job`);
+	// 		}
+	// 	}
+	// });
 
 	// ------------------------------ ProposalSubmitted  event ----------------------------
 
-	useContractEvent({
-		address: GigzaContractAddress,
-		abi: GigzaContractAbi,
-		eventName: "ProposalSubmitted",
-		listener(jobId, description, client, freelancer) {
-			if (address === freelancer) {
-				handleNotification(`You submitted a job proposal`);
-				// setNotifications([...notifications, "You submitted a job proposal"]);
-			}
-			// console.log(
-			// 	`jobId: ${jobId} - description: ${description}  client: ${client}`
-			// );
-		}
-	});
+	// useContractEvent({
+	// 	address: GigzaContractAddress,
+	// 	abi: GigzaContractAbi,
+	// 	eventName: "ProposalSubmitted",
+	// 	listener(jobId, description, client, freelancer) {
+	// 		if (address === freelancer) {
+	// 			handleNotification(`You submitted a job proposal`);
+	// 			// setNotifications([...notifications, "You submitted a job proposal"]);
+	// 		}
+	// 		// console.log(
+	// 		// 	`jobId: ${jobId} - description: ${description}  client: ${client}`
+	// 		// );
+	// 	}
+	// });
 
 	// ------------------------------ ContractSent  event ----------------------------
 
-	useContractEvent({
-		address: GigzaContractAddress,
-		abi: GigzaContractAbi,
-		eventName: "ContractSent",
-		listener(jobId, client, freelancer) {
-			if (address === freelancer) {
-				handleNotification(
-					`You seent a contract to ${formatWalletAddress(
-						freelancer as `0x${string}`
-					)}`
-				);
-				// setNotifications([...notifications, "A contract has been sent to you"]);
-			}
-			console.log(
-				`jobId: ${jobId} - freelancer: ${freelancer} - client : ${client}`
-			);
-		}
-	});
+	// useContractEvent({
+	// 	address: GigzaContractAddress,
+	// 	abi: GigzaContractAbi,
+	// 	eventName: "ContractSent",
+	// 	listener(jobId, client, freelancer) {
+	// 		if (address === freelancer) {
+	// 			handleNotification(
+	// 				`You seent a contract to ${formatWalletAddress(
+	// 					freelancer as `0x${string}`
+	// 				)}`
+	// 			);
+	// 			// setNotifications([...notifications, "A contract has been sent to you"]);
+	// 		}
+	// 		console.log(
+	// 			`jobId: ${jobId} - freelancer: ${freelancer} - client : ${client}`
+	// 		);
+	// 	}
+	// });
 
 	// ------------------------------ ContractAccepted  event ----------------------------
 
-	useContractEvent({
-		address: GigzaContractAddress,
-		abi: GigzaContractAbi,
-		eventName: "ContractAccepted",
-		listener(jobId, freelancer) {
-			if (address === freelancer) {
-				handleNotification("You have accepted a contract");
-			}
-			// console.log(`jobId: ${jobId} - freelancer: ${freelancer}`);
-		}
-	});
+	// useContractEvent({
+	// 	address: GigzaContractAddress,
+	// 	abi: GigzaContractAbi,
+	// 	eventName: "ContractAccepted",
+	// 	listener(jobId, freelancer) {
+	// 		if (address === freelancer) {
+	// 			handleNotification("You have accepted a contract");
+	// 		}
+	// 		// console.log(`jobId: ${jobId} - freelancer: ${freelancer}`);
+	// 	}
+	// });
 
 	// ------------------------------ OfferDeclined  event ----------------------------
 
-	useContractEvent({
-		address: GigzaContractAddress,
-		abi: GigzaContractAbi,
-		eventName: "OfferDeclined",
-		listener(jobId, amount, title) {
-			// if (address === freelancer) {
-			// 	setNotifications([...notifications, "You have accepted a contract"]);
-			// }
-			console.log(`jobId: ${jobId} - amount: ${amount} - title: ${title}`);
-		}
-	});
+	// useContractEvent({
+	// 	address: GigzaContractAddress,
+	// 	abi: GigzaContractAbi,
+	// 	eventName: "OfferDeclined",
+	// 	listener(jobId, amount, title) {
+	// 		// if (address === freelancer) {
+	// 		// 	setNotifications([...notifications, "You have accepted a contract"]);
+	// 		// }
+	// 		console.log(`jobId: ${jobId} - amount: ${amount} - title: ${title}`);
+	// 	}
+	// });
 
 	// ------------------------------ JobCompleted  event ----------------------------
 
-	useContractEvent({
-		address: GigzaContractAddress,
-		abi: GigzaContractAbi,
-		eventName: "JobCompleted",
-		listener(jobId, message, freelancer) {
-			if (address === freelancer) {
-				// setNotifications([...notifications, "You have submitted a job"]);
-			}
-			// console.log(
-			// 	`jobId: ${jobId} - message: ${message} - freelancer: ${freelancer}`
-			// );
-		}
-	});
+	// useContractEvent({
+	// 	address: GigzaContractAddress,
+	// 	abi: GigzaContractAbi,
+	// 	eventName: "JobCompleted",
+	// 	listener(jobId, message, freelancer) {
+	// 		if (address === freelancer) {
+	// 			// setNotifications([...notifications, "You have submitted a job"]);
+	// 		}
+	// 		// console.log(
+	// 		// 	`jobId: ${jobId} - message: ${message} - freelancer: ${freelancer}`
+	// 		// );
+	// 	}
+	// });
 
 	// ------------------------------ PayementReleased  event ----------------------------
 
-	useContractEvent({
-		address: GigzaContractAddress,
-		abi: GigzaContractAbi,
-		eventName: "PayementReleased",
-		listener(jobId, amount, freelancer) {
-			if (address === freelancer) {
-				// setNotifications([
-				// 	...notifications,
-				// 	`You received ${numeral(formatUnit(amount)).format(
-				// 		","
-				// 	)} DAI for a job`
-				// ]);
-			}
-			console.log(
-				`jobId: ${jobId} - amount: ${amount} - freelancer: ${freelancer}`
-			);
-		}
-	});
+	// useContractEvent({
+	// 	address: GigzaContractAddress,
+	// 	abi: GigzaContractAbi,
+	// 	eventName: "PayementReleased",
+	// 	listener(jobId, amount, freelancer) {
+	// 		if (address === freelancer) {
+	// 			// setNotifications([
+	// 			// 	...notifications,
+	// 			// 	`You received ${numeral(formatUnit(amount)).format(
+	// 			// 		","
+	// 			// 	)} DAI for a job`
+	// 			// ]);
+	// 		}
+	// 		console.log(
+	// 			`jobId: ${jobId} - amount: ${amount} - freelancer: ${freelancer}`
+	// 		);
+	// 	}
+	// });
 
 	// ------------------------------ ReviewCreated  event ----------------------------
 
-	useContractEvent({
-		address: GigzaContractAddress,
-		abi: GigzaContractAbi,
-		eventName: "ReviewCreated",
-		listener(client, message, rating) {
-			if (address === client) {
-				// setNotifications([
-				// 	...notifications,
-				// 	`You recieved a ${rating} for a job`
-				// ]);
-			}
-			console.log(
-				`client: ${client} - message: ${message} - rating: ${rating}`
-			);
-		}
-	});
+	// useContractEvent({
+	// 	address: GigzaContractAddress,
+	// 	abi: GigzaContractAbi,
+	// 	eventName: "ReviewCreated",
+	// 	listener(client, message, rating) {
+	// 		if (address === client) {
+	// 			// setNotifications([
+	// 			// 	...notifications,
+	// 			// 	`You recieved a ${rating} for a job`
+	// 			// ]);
+	// 		}
+	// 		console.log(
+	// 			`client: ${client} - message: ${message} - rating: ${rating}`
+	// 		);
+	// 	}
+	// });
 
 	// useEffect(() => {
 	// 	localStorage.setItem(

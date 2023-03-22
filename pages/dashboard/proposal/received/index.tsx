@@ -44,7 +44,7 @@ const Received = ({ totalJobs }: ReceivedProps) => {
 	);
 
 	const handleClick = (jobId: BigNumberData, jobBids: Bids) => {
-		const _jobId = formatUnit(jobId)! * 10 ** 18;
+		const _jobId = Math.trunc(formatUnit(jobId)! * 10 ** 18);
 		if (jobBids.length === 0) {
 			toast.error("There is no bids available");
 			return;
@@ -59,42 +59,44 @@ const Received = ({ totalJobs }: ReceivedProps) => {
 					received proposals ({jobPostedByUser?.length})
 				</h1>
 
-				<div className="mt-4 space-y-5 min-[540px]:mt-8">
-					{jobPostedByUser?.map((item, index) => (
-						<div
-							key={`received-proposals-${index}`}
-							onClick={() => handleClick(item?.[0], item?.[8])}
-							className="block cursor-pointer rounded-lg bg-white py-4 px-3 min-[540px]:py-6 min-[540px]:px-5"
-						>
-							<div className="flex items-start justify-between">
-								<h4 className="w-11/12 text-base font-bold leading-[19px] text-b2">
-									{item?.[1]}
-								</h4>
-								<p
-									className={`text-sm capitalize italic leading-[19px] ${
-										+item?.[10] === 0 ? "text-[#0E9802]" : "text-[#F02323]"
-									}`}
-								>
-									{+item?.[10] === 0 ? "opened" : "closed"}
+				{jobPostedByUser.length ? (
+					<div className="mt-4 space-y-5 min-[540px]:mt-8">
+						{[...jobPostedByUser]?.reverse()?.map((item, index) => (
+							<div
+								key={`received-proposals-${index}`}
+								onClick={() => handleClick(item?.[0], item?.[8])}
+								className="block cursor-pointer rounded-lg bg-white py-4 px-3 min-[540px]:py-6 min-[540px]:px-5"
+							>
+								<div className="flex items-start justify-between">
+									<h4 className="w-11/12 text-base font-bold leading-[19px] text-b2">
+										{item?.[1]}
+									</h4>
+									<p
+										className={`text-sm capitalize italic leading-[19px] ${
+											+item?.[10] === 0 ? "text-[#0E9802]" : "text-[#F02323]"
+										}`}
+									>
+										{+item?.[10] === 0 ? "opened" : "closed"}
+									</p>
+								</div>
+
+								<p className="my-[15px] text-sm leading-[21px] text-b4 line-clamp-3 min-[540px]:w-4/5">
+									{item?.[2]}
+								</p>
+								<p className="text-sm capitalize leading-[17px] text-b1">
+									{item?.[8].length ? (
+										<>
+											{item?.[8].length} application
+											{`${item?.[8].length > 1 ? "s" : ""}`}
+										</>
+									) : (
+										<>no application yet</>
+									)}
 								</p>
 							</div>
-
-							<p className="my-[15px] text-sm leading-[21px] text-b4 line-clamp-3 min-[540px]:w-4/5">
-								{item?.[2]}
-							</p>
-							<p className="text-sm capitalize leading-[17px] text-b1">
-								{item?.[8].length ? (
-									<>
-										{item?.[8].length} application
-										{`${item?.[8].length > 1 ? "s" : ""}`}
-									</>
-								) : (
-									<>no application yet</>
-								)}
-							</p>
-						</div>
-					))}
-				</div>
+						))}
+					</div>
+				) : null}
 			</div>
 		</DashboardLayout>
 	);

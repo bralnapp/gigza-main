@@ -33,10 +33,10 @@ const RecentJobListDetails = ({ jobDetails }: RecentJobListDetailsProps) => {
 			<div className="border-b border-[#E8E8E8] pb-6">
 				<Button
 					title="Apply Job"
-					className="w-[163px] ml-auto mb-6"
-					href={`/dashboard/find-work/bid/${
+					className="ml-auto mb-6 w-[163px]"
+					href={`/dashboard/find-work/bid/${Math.trunc(
 						formatUnit(jobDetails?.[0])! * 10 ** 18
-					}`}
+					)}`}
 				/>
 				<div className="flex items-start justify-between text-xl font-bold leading-[29px] text-b1">
 					<h3 className="w-4/5">{jobDetails?.[1]}</h3>
