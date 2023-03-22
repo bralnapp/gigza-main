@@ -125,7 +125,7 @@ const Contract = () => {
 						</div>
 					))}
 				</div>
-				{contracts ? (
+				{contracts.get(activeSection)?.length ? (
 					<div className="mt-4 space-y-5">
 						{[...contracts.get(activeSection)!]
 							?.reverse()
