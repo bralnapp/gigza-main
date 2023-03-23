@@ -31,6 +31,28 @@ const NotificationBell = () => {
 	);
 	useSetPersistNotificationStore(notifications);
 
+	const handleNewUser = () => {
+		if (notifications?.find((item) => item?.userAddress === address)) return;
+		const newUser: Notification[number] = {
+			userAddress: address!,
+			notification: []
+		};
+		if (notifications?.length) {
+			setNotifications([...notifications, newUser]);
+		} else if (!notifications?.length && address) {
+			setNotifications([newUser]);
+		}
+
+		// else {
+		// 	setNotifications([]);
+		// }
+	};
+
+	useEffect(() => {
+		handleNewUser();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [address]);
+
 	const provider = useProvider();
 
 	const contract = new ethers.Contract(
@@ -57,86 +79,172 @@ const NotificationBell = () => {
 			})
 			.filter((item) => typeof item !== "undefined");
 
-		const userNotification = [
-			{
-				userAddress: address,
-				notification: logsMessages
-			}
-		];
+		const userNotification: Notification[number] = {
+			userAddress: address,
+			notification: logsMessages as string[]
+		};
 
-		const updatedNotificationMap = new Map(
-			userNotification.map((item) => [item.userAddress, item.notification])
-		);
-		const updatedNotificationSet = new Set(
-			userNotification.map((item) => item.userAddress)
-		);
+		console.log("userNotification", userNotification);
+		if (notifications.length === 0) {
+			setNotifications([userNotification]);
+		}
 
-		const updatedNotificationList = notifications.map((item) => {
-			if (updatedNotificationSet.has(item.userAddress)) {
+		const updatedUserNotification = notifications.map((item) => {
+			if (item.userAddress?.toLowerCase() === address?.toLowerCase()) {
 				return {
-					userAddress: item.userAddress,
+					...item,
 					notification: [
 						...item.notification,
-						...updatedNotificationMap.get(item.userAddress)!
-					]
+						...userNotification.notification
+					] as string[]
 				};
 			}
 			return item;
 		});
-		// @ts-ignore
-		setNotifications(updatedNotificationList);
+		console.log("updatedUserNotification", updatedUserNotification);
+		console.log("notifications", notifications);
+		if (notifications.length) {
+			setNotifications(updatedUserNotification);
+		}
+		// const updatedNotificationMap = new Map(
+		// 	userNotification.map((item) => [item.userAddress, item.notification])
+		// );
+		// const updatedNotificationSet = new Set(
+		// 	userNotification.map((item) => item.userAddress)
+		// );
+
+		// const updatedNotificationList = notifications.map((item) => {
+		// 	if (updatedNotificationSet.has(item.userAddress)) {
+		// 		return {
+		// 			userAddress: item.userAddress,
+		// 			notification: [
+		// 				...item.notification,
+		// 				...updatedNotificationMap.get(item.userAddress)!
+		// 			]
+		// 		};
+		// 	}
+		// 	return item;
+		// });
+		// // @ts-ignore
+		// setNotifications(updatedNotificationList);
 	};
 
-	const getContractSentLogs = async () => {
-		if (!isConnected) return;
-		const filter = contract.filters.ContractSent();
-		const logs = await (
-			await contract.queryFilter(filter)
-		).map((item) => item.args);
-		// console.log("logs", logs);
+	// const getContractSentLogs = async () => {
+	// 	if (!isConnected) return;
+	// 	const filter = contract.filters.ContractSent();
+	// 	const logs = await (
+	// 		await contract.queryFilter(filter)
+	// 	).map((item) => item.args);
 
-		const logsMessages = logs
-			.map((item) => {
-				if (item?.freelancer.toLowerCase() === address!.toLowerCase()) {
-					const jobId = Math.trunc(formatUnit(item?.jobId)! * 10 ** 18);
-					return `${formatWalletAddress(item?.client)} sent you a contract`;
-				} else if (item?.client.toLowerCase() === address!.toLowerCase()) {
-					const jobId = Math.trunc(formatUnit(item?.jobId)! * 10 ** 18);
-					return `You sent ${formatWalletAddress(item?.freelancer)} a contract`;
-				}
-				return;
-			})
-			.filter((item) => typeof item !== "undefined");
+	// 	const cleanLogs = logs.map((item) => [
+	// 		{
+	// 			client: item.client,
+	// 			freelancer: item.freelancer,
+	// 			jobId: Math.trunc(formatUnit(item?.jobId)! * 10 ** 18)
+	// 		}
+	// 	]);
+	// 	console.log("cleanLogs", cleanLogs);
 
-		const userNotification = [
-			{
-				userAddress: address,
-				notification: logsMessages
-			}
-		];
+		// const logsMessages = logs
+		// 	.map((item) => {
+		// 		if (item?.freelancer.toLowerCase() === address!.toLowerCase()) {
+		// 			const jobId = Math.trunc(formatUnit(item?.jobId)! * 10 ** 18);
+		// 			return `${formatWalletAddress(item?.client)} sent you a contract`;
+		// 		} else if (item?.client.toLowerCase() === address!.toLowerCase()) {
+		// 			const jobId = Math.trunc(formatUnit(item?.jobId)! * 10 ** 18);
+		// 			return `You sent ${formatWalletAddress(item?.freelancer)} a contract`;
+		// 		}
+		// 		return;
+		// 	})
+		// 	.filter((item) => typeof item !== "undefined");
 
-		const updatedNotificationMap = new Map(
-			userNotification.map((item) => [item.userAddress, item.notification])
-		);
-		const updatedNotificationSet = new Set(
-			userNotification.map((item) => item.userAddress)
-		);
+		// const userNotification = [
+		// 	{
+		// 		userAddress: address,
+		// 		notification: logsMessages
+		// 	}
+		// ];
+		// console.log("userNotification", userNotification);
+		// if (notifications.length === 0) {
+		// 	setNotifications(userNotification);
+		// } else {
+		// 	const updatedNotificationMap = new Map(
+		// 		userNotification.map((item) => [item.userAddress, item.notification])
+		// 	);
+		// 	const updatedNotificationSet = new Set(
+		// 		userNotification.map((item) => item.userAddress)
+		// 	);
 
-		const updatedNotificationList = notifications.map((item) => {
-			if (updatedNotificationSet.has(item.userAddress)) {
-				return {
-					userAddress: item.userAddress,
-					notification: [
-						...item.notification,
-						...updatedNotificationMap.get(item.userAddress)!
-					]
-				};
-			}
-			return item;
-		});
-		// @ts-ignore
-		setNotifications(updatedNotificationList);
-	};
+		// 	const updatedNotificationList = notifications.map((item) => {
+		// 		if (updatedNotificationSet.has(item.userAddress)) {
+		// 			return {
+		// 				userAddress: item.userAddress,
+		// 				notification: [
+		// 					...item.notification,
+		// 					...updatedNotificationMap.get(item.userAddress)!
+		// 				]
+		// 			};
+		// 		}
+		// 		return item;
+		// 	});
+		// 	// @ts-ignore
+		// 	setNotifications(updatedNotificationList);
+		// }
+	// };
+	// const getContractSentLogs = async () => {
+	// 	if (!isConnected) return;
+	// 	const filter = contract.filters.ContractSent();
+	// 	const logs = await (
+	// 		await contract.queryFilter(filter)
+	// 	).map((item) => item.args);
+	// 	// console.log("logs", logs);
+
+	// 	const logsMessages = logs
+	// 		.map((item) => {
+	// 			if (item?.freelancer.toLowerCase() === address!.toLowerCase()) {
+	// 				const jobId = Math.trunc(formatUnit(item?.jobId)! * 10 ** 18);
+	// 				return `${formatWalletAddress(item?.client)} sent you a contract`;
+	// 			} else if (item?.client.toLowerCase() === address!.toLowerCase()) {
+	// 				const jobId = Math.trunc(formatUnit(item?.jobId)! * 10 ** 18);
+	// 				return `You sent ${formatWalletAddress(item?.freelancer)} a contract`;
+	// 			}
+	// 			return;
+	// 		})
+	// 		.filter((item) => typeof item !== "undefined");
+
+	// 	const userNotification = [
+	// 		{
+	// 			userAddress: address,
+	// 			notification: logsMessages
+	// 		}
+	// 	];
+	// 	console.log("userNotification", userNotification);
+	// 	if (notifications.length === 0) {
+	// 		setNotifications(userNotification);
+	// 	} else {
+	// 		const updatedNotificationMap = new Map(
+	// 			userNotification.map((item) => [item.userAddress, item.notification])
+	// 		);
+	// 		const updatedNotificationSet = new Set(
+	// 			userNotification.map((item) => item.userAddress)
+	// 		);
+
+	// 		const updatedNotificationList = notifications.map((item) => {
+	// 			if (updatedNotificationSet.has(item.userAddress)) {
+	// 				return {
+	// 					userAddress: item.userAddress,
+	// 					notification: [
+	// 						...item.notification,
+	// 						...updatedNotificationMap.get(item.userAddress)!
+	// 					]
+	// 				};
+	// 			}
+	// 			return item;
+	// 		});
+	// 		// @ts-ignore
+	// 		setNotifications(updatedNotificationList);
+	// 	}
+	// };
 
 	const getOfferDeclinedEventLogs = async () => {
 		if (!isConnected) return;
@@ -410,35 +518,15 @@ const NotificationBell = () => {
 	};
 
 	useEffect(() => {
-		getProposalSubmittedEventLogs();
-		getContractSentLogs();
-		getOfferDeclinedEventLogs();
-		getContractAcceptedEventLogs();
-		getJobCompletedEventLogs();
-		getPayementReleasedEventLogs();
-		getDisputeOpenedEventLogs();
+		// getProposalSubmittedEventLogs();
+		// getContractSentLogs();
+		// getOfferDeclinedEventLogs();
+		// getContractAcceptedEventLogs();
+		// getJobCompletedEventLogs();
+		// getPayementReleasedEventLogs();
+		// getDisputeOpenedEventLogs();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
-
-	const handleNewUser = () => {
-		if (notifications?.find((item) => item?.userAddress === address)) return;
-		const newUser: Notification[number] = {
-			userAddress: address!,
-			notification: []
-		};
-		if (notifications?.length) {
-			setNotifications([...notifications, newUser]);
-		} else if (!notifications?.length && address) {
-			setNotifications([newUser]);
-		} else {
-			setNotifications([]);
-		}
-	};
-
-	useEffect(() => {
-		handleNewUser();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [address]);
 
 	const handleClick = () => setShowNotification(!showNotification);
 
@@ -658,8 +746,10 @@ const NotificationBell = () => {
 				type="notification"
 				icon={bellIcon}
 				isActive={
-					!!notifications?.find((item) => item.userAddress === address)
-						?.notification?.length
+					notifications?.length
+						? !!notifications?.find((item) => item.userAddress === address)
+								?.notification?.length
+						: false
 				}
 				{...{ handleClick }}
 			/>
@@ -905,3 +995,7 @@ export default NotificationBell;
 // };
 
 // export default NotificationBell;
+
+// const arr = [['foo', 'bar'], ['baz', 'qux'], ['foo', 'bar'], ['quux', 'corge'], ['baz', 'qux']];
+// const uniqueArr = Array.from(new Set(arr.map(JSON.stringify)), JSON.parse);
+// console.log(uniqueArr);
