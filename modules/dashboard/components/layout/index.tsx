@@ -150,7 +150,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
 									<li
 										key={`allMessages-${index}`}
 										className="reak-words py-2 text-sm font-normal leading-[21px] text-b3"
-										dangerouslySetInnerHTML={{ __html: item }}
+										dangerouslySetInnerHTML={{ __html: item as string }}
 									/>
 								))}
 							</ul>
