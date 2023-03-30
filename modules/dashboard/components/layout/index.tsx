@@ -24,7 +24,7 @@ type DashboardLayoutProps = {
 const DashboardLayout = ({ children }: DashboardLayoutProps) => {
 	const { isConnected, address } = useAccount();
 	const [ready, setReady] = useState(false);
-	const [isModalOpen, setIsModalOpen] = useState(true);
+	const [isModalOpen, setIsModalOpen] = useState(false);
 	const { open } = useWeb3Modal();
 
 	const {
