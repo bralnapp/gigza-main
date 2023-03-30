@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import DashboardLayout from "@/modules/dashboard/components/layout";
 import Image from "next/image";

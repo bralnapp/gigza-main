@@ -97,8 +97,8 @@ const DashboardNav = () => {
 				</nav>
 				<div className="flex">
 					<div className="relative mr-10 flex items-center gap-x-10 md:gap-x-8 lg:mr-[21px]">
-						<MessagingNotification />
-						<NotificationBell />
+						{/* <MessagingNotification /> */}
+						{/* <NotificationBell /> */}
 					</div>
 					<Image
 						src={menuIcon}

@@ -17,6 +17,7 @@ export type JobDetailsProps = {
 	userBids: IuserBids[];
 	state: number;
 	timeline: any;
+	freelancer: `0x${string}`;
 }[];
 
 // kindly note the ProposalType is type declaration for sent proposals

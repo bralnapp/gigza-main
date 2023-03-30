@@ -1,0 +1,8 @@
+.bannerGradient {
+	background: linear-gradient(
+			0deg,
+			rgba(255, 255, 255, 0.9),
+			rgba(255, 255, 255, 0.9)
+		),
+		#ffb800;
+}
