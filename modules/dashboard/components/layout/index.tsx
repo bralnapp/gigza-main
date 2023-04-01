@@ -65,7 +65,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
 				item?.freelancer as `0x${string}`
 			)} sent you a bid <a href="/dashboard/proposal/received/${Math.trunc(
 				formatUnit(item?.jobId)! * 10 ** 18
-			)}">proposal</a>`
+			)}"><u>proposal</u></a>`
 		])
 		?.flat();
 
@@ -80,7 +80,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
 				(item) =>
 					`${formatWalletAddress(
 						item?.client
-					)} sent you a <a href="/dashboard/contract">contract</a>`
+					)} sent you a <a href="/dashboard/contract"><u>contract</u></a>`
 		  )
 		: null;
 
@@ -164,7 +164,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
 								There are some action items that require your attention.{" "}
 								<span
 									onClick={() => setIsModalOpen(true)}
-									className="cursor-pointer"
+									className="cursor-pointer text-red-600"
 								>
 									Click to view.
 								</span>
